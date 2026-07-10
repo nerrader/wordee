@@ -3,13 +3,14 @@ import sys
 # from httpx import Client as httpx_client
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFontDatabase
+from PySide6.QtCore import QFile, QTextStream, QIODevice
 
 # from wordle_gui import constants as const
 # from wordle_gui.models import cache
 # from wordle_gui.models import nyt
 
 from wordle_gui.views.main_window import MainWindow
-from wordle_gui import constants as const
+from wordle_gui.assets import resources_rc
 
 
 def main() -> None:
@@ -27,12 +28,18 @@ def main() -> None:
 
     # wordle_solution = nyt.fetch_wordle_solution(const.USER_AGENT)
     app = QApplication(sys.argv)
-    QFontDatabase.addApplicationFont(
-        str(const.SCRIPT_DIR / "assets" / "fonts" / "RobotoMono.ttf")
-    )
-    app.setStyleSheet((const.ASSETS_DIR_PATH / "style.qss").read_text())
+    QFontDatabase.addApplicationFont(":/fonts/RobotoMono.ttf")
+
+    # for some reason qfile doesnt support the with statement in python so
+    file = QFile(":/style.qss")
+    if file.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text):
+        stream = QTextStream(file)
+        stylesheet = stream.readAll()
+        app.setStyleSheet(stylesheet)
+        file.close()
+
     window = MainWindow()
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec())
 
 

@@ -12,4 +12,10 @@ QLabel {
 
 Topbar {
    background-color: #FFED6D;
+   padding: 0px 20px 10px 20px 
+}
+
+#title_label {
+    font-size: 52pt;
+    font-weight: bold;
 }
