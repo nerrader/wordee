@@ -15,6 +15,10 @@ Topbar {
    padding: 0px 20px 10px 20px 
 }
 
+Topbar QToolButton {
+    background-color: #ffffff
+}
+
 #title_label {
     font-size: 52pt;
     font-weight: bold;

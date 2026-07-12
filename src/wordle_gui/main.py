@@ -28,7 +28,7 @@ def main() -> None:
     # wordle_solution = nyt.fetch_wordle_solution(const.USER_AGENT)
     app = QApplication(sys.argv)
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
-    app_setup.get_stylesheet_contents(":/style.qss")
+    app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
     window = MainWindow()
     window.showMaximized()
     sys.exit(app.exec())

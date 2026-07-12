@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QFrame,
     QLabel,
-    QPushButton,
+    QToolButton,
     QVBoxLayout,
     QHBoxLayout,
     QSizePolicy,
@@ -12,6 +12,13 @@ from PySide6.QtCore import QSize
 from wordle_gui.__init__ import __version__ as game_version
 
 
+class ResponsiveToolButton(QToolButton):
+    def resizeEvent(self, event):
+        new_icon_size = int(min(self.width(), self.height()) * 0.9)
+        self.setIconSize(QSize(new_icon_size, new_icon_size))
+        super().resizeEvent(event)
+
+
 class Topbar(QFrame):
     def __init__(self) -> None:
         super().__init__()
@@ -20,6 +27,7 @@ class Topbar(QFrame):
 
         self.setup_components()
         self.setup_layouts()
+
         # self.setup_presenters()
 
     def setup_components(self) -> None:
@@ -28,17 +36,31 @@ class Topbar(QFrame):
         self.version_label = QLabel(f"version {game_version}")
         self.version_label.setObjectName("version_label")
 
-        self.game_icon = QPushButton()
+        self.game_icon = ResponsiveToolButton()
+        self.game_icon.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        self.game_icon.setIcon(QIcon(":/icons/wordee-icon.svg"))
+        self.game_icon.setIconSize(QSize(120, 120))
 
-        self.help_icon = QPushButton()
+        self.help_icon = ResponsiveToolButton()
+        self.help_icon.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         self.help_icon.setIcon(QIcon(":/icons/help-icon.svg"))
         self.help_icon.setIconSize(QSize(50, 50))
 
-        self.statistics_icon = QPushButton()
+        self.statistics_icon = ResponsiveToolButton()
+        self.statistics_icon.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         self.statistics_icon.setIcon(QIcon(":/icons/statistics-icon.svg"))
         self.statistics_icon.setIconSize(QSize(50, 50))
 
-        self.settings_icon = QPushButton()
+        self.settings_icon = ResponsiveToolButton()
+        self.settings_icon.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         self.settings_icon.setIcon(QIcon(":/icons/settings-icon.svg"))
         self.settings_icon.setIconSize(QSize(50, 50))
 
@@ -60,6 +82,7 @@ class Topbar(QFrame):
         icon_area_layout.addWidget(self.help_icon)
         icon_area_layout.addWidget(self.statistics_icon)
         icon_area_layout.addWidget(self.settings_icon)
+        icon_area_layout.setSpacing(20)
 
         topbar_layout.addLayout(icon_area_layout)
 

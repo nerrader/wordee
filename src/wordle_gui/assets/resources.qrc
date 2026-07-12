@@ -3,6 +3,7 @@
         <file>icons/help-icon.svg</file>
         <file>icons/settings-icon.svg</file>
         <file>icons/statistics-icon.svg</file>
+        <file>icons/wordee-icon.svg</file>
         <file>fonts/RobotoMono.ttf</file>
         <file>fonts/RobotoMono-Italic.ttf</file>
         <file>style.qss</file>
