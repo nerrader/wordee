@@ -14,7 +14,7 @@ from wordle_gui.__init__ import __version__ as game_version
 
 class ResponsiveToolButton(QToolButton):
     def resizeEvent(self, event):
-        new_icon_size = int(min(self.width(), self.height()) * 0.9)
+        new_icon_size = int(min(self.width(), self.height()) * 0.85)
         self.setIconSize(QSize(new_icon_size, new_icon_size))
         super().resizeEvent(event)
 

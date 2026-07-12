@@ -15,11 +15,23 @@ Topbar {
    padding: 0px 20px 10px 20px 
 }
 
+/*
 Topbar QToolButton {
     background-color: #ffffff
 }
+*/
 
 #title_label {
     font-size: 52pt;
+    font-weight: bold;
+}
+
+#letter_grid_area_layout {
+    background-color: #3873E9; 
+    border-radius: 20;
+}
+
+#letter_grid_header_label {
+    font-size: 18pt;
     font-weight: bold;
 }
