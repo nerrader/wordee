@@ -22,7 +22,7 @@ Topbar QToolButton {
 */
 
 #title_label {
-    font-size: 52pt;
+    font-size: 42pt;
     font-weight: bold;
 }
 
@@ -34,4 +34,18 @@ Topbar QToolButton {
 #letter_grid_header_label {
     font-size: 18pt;
     font-weight: bold;
+}
+
+#status_label {
+    background-color: #96D7FF;
+    border-radius: 12;
+    font-weight: 500;
+    font-size: 16pt;
+    padding: 20px
+}
+
+QLabel[class="grid_label"] {
+    background-color: #f5f5f5;
+    border-radius: 0;
+    font-size: 28pt;
 }

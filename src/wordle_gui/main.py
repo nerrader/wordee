@@ -24,8 +24,6 @@ def main() -> None:
     # )
     # valid_guesses: set[str] = cache.read_cache("valid_guesses", const.CACHE_DIR_PATH)
     # all_allowed_words = possible_solutions_set | valid_guesses
-
-    # wordle_solution = nyt.fetch_wordle_solution(const.USER_AGENT)
     app = QApplication(sys.argv)
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
     app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
