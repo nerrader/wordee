@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
 from wordle_gui.views.topbar import Topbar
 from wordle_gui.views.left_game_area import LeftGameArea
+from wordle_gui.views.right_game_area import RightGameArea
 
 
 class MainWindow(QMainWindow):
@@ -18,8 +19,8 @@ class MainWindow(QMainWindow):
 
         self.topbar = Topbar()
         self.left_game_area = LeftGameArea()
-        # simulate teh right game area taking space from the left game area
-        self.right_game_area = QFrame()
+        # simulate the right game area taking space from the left game area
+        self.right_game_area = RightGameArea()
 
     def setup_layouts(self):
         main_container_layout = QVBoxLayout()
@@ -40,5 +41,5 @@ class MainWindow(QMainWindow):
 
     def setup_presenters(self):
         raise NotImplementedError(
-            "setup_presenters() not implemented in views/wordee_grid.py"
+            "setup_presenters() not implemented in views/main_window.py"
         )

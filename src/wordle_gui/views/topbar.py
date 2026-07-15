@@ -89,5 +89,5 @@ class Topbar(QFrame):
 
     def setup_presenters(self) -> None:
         raise NotImplementedError(
-            "setup_presenters() in views/topbar.py is not finished."
+            "setup_presenters() not implemented in views/topbar.py"
         )

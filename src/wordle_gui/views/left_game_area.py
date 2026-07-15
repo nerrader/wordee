@@ -68,5 +68,5 @@ class LeftGameArea(QFrame):
 
     def setup_presenters(self):
         raise NotImplementedError(
-            "setup_presenters() not implemented in views/wordee_grid.py"
+            "setup_presenters() not implemented in views/left_game_area.py"
         )
