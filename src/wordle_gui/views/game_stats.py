@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QSizePolicy
 from PySide6.QtGui import QPixmap
 from wordle_gui.assets import resources_rc
 
@@ -22,6 +22,9 @@ class GameStats(QFrame):
 
         self.cat_image = QLabel()
         self.cat_image.setPixmap(QPixmap(":/images/cat-image.png"))
+        self.cat_image.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
 
     def setup_layouts(self) -> None:
         game_stats_layout = QVBoxLayout()

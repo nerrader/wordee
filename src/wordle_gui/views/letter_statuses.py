@@ -1,4 +1,12 @@
-from PySide6.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QFrame
+from PySide6.QtWidgets import (
+    QLabel,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QFrame,
+    QSizePolicy,
+)
+from PySide6.QtCore import Qt
 
 
 class LetterStatuses(QFrame):
@@ -13,10 +21,14 @@ class LetterStatuses(QFrame):
     def setup_components(self) -> None:
 
         self.letter_status_label_header = QLabel("LETTER STATUSES")
-        self.letter_status_label_header.setObjectName("letter-statuses-header-label")
+        self.letter_status_label_header.setObjectName("letter_statuses_header_label")
+        self.letter_status_label_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         def label_format(letter):
             label_widget = QPushButton(letter)
+            label_widget.setSizePolicy(
+                QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+            )
             label_widget.setProperty("class", "letter-status-label")
             return label_widget
 
@@ -52,6 +64,10 @@ class LetterStatuses(QFrame):
         letter_statuses_layout.addLayout(second_row_layout)
         letter_statuses_layout.addLayout(third_row_layout)
 
+        letter_statuses_layout.setStretch(0, 1)
+        letter_statuses_layout.setStretch(1, 1)
+        letter_statuses_layout.setStretch(2, 1)
+        letter_statuses_layout.setStretch(3, 1)
         self.setLayout(letter_statuses_layout)
 
     def setup_presenters(self) -> None:
