@@ -6,8 +6,6 @@ class LeftGameArea(QFrame):
     def __init__(self):
         super().__init__()
 
-        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
-
         self.setup_components()
         self.setup_layouts()
         # self.setup_presenters()
@@ -15,9 +13,6 @@ class LeftGameArea(QFrame):
     def setup_components(self):
         self.letter_grid_area_frame = QFrame()
         self.letter_grid_area_frame.setObjectName("letter_grid_area_layout")
-        self.letter_grid_area_frame.setSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding
-        )
 
         self.letter_grid_label = QLabel("WORDEE LETTER GRID")
         self.letter_grid_label.setObjectName("letter_grid_header_label")
@@ -28,9 +23,6 @@ class LeftGameArea(QFrame):
         self.status_label = QLabel("Start typing to play WORDEE!")
         self.status_label.setObjectName("status_label")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding
-        )
 
         for _ in range(6):
             row_labels: list[QLabel] = []
@@ -54,6 +46,8 @@ class LeftGameArea(QFrame):
         letter_grid_area_layout.addLayout(letter_grid_layout)
         letter_grid_area_layout.setStretch(0, 1)
         letter_grid_area_layout.setStretch(1, 9)
+        letter_grid_area_layout.setSpacing(10)
+        letter_grid_area_layout.setContentsMargins(20, 20, 20, 20)
         self.letter_grid_area_frame.setLayout(letter_grid_area_layout)
 
         left_game_area_layout.addWidget(self.letter_grid_area_frame)
@@ -61,10 +55,9 @@ class LeftGameArea(QFrame):
         left_game_area_layout.setStretch(0, 9)
         left_game_area_layout.setStretch(1, 1)
         left_game_area_layout.setSpacing(10)
-        left_game_area_layout.setContentsMargins(20, 10, 20, 10)
+        left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)
-        self.setStyleSheet("border: 1px solid red;")
 
     def setup_presenters(self):
         raise NotImplementedError(

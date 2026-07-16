@@ -12,7 +12,7 @@ QLabel, QPushButton, QToolButton {
 
 Topbar {
    background-color: #FFED6D;
-   padding: 0px 20px 10px 20px 
+   padding: 10px;
 }
 
 /*
@@ -32,7 +32,7 @@ Topbar QToolButton {
 }
 
 #letter_grid_header_label {
-    font-size: 18pt;
+    font-size: 24pt;
     font-weight: bold;
 }
 
@@ -51,7 +51,7 @@ QLabel[class="grid_label"] {
 }
 
 #puzzle_number_label {
-    font-size: 16pt;
+    font-size: 32pt;
     font-weight: bold;
 }
 
@@ -61,6 +61,10 @@ GameStats {
     padding: 10;
 }
 
+QLabel[class="game_stats_label"] {
+    font-size: 14pt;
+}
+
 LetterStatuses {
     background-color: #E0536F;
     border-radius: 20;
@@ -68,12 +72,12 @@ LetterStatuses {
 
 #letter_statuses_header_label {
     font-weight: bold;
-    font-size: 20pt;
+    font-size: 24pt;
 }
 
 #game_stats_label_header {
     font-weight: bold;
-    font-size: 20pt;
+    font-size: 24pt;
 }
 
 #give_up_button {
@@ -81,6 +85,7 @@ LetterStatuses {
     border-radius: 8; 
     background-color: #a0a0a0;
     border: none;
+    padding: 10px;
 }
 
 #switch_to_unlimited_mode_button {
@@ -89,10 +94,11 @@ LetterStatuses {
     background-color: #A791FF;
     border: none;
     font-weight: bold;
+    padding: 10px;
 }
 
 LetterStatuses QPushButton[class="letter-status-label"] {
     background-color: #dbdbdb;
     border-radius: 0;
-    font-size: 28pt;
+    font-size: 24pt;
 }

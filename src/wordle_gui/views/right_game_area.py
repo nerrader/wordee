@@ -30,16 +30,10 @@ class RightGameArea(QFrame):
 
         self.give_up_button = QPushButton("Give Up")
         self.give_up_button.setObjectName("give_up_button")
-        self.give_up_button.setSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding
-        )
 
         self.switch_to_unlimited_mode_button = QPushButton("Switch to Unlimited")
         self.switch_to_unlimited_mode_button.setObjectName(
             "switch_to_unlimited_mode_button"
-        )
-        self.switch_to_unlimited_mode_button.setSizePolicy(
-            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding
         )
 
     def setup_layouts(self) -> None:
@@ -55,11 +49,15 @@ class RightGameArea(QFrame):
         right_game_area_layout.addWidget(self.letter_statuses)
         right_game_area_layout.addLayout(misc_buttons_layout)
 
-        self.setLayout(right_game_area_layout)
         right_game_area_layout.setStretch(0, 1)
         right_game_area_layout.setStretch(1, 3)
         right_game_area_layout.setStretch(2, 4)
         right_game_area_layout.setStretch(3, 1)
+
+        right_game_area_layout.setSpacing(30)
+        right_game_area_layout.setContentsMargins(20, 20, 20, 20)
+
+        self.setLayout(right_game_area_layout)
 
     def setup_presenters(self) -> None:
         raise NotImplementedError(

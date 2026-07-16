@@ -22,7 +22,7 @@ class LetterStatuses(QFrame):
 
         self.letter_status_label_header = QLabel("LETTER STATUSES")
         self.letter_status_label_header.setObjectName("letter_statuses_header_label")
-        self.letter_status_label_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.letter_status_label_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         def label_format(letter):
             label_widget = QPushButton(letter)
@@ -68,6 +68,9 @@ class LetterStatuses(QFrame):
         letter_statuses_layout.setStretch(1, 1)
         letter_statuses_layout.setStretch(2, 1)
         letter_statuses_layout.setStretch(3, 1)
+        letter_statuses_layout.setSpacing(7)
+
+        letter_statuses_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(letter_statuses_layout)
 
     def setup_presenters(self) -> None:

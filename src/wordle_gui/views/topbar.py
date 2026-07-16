@@ -24,8 +24,7 @@ class Topbar(QFrame):
         super().__init__()
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-        self.setContentsMargins(10, 0, 20, 0)
-        self.setMaximumHeight(100)
+        self.setMaximumHeight(110)
 
         self.setup_components()
         self.setup_layouts()
@@ -35,6 +34,7 @@ class Topbar(QFrame):
     def setup_components(self) -> None:
         self.title_label = QLabel("WORDEE")
         self.title_label.setObjectName("title_label")
+
         self.version_label = QLabel(f"version {game_version}")
         self.version_label.setObjectName("version_label")
 
@@ -85,7 +85,6 @@ class Topbar(QFrame):
         topbar_layout.addLayout(icon_area_layout)
 
         self.setLayout(topbar_layout)
-        self.setStyleSheet("border: 1px solid red;")
 
     def setup_presenters(self) -> None:
         raise NotImplementedError(

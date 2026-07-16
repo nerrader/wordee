@@ -19,25 +19,23 @@ class MainWindow(QMainWindow):
 
         self.topbar = Topbar()
         self.left_game_area = LeftGameArea()
-        # simulate the right game area taking space from the left game area
         self.right_game_area = RightGameArea()
 
     def setup_layouts(self):
         main_container_layout = QVBoxLayout()
         main_container_layout.setStretch(0, 1)
         main_container_layout.setStretch(1, 9)
-        main_container_layout.addWidget(
-            self.topbar, alignment=Qt.AlignmentFlag.AlignTop
-        )
+        main_container_layout.addWidget(self.topbar)
         main_container_layout.setContentsMargins(0, 0, 0, 0)
 
         game_area_layout = QHBoxLayout()
         game_area_layout.addWidget(self.left_game_area)
         game_area_layout.addWidget(self.right_game_area)
+        game_area_layout.setSpacing(20)
+
         main_container_layout.addLayout(game_area_layout)
 
         self.main_container.setLayout(main_container_layout)
-        self.setStyleSheet("border: 1px solid red;")
 
     def setup_presenters(self):
         raise NotImplementedError(
