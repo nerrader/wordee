@@ -6,7 +6,6 @@ from PySide6.QtWidgets import (
     QFrame,
     QSizePolicy,
 )
-from PySide6.QtCore import Qt
 
 
 class LetterStatuses(QFrame):
@@ -19,12 +18,10 @@ class LetterStatuses(QFrame):
         # self.setup_presenters()
 
     def setup_components(self) -> None:
-
         self.letter_status_label_header = QLabel("LETTER STATUSES")
         self.letter_status_label_header.setObjectName("letter_statuses_header_label")
-        # self.letter_status_label_header.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        def label_format(letter):
+        def label_format(letter: str) -> QPushButton:
             label_widget = QPushButton(letter)
             label_widget.setSizePolicy(
                 QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred

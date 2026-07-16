@@ -8,7 +8,9 @@ from PySide6.QtWidgets import QApplication
 # from wordle_gui.models import nyt
 
 from wordle_gui.views.main_window import MainWindow
-from wordle_gui.assets import resources_rc
+
+# this import is used for the .qrc :/ virtual filepaths to work
+from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
 from wordle_gui import app_setup
 
 

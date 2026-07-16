@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from PySide6.QtWidgets import (
     QFrame,
     QLabel,
@@ -11,9 +13,12 @@ from PySide6.QtCore import QSize
 
 from wordle_gui.__init__ import __version__ as game_version
 
+if TYPE_CHECKING:
+    from PySide6.QtGui import QResizeEvent
+
 
 class ResponsiveToolButton(QToolButton):
-    def resizeEvent(self, event):
+    def resizeEvent(self, event: QResizeEvent):
         new_icon_size = int(min(self.width(), self.height()) * 0.9)
         self.setIconSize(QSize(new_icon_size, new_icon_size))
         super().resizeEvent(event)

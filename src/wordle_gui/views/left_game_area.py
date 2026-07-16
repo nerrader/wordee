@@ -1,16 +1,16 @@
-from PySide6.QtWidgets import QGridLayout, QLabel, QFrame, QVBoxLayout, QSizePolicy
+from PySide6.QtWidgets import QGridLayout, QLabel, QFrame, QVBoxLayout
 from PySide6.QtCore import Qt
 
 
 class LeftGameArea(QFrame):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.setup_components()
         self.setup_layouts()
         # self.setup_presenters()
 
-    def setup_components(self):
+    def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
         self.letter_grid_area_frame.setObjectName("letter_grid_area_layout")
 
@@ -33,7 +33,7 @@ class LeftGameArea(QFrame):
                 row_labels.append(grid_label)
             self.grid_labels.append(row_labels)
 
-    def setup_layouts(self):
+    def setup_layouts(self) -> None:
         left_game_area_layout = QVBoxLayout()
         letter_grid_area_layout = QVBoxLayout()
         letter_grid_layout = QGridLayout()
@@ -59,7 +59,7 @@ class LeftGameArea(QFrame):
 
         self.setLayout(left_game_area_layout)
 
-    def setup_presenters(self):
+    def setup_presenters(self) -> None:
         raise NotImplementedError(
             "setup_presenters() not implemented in views/left_game_area.py"
         )

@@ -30,3 +30,8 @@ dev = [
     "respx>=0.23.1",
     "ruff>=0.15.17",
 ]
+[tool.mypy]
+# Tell Mypy that 'src' is where your packages live
+mypy_path = "src"
+explicit_package_bases = true
+namespace_packages = true

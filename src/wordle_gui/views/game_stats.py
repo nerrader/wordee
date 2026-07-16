@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QSizePolicy
-from PySide6.QtGui import QPixmap
-from wordle_gui.assets import resources_rc
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
+
+# this import is used for the .qrc :/ virtual filepaths to work
+from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
 
 
 class GameStats(QFrame):
@@ -38,7 +39,7 @@ class GameStats(QFrame):
 
         self.setLayout(game_stats_layout)
 
-    def setup_presenters(self):
+    def setup_presenters(self) -> None:
         raise NotImplementedError(
             "setup_presenters() not implemented in views/game_stats.py"
         )

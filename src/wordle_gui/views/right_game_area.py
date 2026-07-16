@@ -1,11 +1,4 @@
-from PySide6.QtWidgets import (
-    QLabel,
-    QHBoxLayout,
-    QVBoxLayout,
-    QPushButton,
-    QFrame,
-    QSizePolicy,
-)
+from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QPushButton, QFrame
 from PySide6.QtCore import Qt
 from wordle_gui.views.game_stats import GameStats
 from wordle_gui.views.letter_statuses import LetterStatuses
