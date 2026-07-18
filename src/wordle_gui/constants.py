@@ -3,10 +3,8 @@ from pathlib import Path
 
 _dirs = PlatformDirs("wordle", appauthor="nerrader")
 MAIN_DATA_PATH: Path = _dirs.user_data_path
+LOG_FILE_PATH: Path = MAIN_DATA_PATH / "app.log"
 CACHE_DIR_PATH: Path = MAIN_DATA_PATH / "cache"
-
-USER_AGENT = "WordleGUI (https://github.com/nerrader/wordle-gui)"
 SOLUTIONS_CACHE_PATH = CACHE_DIR_PATH / "possible_solutions.txt"
 
-SCRIPT_DIR: Path = Path(__file__).resolve().parent
-ASSETS_DIR_PATH: Path = SCRIPT_DIR / "assets"
+USER_AGENT = "WordleGUI (https://github.com/nerrader/wordle-gui)"

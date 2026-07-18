@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from loguru import logger
 from PySide6.QtWidgets import QMainWindow, QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Signal
 from wordle_gui.views.topbar import Topbar

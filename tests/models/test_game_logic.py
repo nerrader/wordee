@@ -4,7 +4,7 @@ from wordle_gui.models.game_logic import WordeeGame
 
 @pytest.fixture
 def wordee_game() -> WordeeGame:
-    return WordeeGame("ENTRY")
+    return WordeeGame("ENTRY", set(["stray", "louie", "sheep", "entry"]))
 
 
 @pytest.mark.parametrize(

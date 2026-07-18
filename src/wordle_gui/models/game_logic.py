@@ -1,3 +1,6 @@
+from loguru import logger
+
+
 class WordeeGame:
     def __init__(self, target_word: str, valid_guesses: set[str]) -> None:
         self._target_word: str = target_word.lower()
@@ -50,10 +53,15 @@ class WordeeGame:
         guess = guess.lower()
 
         if guess not in self._valid_guesses:
+            logger.warning(f"This guess is not valid: {guess}")
             raise ValueError(f"This guess is not valid: {guess}")
         self._guesses_left -= 1
 
+        logger.info(f"User guessed: {guess}. Guesses remaining: {self._guesses_left}")
+
         if (guess != self.target_word) and self.guesses_left <= 0:
+            logger.info("The user lost the game.")
             self._game_state = "loss"
         else:
+            logger.info("The user won the game.")
             self._game_state = "win"

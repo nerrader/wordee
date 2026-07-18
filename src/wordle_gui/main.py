@@ -1,6 +1,7 @@
 import sys
 
 from httpx import Client as httpx_client
+from loguru import logger
 from PySide6.QtWidgets import QApplication
 
 from wordle_gui import constants as const
@@ -16,7 +17,14 @@ from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
 from wordle_gui import app_setup
 
 
+def setup_logger() -> None:
+    logger.remove()
+    logger.add(sink=const.LOG_FILE_PATH, diagnose=False, retention=0, rotation="00:00")
+
+
 def main() -> None:
+    setup_logger()
+
     const.CACHE_DIR_PATH.mkdir(parents=True, exist_ok=True)
 
     with httpx_client(timeout=10.0, headers={"User-Agent": const.USER_AGENT}) as client:
@@ -29,6 +37,7 @@ def main() -> None:
     valid_guesses: set[str] = cache.read_cache("valid_guesses", const.CACHE_DIR_PATH)
     all_allowed_words = possible_solutions | valid_guesses
     target_word = nyt.fetch_wordle_solution(const.USER_AGENT)
+
     app = QApplication(sys.argv)
 
     game_logic_model = WordeeGame(target_word, all_allowed_words)

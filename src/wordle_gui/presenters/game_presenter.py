@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from loguru import logger
 
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
@@ -23,7 +24,7 @@ class GamePresenter:
         Args:
             key (str): The alphabetical letter that the user inputted.
         """
-        print(f"Presenter received alphabet key: {key}")
+        logger.debug(f"Presenter recieved alphabet key: {key}")
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
@@ -32,13 +33,12 @@ class GamePresenter:
         )
 
         if target_label is None:
-            print("the wordee row is full so it no longer supports any more characters")
             return
 
         target_label.setText(key.upper())
 
     def handle_backspace_key(self) -> None:
-        print("Presenter received backspace key")
+        logger.debug("Presenter received backspace key")
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
@@ -48,20 +48,18 @@ class GamePresenter:
         ]
 
         if not filled_labels:
-            print("there are no characters to delete in this row")
             return
 
         filled_labels[-1].setText("")
 
     def handle_enter_key(self) -> None:
-        print("Presenter received enter key")
+        logger.debug("Presenter received enter key")
 
         try:
             grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
                 -self.model.guesses_left
             ]
             user_guess: str = "".join([label.text() for label in grid_row_cell_labels])
-            print(user_guess)
 
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
@@ -82,5 +80,4 @@ class GamePresenter:
                 label.style().polish(label)
 
         except ValueError:
-            print("that is not a valid guess")
             self.view.left_game_area.status_label.setText("That is NOT a valid guess!")

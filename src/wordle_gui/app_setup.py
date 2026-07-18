@@ -1,3 +1,5 @@
+from loguru import logger
+
 from PySide6.QtCore import QFile, QIODevice, QTextStream
 from PySide6.QtGui import QFontDatabase
 
@@ -14,7 +16,10 @@ def load_application_font(font_path: str) -> None:
     font_id = QFontDatabase.addApplicationFont(font_path)
 
     if font_id == -1:
+        logger.error(f"Failed to load [{font_path}], font ID: {font_id}")
         raise FileNotFoundError(f"{font_path} failed to load with a font ID of -1.")
+
+    logger.debug(f"Loaded [{font_path}] with an ID of {font_id}")
 
 
 def get_stylesheet_contents(stylesheet_path: str) -> str:
@@ -32,8 +37,10 @@ def get_stylesheet_contents(stylesheet_path: str) -> str:
         stream = QTextStream(file)
         stylesheet: str = stream.readAll()
         file.close()
+        logger.debug(f"Successfully loaded stylesheet: {stylesheet_path}")
         return stylesheet
     else:
+        logger.error(f"Stylesheet path: [{stylesheet_path}] could not be loaded.")
         raise FileNotFoundError(
             "ERROR: Could not read file for :/style.qss. Closing the application..."
         )

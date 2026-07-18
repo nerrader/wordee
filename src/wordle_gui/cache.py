@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from loguru import logger
+
 if TYPE_CHECKING:
     import httpx
     from pathlib import Path
@@ -9,6 +11,7 @@ def validate_cache_type(cache_type: str) -> None:
     """Checks the filename base and raises an error if invalid.
     Only 'possible_solutions' and 'valid_guesses' are valid filename bases."""
     if cache_type not in ["possible_solutions", "valid_guesses"]:
+        logger.error(f"Invalid filename base: {cache_type}")
         raise ValueError(f"Invalid filename base: {cache_type}")
 
 
@@ -35,9 +38,12 @@ def sync_cache(cache_type: str, cache_dir: Path, client: httpx.Client) -> None:
             headers=request_headers,
         )
         if response.status_code == 304:
-            print(f"Cache for {cache_type} is up to date.")
+            logger.info(f"Cache type {cache_type} is up to date.")
             return
         elif response.status_code != 200:
+            logger.error(
+                f"Failed to fetch {cache_type} cache, status code: {response.status_code}"
+            )
             raise httpx.HTTPStatusError(
                 f"Failed to fetch {cache_type} cache. Status code: {response.status_code}",
                 request=response.request,
@@ -50,6 +56,7 @@ def sync_cache(cache_type: str, cache_dir: Path, client: httpx.Client) -> None:
         print(f"Cache for {cache_type} downloaded and saved.")
 
     except Exception as error:
+        logger.error(f"Failed to sync cache while fetching {cache_type}: {error}")
         print(f"An error occurred while fetching {cache_type}: {error}")
 
 
@@ -69,6 +76,8 @@ def read_cache(cache_type: str, cache_dir: Path) -> set[str]:
 
     cache_file = cache_dir / f"{cache_type}.txt"
     if not cache_file.exists():
+        logger.error(f"Cache file for {cache_type} not found.")
         raise FileNotFoundError(f"Cache file for {cache_type} not found.")
 
+    logger.debug(f"Successfully read the cache for {cache_type}")
     return set(cache_file.read_text().splitlines())

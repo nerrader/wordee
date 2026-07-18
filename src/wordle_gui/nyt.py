@@ -3,16 +3,25 @@ from datetime import date
 from typing import Any
 
 import httpx
+from loguru import logger
 
 
 def fetch_wordle_solution(user_agent: str) -> str:
     """Fetches the wordle solution for today from the New York Times API."""
-    # no httpx client here because it only works when you talk to same domain anyway
+    logger.debug("Starting fetch of wordle solution")
     current_date = date.today()
-    headers = {"User-Agent": user_agent}
-    response = httpx.get(
-        f"https://www.nytimes.com/svc/wordle/v2/{current_date}.json", headers=headers
-    )
-    data: dict[str, Any] = response.json()
+    # no httpx client here because it only works when you talk to same domain anyway
+    try:
+        headers = {"User-Agent": user_agent}
+        response = httpx.get(
+            f"https://www.nytimes.com/svc/wordle/v2/{current_date}.json",
+            headers=headers,
+        )
+        response.raise_for_status()
+        data: dict[str, Any] = response.json()
 
-    return data["solution"]
+        logger.debug("Successfully fetched wordle solution.")
+        return data["solution"]
+    except Exception as error:
+        logger.error(f"Fetch wordle solution ({current_date}) failed: {error}")
+        raise Exception
