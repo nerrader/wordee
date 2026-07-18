@@ -85,7 +85,7 @@ class LeftGameArea(QFrame):
         left_game_area_layout.addWidget(self.status_label)
         left_game_area_layout.setStretch(0, 9)
         left_game_area_layout.setStretch(1, 1)
-        left_game_area_layout.setSpacing(10)
+        left_game_area_layout.setSpacing(20)
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)

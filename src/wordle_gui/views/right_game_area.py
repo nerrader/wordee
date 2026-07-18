@@ -1,4 +1,11 @@
-from PySide6.QtWidgets import QLabel, QHBoxLayout, QVBoxLayout, QPushButton, QFrame
+from PySide6.QtWidgets import (
+    QLabel,
+    QHBoxLayout,
+    QVBoxLayout,
+    QPushButton,
+    QFrame,
+    QSizePolicy,
+)
 from PySide6.QtCore import Qt
 from wordle_gui.views.game_stats import GameStats
 from wordle_gui.views.letter_statuses import LetterStatuses
@@ -8,9 +15,9 @@ class RightGameArea(QFrame):
     def __init__(self) -> None:
         super().__init__()
 
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
         self.setup_layouts()
-        # self.setup_presenters()
 
     def setup_components(self) -> None:
         self.puzzle_number_label = QLabel("Puzzle #NULL")
