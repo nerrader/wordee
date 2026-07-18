@@ -2,7 +2,7 @@ from datetime import date
 from httpx import Response
 import respx
 
-from wordle_gui.models import nyt
+from wordle_gui import nyt
 from wordle_gui import constants as const
 
 

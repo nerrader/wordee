@@ -50,6 +50,18 @@ QLabel[class="grid_label"] {
     font-size: 28pt;
 }
 
+QLabel[class="grid_label"][status="absent"] {
+    background-color: #a0a0a0;
+}
+
+QLabel[class="grid_label"][status="misplaced"] {
+    background-color: #FFD400;
+}
+
+QLabel[class="grid_label"][status="correct"] {
+    background-color: #65E510;
+}
+
 #puzzle_number_label {
     font-size: 32pt;
     font-weight: bold;

@@ -3,7 +3,7 @@ from pathlib import Path
 import httpx
 import pytest
 
-from wordle_gui.models import cache
+from wordle_gui import cache
 
 
 def test_validate_cache_type() -> None:

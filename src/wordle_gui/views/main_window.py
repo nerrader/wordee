@@ -1,10 +1,19 @@
+from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QMainWindow, QFrame, QVBoxLayout, QHBoxLayout
+from PySide6.QtCore import Qt, Signal
 from wordle_gui.views.topbar import Topbar
 from wordle_gui.views.left_game_area import LeftGameArea
 from wordle_gui.views.right_game_area import RightGameArea
 
+if TYPE_CHECKING:
+    from PySide6.QtGui import QKeyEvent
+
 
 class MainWindow(QMainWindow):
+    alphabet_key_signal = Signal(str)
+    backspace_key_signal = Signal()
+    enter_key_signal = Signal()
+
     def __init__(self) -> None:
         super().__init__()
         self.setup_components()
@@ -40,3 +49,15 @@ class MainWindow(QMainWindow):
         raise NotImplementedError(
             "setup_presenters() not implemented in views/main_window.py"
         )
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        match event.key():
+            case Qt.Key.Key_Backspace:
+                self.backspace_key_signal.emit()
+            case Qt.Key.Key_Return | Qt.Key.Key_Enter:
+                self.enter_key_signal.emit()
+            case _:
+                if event.text().isalpha():
+                    self.alphabet_key_signal.emit(event.text().lower())
+                else:
+                    return

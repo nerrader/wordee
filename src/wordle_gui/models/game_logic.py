@@ -1,14 +1,7 @@
-from wordle_gui.models import cache
-from wordle_gui import constants as const
-from wordle_gui.models import nyt
-
-
 class WordeeGame:
-    def __init__(self, target_word=None) -> None:
-        self._target_word: str = target_word or nyt.fetch_wordle_solution(
-            const.USER_AGENT
-        )
-        self._target_word = self._target_word.lower()
+    def __init__(self, target_word: str, valid_guesses: set[str]) -> None:
+        self._target_word: str = target_word.lower()
+        self._valid_guesses: set[str] = valid_guesses
         self._guesses_left: int = 6
         self._game_state: str = "playing"  # should only be playing, win, or loss
 
@@ -28,9 +21,9 @@ class WordeeGame:
         """From the guess and the current target word, get a list that
         returns "gray"/"yellow"/"green" for every letter in the guess.
 
-        Gray = The guessed letter doesn't exist in the target word.
-        Yellow = The guessed letter is misplaced.
-        Green = The guessed letter is in the correct spot.
+        "gray" = The guessed letter doesn't exist in the target word.
+        "yellow" = The guessed letter is misplaced.
+        "green" = The guessed letter is in the correct spot.
         """
         guess = guess.lower()
         words_in_target_word = set(self.target_word)
@@ -50,16 +43,13 @@ class WordeeGame:
         return color_feedback
 
     def submit_guess(self, guess: str) -> None:
-        """If the guess is not valid, raise a ValueError
-        Decreases the amount of guesses left
-        If conditions meet, change the game state.
+        """
+        If conditions meet, change the game state, and decrease number of guesses left.
+        If the guess is not valid, raise a ValueError.
         """
         guess = guess.lower()
-        all_valid_guesses = cache.read_cache(
-            "valid_guesses", const.CACHE_DIR_PATH
-        ) | cache.read_cache("possible_solutions", const.CACHE_DIR_PATH)
 
-        if guess not in all_valid_guesses:
+        if guess not in self._valid_guesses:
             raise ValueError(f"This guess is not valid: {guess}")
         self._guesses_left -= 1
 
