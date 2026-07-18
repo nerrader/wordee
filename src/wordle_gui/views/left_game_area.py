@@ -1,5 +1,27 @@
-from PySide6.QtWidgets import QGridLayout, QLabel, QFrame, QVBoxLayout
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QFrame,
+    QVBoxLayout,
+    QSizePolicy,
+)
 from PySide6.QtCore import Qt
+
+
+class WordeeCell(QLabel):
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.setProperty("class", "grid_label")
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+    def resizeEvent(self, event) -> None:
+        new_size = min(self.width(), self.height())
+        self.resize(new_size, new_size)
+
+        super().resizeEvent(event)
 
 
 class LeftGameArea(QFrame):
@@ -18,7 +40,7 @@ class LeftGameArea(QFrame):
         self.letter_grid_label.setObjectName("letter_grid_header_label")
         self.letter_grid_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.grid_labels: list[list[QLabel]] = []
+        self.wordee_cells: list[list[QLabel]] = []
 
         self.status_label = QLabel("Start typing to play WORDEE!")
         self.status_label.setObjectName("status_label")
@@ -26,19 +48,18 @@ class LeftGameArea(QFrame):
 
         for _ in range(6):
             row_labels: list[QLabel] = []
-            for _ in range(6):
-                grid_label = QLabel("A")
-                grid_label.setProperty("class", "grid_label")
-                grid_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            for _ in range(5):
+                grid_label = WordeeCell()
                 row_labels.append(grid_label)
-            self.grid_labels.append(row_labels)
+            self.wordee_cells.append(row_labels)
 
     def setup_layouts(self) -> None:
         left_game_area_layout = QVBoxLayout()
         letter_grid_area_layout = QVBoxLayout()
         letter_grid_layout = QGridLayout()
+        letter_grid_layout.setSpacing(10)
 
-        for row_index, row in enumerate(self.grid_labels):
+        for row_index, row in enumerate(self.wordee_cells):
             for column_index, column in enumerate(row):
                 letter_grid_layout.addWidget(column, row_index, column_index)
 
@@ -48,9 +69,19 @@ class LeftGameArea(QFrame):
         letter_grid_area_layout.setStretch(1, 9)
         letter_grid_area_layout.setSpacing(10)
         letter_grid_area_layout.setContentsMargins(20, 20, 20, 20)
+        letter_grid_area_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        letter_grid_area_layout.setSizeConstraint(
+            QVBoxLayout.SizeConstraint.SetMinimumSize
+        )
         self.letter_grid_area_frame.setLayout(letter_grid_area_layout)
 
-        left_game_area_layout.addWidget(self.letter_grid_area_frame)
+        # Create a wrapper layout that centers the grid horizontally
+        container_layout = QHBoxLayout()
+        container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        container_layout.addWidget(self.letter_grid_area_frame)
+
+        # left_game_area_layout.addWidget(self.letter_grid_area_frame)
+        left_game_area_layout.addLayout(container_layout)
         left_game_area_layout.addWidget(self.status_label)
         left_game_area_layout.setStretch(0, 9)
         left_game_area_layout.setStretch(1, 1)
