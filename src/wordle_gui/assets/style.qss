@@ -88,16 +88,33 @@ LetterStatuses {
     font-size: 24pt;
 }
 
+WordeeStatusKey {
+    background-color: #dbdbdb;
+    border-radius: 0;
+    font-size: 24pt;
+}
+WordeeStatusKey[status="absent"] {
+    background-color: #a0a0a0;
+}
+
+WordeeStatusKey[status="misplaced"] {
+    background-color: #FFD400;
+}
+
+WordeeStatusKey[status="correct"] {
+    background-color: #65E510;
+}
+
 #backspace_key {
     background-color: #a1a0a0;
-    font-weight: bold;
-    font-size: 24pt;
+    font-size: 20pt;
+    border-radius: 0;
 }
 
 #enter_key {
     background-color: #7fbc8d;
-    font-weight: bold;
-    font-size: 24pt;
+    font-size: 20pt;
+    border-radius: 0;
 }
 
 #game_stats_label_header {
@@ -120,21 +137,4 @@ LetterStatuses {
     border: none;
     font-weight: bold;
     padding: 10px;
-}
-
-WordeeStatusKey {
-    background-color: #dbdbdb;
-    border-radius: 0;
-    font-size: 24pt;
-}
-WordeeStatusKey[status="absent"] {
-    background-color: #a0a0a0;
-}
-
-WordeeStatusKey[status="misplaced"] {
-    background-color: #FFD400;
-}
-
-WordeeStatusKey[status="correct"] {
-    background-color: #65E510;
 }

@@ -19,7 +19,7 @@ class GamePresenter:
         return self.view.left_game_area.status_label
 
     @property
-    def playing(self) -> bool:
+    def is_playing(self) -> bool:
         return self.model.game_state == "playing"
 
     def setup_connections(self) -> None:
@@ -33,7 +33,7 @@ class GamePresenter:
         Args:
             key (str): The alphabetical letter that the user inputted.
         """
-        if not self.playing:
+        if not self.is_playing:
             return
         logger.debug(f"Presenter recieved alphabet key: {key}")
 
@@ -55,7 +55,7 @@ class GamePresenter:
         target_label.setText(key.upper())
 
     def handle_backspace_key(self) -> None:
-        if not self.playing:
+        if not self.is_playing:
             return
         logger.debug("Presenter received backspace key")
 
@@ -78,7 +78,7 @@ class GamePresenter:
         - Updates color of wordee grid and letter status cells.
         - Occassionally updates status label if something interesting happens.
         """
-        if not self.playing:
+        if not self.is_playing:
             return
         logger.debug("Presenter received enter key")
 
@@ -142,5 +142,6 @@ class GamePresenter:
 
         if self.model.guesses_left > 1:
             self.status_label.setText("Nice guess! Try another word.")
+            return  
 
         self.status_label.setText("Last guess. Make it count!")
