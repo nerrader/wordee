@@ -5,6 +5,7 @@ if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
     from wordle_gui.views.main_window import MainWindow
     from wordle_gui.models.game_logic import WordeeGame
+    from wordle_gui.views.letter_statuses import WordeeStatusKey
 
 
 class GamePresenter:
@@ -69,6 +70,9 @@ class GamePresenter:
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
             color_feedback = self.model.get_color_feedback(user_guess)
+            self.view.right_game_area.game_stats.guesses_left_label.setText(
+                f"Guesses Left - {self.model.guesses_left}/6"
+            )
 
             # to change from the color thing to the status property
             color_feedback_status_map: dict[str, str] = {
@@ -79,10 +83,22 @@ class GamePresenter:
 
             for label, color in zip(grid_row_cell_labels, color_feedback):
                 label.setProperty("status", color_feedback_status_map[color])
-                print((color_feedback_status_map[color]))
 
                 label.style().unpolish(label)
                 label.style().polish(label)
+
+            letter_status_buttons: list[WordeeStatusKey] = [
+                self.view.right_game_area.letter_statuses.keyboard_map[letter.lower()]
+                for letter in user_guess
+            ]
+
+            print(letter_status_buttons)
+
+            for button, color in zip(letter_status_buttons, color_feedback):
+                button.setProperty("status", color_feedback_status_map[color])
+
+                button.style().unpolish(button)
+                button.style().polish(button)
 
         except ValueError:
             self.view.left_game_area.status_label.setText("That is NOT a valid guess!")

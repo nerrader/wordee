@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 
-# this import is used for the .qrc :/ virtual filepaths to work
+# this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
 
 
@@ -15,7 +15,7 @@ class GameStats(QFrame):
         self.game_stats_label_header = QLabel("GAME STATS")
         self.game_stats_label_header.setObjectName("game_stats_label_header")
 
-        self.mode_label_header = QLabel("Mode - NULL")
+        self.mode_label_header = QLabel("Mode - Daily")
         self.mode_label_header.setProperty("class", "game_stats_label")
 
         self.difficulty_label_header = QLabel("Difficulty - NULL")

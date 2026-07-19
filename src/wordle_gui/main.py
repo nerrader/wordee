@@ -12,7 +12,7 @@ from wordle_gui.views.main_window import MainWindow
 from wordle_gui.models.game_logic import WordeeGame
 from wordle_gui.presenters.game_presenter import GamePresenter
 
-# this import is used for the .qrc :/ virtual filepaths to work
+# this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
 from wordle_gui import app_setup
 
@@ -44,7 +44,7 @@ def main() -> None:
     window = MainWindow()
 
     # i dont need to assign it to anything since all the connecting stuff is in __init__()
-    presenter = GamePresenter(window, game_logic_model)
+    presenter = GamePresenter(window, game_logic_model)  # noqa: F841
 
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
     app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))

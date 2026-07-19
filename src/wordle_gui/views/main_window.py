@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from loguru import logger
 from PySide6.QtWidgets import QMainWindow, QFrame, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, Signal
 from wordle_gui.views.topbar import Topbar
@@ -28,6 +27,13 @@ class MainWindow(QMainWindow):
         self.topbar = Topbar()
         self.left_game_area = LeftGameArea()
         self.right_game_area = RightGameArea()
+
+        # make the buttons click signal connect with this main alphabet key signal
+        # so theres no two signals that do the exact same thing
+        for button in self.right_game_area.letter_statuses.keyboard_map.values():
+            button.key_pressed.connect(
+                lambda: self.alphabet_key_signal.emit(button.text())
+            )
 
     def setup_layouts(self) -> None:
         main_container_layout = QVBoxLayout()

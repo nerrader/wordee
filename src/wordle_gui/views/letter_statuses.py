@@ -6,6 +6,18 @@ from PySide6.QtWidgets import (
     QFrame,
     QSizePolicy,
 )
+from PySide6.QtCore import Signal
+
+
+class WordeeStatusKey(QPushButton):
+    key_pressed = Signal(str)
+
+    def __init__(self, letter: str):
+        super().__init__(letter)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+        # this signal will be passed into main_window.py, to be converted into the main alphabet_key_signal
+        self.clicked.connect(lambda: self.key_pressed.emit(letter))
 
 
 class LetterStatuses(QFrame):
@@ -20,25 +32,25 @@ class LetterStatuses(QFrame):
         self.letter_status_label_header = QLabel("LETTER STATUSES")
         self.letter_status_label_header.setObjectName("letter_statuses_header_label")
 
-        def label_format(letter: str) -> QPushButton:
-            label_widget = QPushButton(letter)
-            label_widget.setSizePolicy(
-                QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
-            )
-            label_widget.setProperty("class", "letter-status-label")
-            return label_widget
-
         self.first_letter_row = [
-            label_format(letter)
-            for letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]
+            WordeeStatusKey(letter)
+            for letter in ("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P")
         ]
         self.second_letter_row = [
-            label_format(letter)
-            for letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L"]
+            WordeeStatusKey(letter)
+            for letter in ("A", "S", "D", "F", "G", "H", "J", "K", "L")
         ]
         self.third_letter_row = [
-            label_format(letter) for letter in ["Z", "X", "C", "V", "B", "N", "M"]
+            WordeeStatusKey(letter) for letter in ("Z", "X", "C", "V", "B", "N", "M")
         ]
+
+        self.keyboard_map: dict[str, WordeeStatusKey] = {}
+
+        for button in (
+            self.first_letter_row + self.second_letter_row + self.third_letter_row
+        ):
+            button_letter = button.text().lower()
+            self.keyboard_map[button_letter] = button
 
     def setup_layouts(self) -> None:
         letter_statuses_layout = QVBoxLayout()

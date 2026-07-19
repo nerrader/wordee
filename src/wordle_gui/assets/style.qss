@@ -110,8 +110,19 @@ LetterStatuses {
     padding: 10px;
 }
 
-LetterStatuses QPushButton[class="letter-status-label"] {
+WordeeStatusKey {
     background-color: #dbdbdb;
     border-radius: 0;
     font-size: 24pt;
+}
+WordeeStatusKey[status="absent"] {
+    background-color: #a0a0a0;
+}
+
+WordeeStatusKey[status="misplaced"] {
+    background-color: #FFD400;
+}
+
+WordeeStatusKey[status="correct"] {
+    background-color: #65E510;
 }

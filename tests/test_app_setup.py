@@ -2,7 +2,9 @@ from PySide6.QtWidgets import QApplication
 import pytest
 
 from wordle_gui import app_setup
-from wordle_gui.assets import resources_rc
+
+# this import is required for the .qrc :/ virtual filepaths to work
+from wordle_gui.assets import resources_rc  # noqa: F401
 
 
 @pytest.fixture(scope="session", autouse=True)
