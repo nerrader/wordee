@@ -25,6 +25,11 @@ class GamePresenter:
             key (str): The alphabetical letter that the user inputted.
         """
         logger.debug(f"Presenter recieved alphabet key: {key}")
+
+        if self.model.guesses_left == 6:
+            self.view.left_game_area.status_label.setText(
+                "Press ENTER to submit guess."
+            )
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
@@ -55,12 +60,12 @@ class GamePresenter:
     def handle_enter_key(self) -> None:
         logger.debug("Presenter received enter key")
 
-        try:
-            grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
-                -self.model.guesses_left
-            ]
-            user_guess: str = "".join([label.text() for label in grid_row_cell_labels])
+        grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
+            -self.model.guesses_left
+        ]
+        user_guess: str = "".join([label.text() for label in grid_row_cell_labels])
 
+        try:
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
             color_feedback = self.model.get_color_feedback(user_guess)
@@ -81,3 +86,24 @@ class GamePresenter:
 
         except ValueError:
             self.view.left_game_area.status_label.setText("That is NOT a valid guess!")
+            return
+
+        if self.model.guesses_left == 1:
+            self.view.left_game_area.status_label.setText("Last guess. Make it count!")
+        else:
+            self.view.left_game_area.status_label.setText(
+                "Good guess. Try another word."
+            )
+
+        match self.model.game_state:
+            case "win":
+                self.view.left_game_area.status_label.setText(
+                    f"Good job! The word was {self.model.target_word.upper()}"
+                )
+            case "loss":
+                self.view.left_game_area.status_label.setText(
+                    f"Out of guesses. The word was {self.model.target_word.upper()}"
+                )
+
+            case _:
+                pass

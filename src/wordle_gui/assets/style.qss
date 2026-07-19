@@ -40,7 +40,7 @@ Topbar QToolButton {
     background-color: #96D7FF;
     border-radius: 12;
     font-weight: 500;
-    font-size: 16pt;
+    font-size: 14pt;
     padding: 20px
 }
 
@@ -48,6 +48,7 @@ QLabel[class="grid_label"] {
     background-color: #f5f5f5;
     border-radius: 0;
     font-size: 28pt;
+    font-weight: bold;
 }
 
 QLabel[class="grid_label"][status="absent"] {

@@ -59,9 +59,9 @@ class WordeeGame:
 
         logger.info(f"User guessed: {guess}. Guesses remaining: {self._guesses_left}")
 
-        if (guess != self.target_word) and self.guesses_left <= 0:
+        if (guess != self.target_word) and self.guesses_left == 0:
             logger.info("The user lost the game.")
             self._game_state = "loss"
-        else:
+        elif guess == self.target_word:
             logger.info("The user won the game.")
             self._game_state = "win"

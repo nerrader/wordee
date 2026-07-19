@@ -42,6 +42,8 @@ def main() -> None:
 
     game_logic_model = WordeeGame(target_word, all_allowed_words)
     window = MainWindow()
+
+    # i dont need to assign it to anything since all the connecting stuff is in __init__()
     presenter = GamePresenter(window, game_logic_model)
 
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
