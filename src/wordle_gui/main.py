@@ -20,6 +20,7 @@ from wordle_gui import app_setup
 def setup_logger() -> None:
     logger.remove()
     logger.add(sink=const.LOG_FILE_PATH, diagnose=False, retention=0, rotation="00:00")
+    logger.add(sink=sys.stderr, level="INFO", diagnose=False)
 
 
 def main() -> None:
