@@ -79,15 +79,14 @@ class GamePresenter:
                 f"Guesses Left - {self.model.guesses_left}/6"
             )
 
-            # to change from the color thing to the status property
-            color_feedback_status_map: dict[str, str] = {
+            STATUS_FROM_COLOR_MAP: dict[str, str] = {
                 "gray": "absent",
                 "yellow": "misplaced",
                 "green": "correct",
             }
 
             for label, color in zip(grid_row_cell_labels, color_feedback):
-                label.setProperty("status", color_feedback_status_map[color])
+                label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
 
                 label.style().unpolish(label)
                 label.style().polish(label)
@@ -102,7 +101,7 @@ class GamePresenter:
                 if button.property("status") == "correct":
                     continue
 
-                button.setProperty("status", color_feedback_status_map[color])
+                button.setProperty("status", STATUS_FROM_COLOR_MAP[color])
 
                 button.style().unpolish(button)
                 button.style().polish(button)
