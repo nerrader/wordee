@@ -18,17 +18,23 @@ class GamePresenter:
     def status_label(self) -> QLabel:
         return self.view.left_game_area.status_label
 
+    @property
+    def playing(self) -> bool:
+        return self.model.game_state == "playing"
+
     def setup_connections(self) -> None:
         self.view.alphabet_key_signal.connect(self.handle_alphabet_key)
         self.view.backspace_key_signal.connect(self.handle_backspace_key)
         self.view.enter_key_signal.connect(self.handle_enter_key)
 
     def handle_alphabet_key(self, key: str) -> None:
-        """Changes the label in the wordee grid to the letter.j
+        """Changes the label in the wordee grid to the letter.
 
         Args:
             key (str): The alphabetical letter that the user inputted.
         """
+        if not self.playing:
+            return
         logger.debug(f"Presenter recieved alphabet key: {key}")
 
         # when the user first starts the game and types, to give them more indication on what to do
@@ -49,7 +55,10 @@ class GamePresenter:
         target_label.setText(key.upper())
 
     def handle_backspace_key(self) -> None:
+        if not self.playing:
+            return
         logger.debug("Presenter received backspace key")
+
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
@@ -69,6 +78,8 @@ class GamePresenter:
         - Updates color of wordee grid and letter status cells.
         - Occassionally updates status label if something interesting happens.
         """
+        if not self.playing:
+            return
         logger.debug("Presenter received enter key")
 
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[

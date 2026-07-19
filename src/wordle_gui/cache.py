@@ -15,7 +15,7 @@ def sync_cache(
     """Fetches data from the github repository, and saves it to cache. Checks ETAG to prevent uneccessary saving.
 
     Args:
-        - cache_type (str): The cache type to sync.
+        - cache_type (Literal): The cache type to sync.
         - client (httpx.Client): The HTTPX client to use for the request.
         - cache_dir (Path): The directory where the cache files are stored.
     """
@@ -59,7 +59,7 @@ def read_cache(
     """Reads the cache file and returns a set of words.
 
     Args:
-        cache_type (str): The cache type to read from.
+        cache_type (Literal): The cache type to read from.
         cache_dir (Path): The directory where the cache files are stored.
 
     Raises:

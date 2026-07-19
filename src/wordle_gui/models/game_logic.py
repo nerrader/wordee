@@ -56,8 +56,8 @@ class WordeeGame:
         guess = guess.lower()
 
         if guess not in self._valid_guesses:
-            logger.warning(f"This guess is not valid: {guess}")
-            raise ValueError(f"This guess is not valid: {guess}")
+            logger.warning(f"This guess is not valid: '{guess}'")
+            raise ValueError(f"This guess is not valid: '{guess}'")
         self._guesses_left -= 1
 
         logger.info(f"User guessed: {guess}. Guesses remaining: {self._guesses_left}")
