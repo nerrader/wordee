@@ -24,7 +24,7 @@ class GamePresenter:
         self.view.enter_key_signal.connect(self.handle_enter_key)
 
     def handle_alphabet_key(self, key: str) -> None:
-        """Changes the label in the grid to the letter
+        """Changes the label in the wordee grid to the letter.j
 
         Args:
             key (str): The alphabetical letter that the user inputted.
@@ -64,6 +64,11 @@ class GamePresenter:
         filled_labels[-1].setText("")
 
     def handle_enter_key(self) -> None:
+        """
+        - Submits guess to the model, to change the gamestate variables.
+        - Updates color of wordee grid and letter status cells.
+        - Occassionally updates status label if something interesting happens.
+        """
         logger.debug("Presenter received enter key")
 
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
@@ -79,15 +84,14 @@ class GamePresenter:
                 f"Guesses Left - {self.model.guesses_left}/6"
             )
 
-            # to change from the color thing to the status property
-            color_feedback_status_map: dict[str, str] = {
+            STATUS_FROM_COLOR_MAP: dict[str, str] = {
                 "gray": "absent",
                 "yellow": "misplaced",
                 "green": "correct",
             }
 
             for label, color in zip(grid_row_cell_labels, color_feedback):
-                label.setProperty("status", color_feedback_status_map[color])
+                label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
 
                 label.style().unpolish(label)
                 label.style().polish(label)
@@ -102,7 +106,7 @@ class GamePresenter:
                 if button.property("status") == "correct":
                     continue
 
-                button.setProperty("status", color_feedback_status_map[color])
+                button.setProperty("status", STATUS_FROM_COLOR_MAP[color])
 
                 button.style().unpolish(button)
                 button.style().polish(button)
@@ -114,20 +118,18 @@ class GamePresenter:
             self.status_label.setText("That is NOT a valid guess!")
             return
 
-        if self.model.guesses_left == 1:
-            self.status_label.setText("Last guess. Make it count!")
-        else:
+        if self.model.game_state == "win":
+            self.status_label.setText(
+                f"Good job! The word was {self.model.target_word.upper()}"
+            )
+            return
+        elif self.model.game_state == "loss":
+            self.status_label.setText(
+                f"Out of guesses. The word was {self.model.target_word.upper()}"
+            )
+            return
+
+        if self.model.guesses_left > 1:
             self.status_label.setText("Nice guess! Try another word.")
 
-        match self.model.game_state:
-            case "win":
-                self.status_label.setText(
-                    f"Good job! The word was {self.model.target_word.upper()}"
-                )
-            case "loss":
-                self.status_label.setText(
-                    f"Out of guesses. The word was {self.model.target_word.upper()}"
-                )
-
-            case _:
-                pass
+        self.status_label.setText("Last guess. Make it count!")

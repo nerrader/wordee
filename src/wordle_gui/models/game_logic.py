@@ -1,3 +1,4 @@
+from typing import Literal
 from loguru import logger
 
 
@@ -6,7 +7,7 @@ class WordeeGame:
         self._target_word: str = target_word.lower()
         self._valid_guesses: set[str] = valid_guesses
         self._guesses_left: int = 6
-        self._game_state: str = "playing"  # should only be playing, win, or loss
+        self._game_state: Literal["win", "loss", "playing"] = "playing"
 
     @property
     def target_word(self) -> str:
@@ -20,7 +21,9 @@ class WordeeGame:
     def game_state(self) -> str:
         return self._game_state
 
-    def get_color_feedback(self, guess: str) -> list[str]:
+    def get_color_feedback(
+        self, guess: str
+    ) -> list[Literal["gray", "green", "yellow"]]:
         """From the guess and the current target word, get a list that
         returns "gray"/"yellow"/"green" for every letter in the guess.
 
@@ -31,7 +34,7 @@ class WordeeGame:
         guess = guess.lower()
         words_in_target_word = set(self.target_word)
 
-        color_feedback: list[str] = []
+        color_feedback: list[Literal["gray", "green", "yellow"]] = []
         for index, letter in enumerate(guess):
             target_word_letter: str = self.target_word[index]
 

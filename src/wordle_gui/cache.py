@@ -16,8 +16,7 @@ def sync_cache(
 
     Args:
         - cache_type (str): The cache type to sync.
-        - client (httpx.Client | None, optional): The HTTPX client to use for the request.
-        If None, a new client will be created for this request. Defaults to None.
+        - client (httpx.Client): The HTTPX client to use for the request.
         - cache_dir (Path): The directory where the cache files are stored.
     """
 
@@ -47,7 +46,7 @@ def sync_cache(
         (cache_dir / f"{cache_type}.txt").write_text(response.text)
         if response.headers.get("ETag"):
             (cache_dir / f"{cache_type}.etag").write_text(response.headers["ETag"])
-        print(f"Cache for {cache_type} downloaded and saved.")
+        logger.success(f"Cache for {cache_type} downloaded and saved.")
 
     except Exception as error:
         logger.error(f"Failed to sync cache while fetching {cache_type}: {error}")
