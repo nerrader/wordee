@@ -95,6 +95,10 @@ class GamePresenter:
             print(letter_status_buttons)
 
             for button, color in zip(letter_status_buttons, color_feedback):
+                # prevent already green buttons from turning yellow
+                if button.property("status") == "correct":
+                    continue
+
                 button.setProperty("status", color_feedback_status_map[color])
 
                 button.style().unpolish(button)
