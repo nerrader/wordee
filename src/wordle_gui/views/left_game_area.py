@@ -30,7 +30,6 @@ class LeftGameArea(QFrame):
 
         self.setup_components()
         self.setup_layouts()
-        # self.setup_presenters()
 
     def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
@@ -75,7 +74,7 @@ class LeftGameArea(QFrame):
         )
         self.letter_grid_area_frame.setLayout(letter_grid_area_layout)
 
-        # Create a wrapper layout that centers the grid horizontally
+        # create a layout that centers the grid horizontally
         container_layout = QHBoxLayout()
         container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(self.letter_grid_area_frame)
@@ -89,8 +88,3 @@ class LeftGameArea(QFrame):
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in views/left_game_area.py"
-        )

@@ -19,7 +19,6 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setup_components()
         self.setup_layouts()
-        # self.setup_presenters()
 
     def setup_components(self) -> None:
         self.main_container = QFrame()
@@ -45,11 +44,6 @@ class MainWindow(QMainWindow):
         main_container_layout.addLayout(game_area_layout)
 
         self.main_container.setLayout(main_container_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in views/main_window.py"
-        )
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         match event.key():

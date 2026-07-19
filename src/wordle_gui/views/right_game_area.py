@@ -58,8 +58,3 @@ class RightGameArea(QFrame):
         right_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(right_game_area_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in right_game_area.py"
-        )

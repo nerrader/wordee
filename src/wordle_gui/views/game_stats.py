@@ -10,7 +10,6 @@ class GameStats(QFrame):
 
         self.setup_components()
         self.setup_layouts()
-        # setup_presenters()
 
     def setup_components(self) -> None:
         self.game_stats_label_header = QLabel("GAME STATS")
@@ -38,8 +37,3 @@ class GameStats(QFrame):
         game_stats_layout.addWidget(self.guesses_left_label)
 
         self.setLayout(game_stats_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in views/game_stats.py"
-        )

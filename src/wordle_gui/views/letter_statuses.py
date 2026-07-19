@@ -15,7 +15,6 @@ class LetterStatuses(QFrame):
 
         self.setup_components()
         self.setup_layouts()
-        # self.setup_presenters()
 
     def setup_components(self) -> None:
         self.letter_status_label_header = QLabel("LETTER STATUSES")
@@ -69,8 +68,3 @@ class LetterStatuses(QFrame):
 
         letter_statuses_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(letter_statuses_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in letter_statuses.py"
-        )

@@ -34,8 +34,6 @@ class Topbar(QFrame):
         self.setup_components()
         self.setup_layouts()
 
-        # self.setup_presenters()
-
     def setup_components(self) -> None:
         self.title_label = QLabel("WORDEE")
         self.title_label.setObjectName("title_label")
@@ -90,8 +88,3 @@ class Topbar(QFrame):
         topbar_layout.addLayout(icon_area_layout)
 
         self.setLayout(topbar_layout)
-
-    def setup_presenters(self) -> None:
-        raise NotImplementedError(
-            "setup_presenters() not implemented in views/topbar.py"
-        )
