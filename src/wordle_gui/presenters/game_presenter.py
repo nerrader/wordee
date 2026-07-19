@@ -14,6 +14,10 @@ class GamePresenter:
         self.model = model
         self.setup_connections()
 
+    @property
+    def status_label(self) -> QLabel:
+        return self.view.left_game_area.status_label
+
     def setup_connections(self) -> None:
         self.view.alphabet_key_signal.connect(self.handle_alphabet_key)
         self.view.backspace_key_signal.connect(self.handle_backspace_key)
@@ -30,9 +34,7 @@ class GamePresenter:
         # when the user first starts the game and types, to give them more indication on what to do
         # after theyve entered a guess
         if self.model.guesses_left == 6:
-            self.view.left_game_area.status_label.setText(
-                "Press ENTER to submit guess."
-            )
+            self.status_label.setText("Press ENTER to submit guess.")
 
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
@@ -95,8 +97,6 @@ class GamePresenter:
                 for letter in user_guess
             ]
 
-            print(letter_status_buttons)
-
             for button, color in zip(letter_status_buttons, color_feedback):
                 # prevent already green buttons from turning yellow
                 if button.property("status") == "correct":
@@ -108,23 +108,24 @@ class GamePresenter:
                 button.style().polish(button)
 
         except ValueError:
-            self.view.left_game_area.status_label.setText("That is NOT a valid guess!")
+            if len(user_guess) == 0:
+                self.status_label.setText("You submitted an empty guess.")
+                return
+            self.status_label.setText("That is NOT a valid guess!")
             return
 
         if self.model.guesses_left == 1:
-            self.view.left_game_area.status_label.setText("Last guess. Make it count!")
+            self.status_label.setText("Last guess. Make it count!")
         else:
-            self.view.left_game_area.status_label.setText(
-                "Nice guess! Try another word."
-            )
+            self.status_label.setText("Nice guess! Try another word.")
 
         match self.model.game_state:
             case "win":
-                self.view.left_game_area.status_label.setText(
+                self.status_label.setText(
                     f"Good job! The word was {self.model.target_word.upper()}"
                 )
             case "loss":
-                self.view.left_game_area.status_label.setText(
+                self.status_label.setText(
                     f"Out of guesses. The word was {self.model.target_word.upper()}"
                 )
 
