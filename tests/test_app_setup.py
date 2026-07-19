@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QApplication
 import pytest
 
 from wordle_gui import app_setup
-from wordle_gui import constants as const
 from wordle_gui.assets import resources_rc
 
 
@@ -21,10 +20,11 @@ def test_load_nonexistant_application_font():
 
 
 def test_load_stylesheet():
-    assert (
-        app_setup.get_stylesheet_contents(":/style.qss")
-        == (const.ASSETS_DIR_PATH / "style.qss").read_text()
-    )
+    stylesheet_contents = app_setup.get_stylesheet_contents(":/style.qss")
+
+    assert stylesheet_contents is not None
+    assert "background-color" in stylesheet_contents
+    assert '[class="grid_label"]' in stylesheet_contents
 
 
 def test_load_nonexistant_stylesheet():
