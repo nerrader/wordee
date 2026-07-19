@@ -30,10 +30,13 @@ class MainWindow(QMainWindow):
 
         # make the buttons click signal connect with this main alphabet key signal
         # so theres no two signals that do the exact same thing
-        for button in self.right_game_area.letter_statuses.keyboard_map.values():
+        letter_statuses = self.right_game_area.letter_statuses
+        for button in letter_statuses.keyboard_map.values():
             button.key_pressed.connect(
-                lambda: self.alphabet_key_signal.emit(button.text())
+                lambda letter: self.alphabet_key_signal.emit(letter)
             )
+        letter_statuses.backspace_signal.connect(self.backspace_key_signal)
+        letter_statuses.enter_signal.connect(self.enter_key_signal)
 
     def setup_layouts(self) -> None:
         main_container_layout = QVBoxLayout()

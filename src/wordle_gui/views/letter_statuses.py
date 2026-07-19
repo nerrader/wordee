@@ -21,6 +21,9 @@ class WordeeStatusKey(QPushButton):
 
 
 class LetterStatuses(QFrame):
+    backspace_signal = Signal()
+    enter_signal = Signal()
+
     def __init__(self) -> None:
 
         super().__init__()
@@ -31,6 +34,19 @@ class LetterStatuses(QFrame):
     def setup_components(self) -> None:
         self.letter_status_label_header = QLabel("LETTER STATUSES")
         self.letter_status_label_header.setObjectName("letter_statuses_header_label")
+
+        self.backspace_key = QPushButton("Backspace")
+        self.backspace_key.setObjectName("backspace_key")
+        self.backspace_key.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        self.backspace_key.clicked.connect(self.backspace_signal.emit)
+        self.enter_key = QPushButton("Enter")
+        self.enter_key.setObjectName("enter_key")
+        self.enter_key.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        self.enter_key.clicked.connect(self.enter_signal.emit)
 
         self.first_letter_row = [
             WordeeStatusKey(letter)
@@ -53,6 +69,11 @@ class LetterStatuses(QFrame):
             self.keyboard_map[button_letter] = button
 
     def setup_layouts(self) -> None:
+        label_header_layout = QHBoxLayout()
+        label_header_layout.addWidget(self.letter_status_label_header)
+        label_header_layout.addWidget(self.backspace_key)
+        label_header_layout.addWidget(self.enter_key)
+
         letter_statuses_layout = QVBoxLayout()
 
         first_row_layout = QHBoxLayout()
@@ -67,7 +88,7 @@ class LetterStatuses(QFrame):
         for label in self.third_letter_row:
             third_row_layout.addWidget(label)
 
-        letter_statuses_layout.addWidget(self.letter_status_label_header)
+        letter_statuses_layout.addLayout(label_header_layout)
         letter_statuses_layout.addLayout(first_row_layout)
         letter_statuses_layout.addLayout(second_row_layout)
         letter_statuses_layout.addLayout(third_row_layout)

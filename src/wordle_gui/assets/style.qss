@@ -88,6 +88,18 @@ LetterStatuses {
     font-size: 24pt;
 }
 
+#backspace_key {
+    background-color: #a1a0a0;
+    font-weight: bold;
+    font-size: 24pt;
+}
+
+#enter_key {
+    background-color: #7fbc8d;
+    font-weight: bold;
+    font-size: 24pt;
+}
+
 #game_stats_label_header {
     font-weight: bold;
     font-size: 24pt;

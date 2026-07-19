@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import httpx
-import pytest
 
 from wordle_gui import cache
 

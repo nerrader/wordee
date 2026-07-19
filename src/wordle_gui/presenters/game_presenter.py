@@ -27,10 +27,13 @@ class GamePresenter:
         """
         logger.debug(f"Presenter recieved alphabet key: {key}")
 
+        # when the user first starts the game and types, to give them more indication on what to do
+        # after theyve entered a guess
         if self.model.guesses_left == 6:
             self.view.left_game_area.status_label.setText(
                 "Press ENTER to submit guess."
             )
+
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
@@ -112,7 +115,7 @@ class GamePresenter:
             self.view.left_game_area.status_label.setText("Last guess. Make it count!")
         else:
             self.view.left_game_area.status_label.setText(
-                "Good guess. Try another word."
+                "Nice guess! Try another word."
             )
 
         match self.model.game_state:
