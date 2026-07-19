@@ -6,22 +6,20 @@ import httpx
 from loguru import logger
 
 
-def fetch_wordle_solution(user_agent: str) -> str:
+def fetch_wordle_solution(httpx_client: httpx.Client) -> str:
     """Fetches the wordle solution for today from the New York Times API."""
     logger.debug("Starting fetch of wordle solution")
     current_date = date.today()
     # no httpx client here because it only works when you talk to same domain anyway
     try:
-        headers = {"User-Agent": user_agent}
-        response = httpx.get(
+        response = httpx_client.get(
             f"https://www.nytimes.com/svc/wordle/v2/{current_date}.json",
-            headers=headers,
         )
         response.raise_for_status()
         data: dict[str, Any] = response.json()
 
         logger.debug("Successfully fetched wordle solution.")
         return data["solution"]
-    except Exception as error:
+    except httpx.HTTPError as error:
         logger.error(f"Fetch wordle solution ({current_date}) failed: {error}")
-        raise Exception
+        raise httpx.HTTPError("HTTP Error when fetching for wordle solution.")

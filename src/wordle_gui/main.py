@@ -30,13 +30,13 @@ def main() -> None:
     with httpx_client(timeout=10.0, headers={"User-Agent": const.USER_AGENT}) as client:
         cache.sync_cache("possible_solutions", const.CACHE_DIR_PATH, client)
         cache.sync_cache("valid_guesses", const.CACHE_DIR_PATH, client)
+        target_word = nyt.fetch_wordle_solution(client)
 
     possible_solutions: set[str] = cache.read_cache(
         "possible_solutions", const.CACHE_DIR_PATH
     )
     valid_guesses: set[str] = cache.read_cache("valid_guesses", const.CACHE_DIR_PATH)
     all_allowed_words = possible_solutions | valid_guesses
-    target_word = nyt.fetch_wordle_solution(const.USER_AGENT)
 
     app = QApplication(sys.argv)
 
