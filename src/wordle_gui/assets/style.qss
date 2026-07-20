@@ -107,14 +107,16 @@ WordeeStatusKey[status="correct"] {
 
 #backspace_key {
     background-color: #a1a0a0;
-    font-size: 20pt;
+    font-size: 18pt;
     border-radius: 0;
+    padding: 10;
 }
 
 #enter_key {
     background-color: #7fbc8d;
-    font-size: 20pt;
+    font-size: 18pt;
     border-radius: 0;
+    padding: 10;
 }
 
 #game_stats_label_header {

@@ -1,4 +1,6 @@
+from typing import Literal
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
+from PySide6.QtCore import QTimer
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
@@ -18,10 +20,10 @@ class GameStats(QFrame):
         self.mode_label_header = QLabel("Mode - Daily")
         self.mode_label_header.setProperty("class", "game_stats_label")
 
-        self.difficulty_label_header = QLabel("Difficulty - NULL")
+        self.difficulty_label_header = QLabel("Difficulty - Normal")
         self.difficulty_label_header.setProperty("class", "game_stats_label")
 
-        self.time_elapsed_label = QLabel("Time Elapsed - xx:xx")
+        self.time_elapsed_label = QLabel("Time Elapsed - 00:00")
         self.time_elapsed_label.setProperty("class", "game_stats_label")
 
         self.guesses_left_label = QLabel("Guesses Left - 6/6")
@@ -37,3 +39,23 @@ class GameStats(QFrame):
         game_stats_layout.addWidget(self.guesses_left_label)
 
         self.setLayout(game_stats_layout)
+
+    def set_guesses_left(self, guesses_left: int) -> None:
+        self.guesses_left_label.setText(f"Guesses left -  {guesses_left}/6")
+
+    def start_time_elapsed_timer(self) -> None:
+        self.seconds_elapsed = 0
+        self.time_elapsed_timer = QTimer()
+        self.time_elapsed_timer.timeout.connect(self._update_time_elapsed_timer)
+        self.time_elapsed_timer.start(1000)
+
+    def _update_time_elapsed_timer(self) -> None:
+        self.seconds_elapsed += 1
+
+        minutes = self.seconds_elapsed // 60
+        seconds = self.seconds_elapsed % 60
+
+        self.time_elapsed_label.setText(f"Time Elapsed - {minutes:02d}:{seconds:02d}")
+
+    def stop_time_elapsed_timer(self) -> None:
+        self.time_elapsed_timer.stop()

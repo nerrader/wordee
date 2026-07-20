@@ -40,6 +40,7 @@ class GamePresenter:
         # when the user first starts the game and types, to give them more indication on what to do
         # after theyve entered a guess
         if self.model.guesses_left == 6:
+            self.view.right_game_area.game_stats.start_time_elapsed_timer()
             self.status_label.setText("Press ENTER to submit guess.")
 
         grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
@@ -91,8 +92,8 @@ class GamePresenter:
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
             color_feedback = self.model.get_color_feedback(user_guess)
-            self.view.right_game_area.game_stats.guesses_left_label.setText(
-                f"Guesses Left - {self.model.guesses_left}/6"
+            self.view.right_game_area.game_stats.set_guesses_left(
+                self.model.guesses_left
             )
 
             STATUS_FROM_COLOR_MAP: dict[str, str] = {
@@ -133,15 +134,17 @@ class GamePresenter:
             self.status_label.setText(
                 f"Good job! The word was {self.model.target_word.upper()}"
             )
+            self.view.right_game_area.game_stats.stop_time_elapsed_timer()
             return
         elif self.model.game_state == "loss":
             self.status_label.setText(
                 f"Out of guesses. The word was {self.model.target_word.upper()}"
             )
+            self.view.right_game_area.game_stats.stop_time_elapsed_timer()
             return
 
         if self.model.guesses_left > 1:
             self.status_label.setText("Nice guess! Try another word.")
-            return  
+            return
 
         self.status_label.setText("Last guess. Make it count!")

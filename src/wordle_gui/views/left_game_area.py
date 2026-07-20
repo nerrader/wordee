@@ -69,9 +69,6 @@ class LeftGameArea(QFrame):
         letter_grid_area_layout.setSpacing(10)
         letter_grid_area_layout.setContentsMargins(20, 20, 20, 20)
         letter_grid_area_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        letter_grid_area_layout.setSizeConstraint(
-            QVBoxLayout.SizeConstraint.SetMinimumSize
-        )
         self.letter_grid_area_frame.setLayout(letter_grid_area_layout)
 
         # create a layout that centers the grid horizontally

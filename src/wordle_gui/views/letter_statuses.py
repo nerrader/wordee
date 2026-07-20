@@ -41,6 +41,7 @@ class LetterStatuses(QFrame):
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.backspace_key.clicked.connect(self.backspace_signal.emit)
+
         self.enter_key = QPushButton("Enter")
         self.enter_key.setObjectName("enter_key")
         self.enter_key.setSizePolicy(
