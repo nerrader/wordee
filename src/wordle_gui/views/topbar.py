@@ -7,8 +7,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QSizePolicy,
+    QGraphicsDropShadowEffect,
 )
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QColor
 from PySide6.QtCore import QSize
 
 from wordle_gui.__init__ import __version__ as game_version
@@ -33,6 +34,7 @@ class Topbar(QFrame):
 
         self.setup_components()
         self.setup_layouts()
+        self.setup_shadow()
 
     def setup_components(self) -> None:
         self.title_label = QLabel("WORDEE")
@@ -88,3 +90,11 @@ class Topbar(QFrame):
         topbar_layout.addLayout(icon_area_layout)
 
         self.setLayout(topbar_layout)
+
+    def setup_shadow(self) -> None:
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(15)
+        shadow.setYOffset(5)
+        shadow.setColor(QColor(63, 80, 90, 20))
+
+        self.setGraphicsEffect(shadow)

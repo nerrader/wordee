@@ -1,4 +1,3 @@
-from typing import Literal
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 from PySide6.QtCore import QTimer
 
