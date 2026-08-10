@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QApplication
 import pytest
+from PySide6.QtWidgets import QApplication
 
 from wordle_gui import app_setup
 

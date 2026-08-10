@@ -1,5 +1,4 @@
 from loguru import logger
-
 from PySide6.QtCore import QFile, QIODevice, QTextStream
 from PySide6.QtGui import QFontDatabase
 

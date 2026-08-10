@@ -1,12 +1,12 @@
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
     QLabel,
     QPushButton,
-    QHBoxLayout,
-    QVBoxLayout,
-    QFrame,
     QSizePolicy,
+    QVBoxLayout,
 )
-from PySide6.QtCore import Signal
 
 
 class WordeeStatusKey(QPushButton):

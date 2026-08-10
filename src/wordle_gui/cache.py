@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, Literal
 
+import httpx
 from loguru import logger
 
 if TYPE_CHECKING:
-    import httpx
     from pathlib import Path
 
 
@@ -49,7 +49,7 @@ def sync_cache(
         logger.success(f"Cache for {cache_type} downloaded and saved.")
         logger.success(f"Cache for {cache_type} downloaded and saved.")
 
-    except Exception as error:
+    except httpx.HTTPStatusError as error:
         logger.error(f"Failed to sync cache while fetching {cache_type}: {error}")
         print(f"An error occurred while fetching {cache_type}: {error}")
 

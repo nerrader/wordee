@@ -1,13 +1,13 @@
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
+    QFrame,
     QGridLayout,
     QHBoxLayout,
     QLabel,
-    QFrame,
-    QVBoxLayout,
     QSizePolicy,
+    QVBoxLayout,
 )
-from PySide6.QtCore import Qt
 
 
 class WordeeCell(QLabel):

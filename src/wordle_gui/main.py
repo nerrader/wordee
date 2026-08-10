@@ -4,17 +4,14 @@ from httpx import Client as httpx_client
 from loguru import logger
 from PySide6.QtWidgets import QApplication
 
+from wordle_gui import app_setup, cache, nyt
 from wordle_gui import constants as const
-from wordle_gui import cache
-from wordle_gui import nyt
-
-from wordle_gui.views.main_window import MainWindow
-from wordle_gui.models.game_logic import WordeeGame
-from wordle_gui.presenters.game_presenter import GamePresenter
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # noqa: F401
-from wordle_gui import app_setup
+from wordle_gui.models.game_logic import WordeeGame
+from wordle_gui.presenters.game_presenter import GamePresenter
+from wordle_gui.views.main_window import MainWindow
 
 
 def setup_logger() -> None:

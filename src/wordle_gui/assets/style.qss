@@ -27,7 +27,7 @@ Topbar QToolButton {
 }
 
 #letter_grid_area_layout {
-    background-color: #3873E9; 
+    background-color: #3873E9;
     border-radius: 20;
 }
 
@@ -126,7 +126,7 @@ WordeeStatusKey[status="correct"] {
 
 #give_up_button {
     font-size: 16pt;
-    border-radius: 8; 
+    border-radius: 8;
     background-color: #a0a0a0;
     border: none;
     padding: 10px;

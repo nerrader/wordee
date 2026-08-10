@@ -1,9 +1,11 @@
 from typing import TYPE_CHECKING
-from PySide6.QtWidgets import QMainWindow, QFrame, QVBoxLayout, QHBoxLayout
+
 from PySide6.QtCore import Qt, Signal
-from wordle_gui.views.topbar import Topbar
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout
+
 from wordle_gui.views.left_game_area import LeftGameArea
 from wordle_gui.views.right_game_area import RightGameArea
+from wordle_gui.views.topbar import Topbar
 
 if TYPE_CHECKING:
     from PySide6.QtGui import QKeyEvent

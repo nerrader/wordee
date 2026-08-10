@@ -1,16 +1,16 @@
 from typing import TYPE_CHECKING
 
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QColor, QIcon
 from PySide6.QtWidgets import (
     QFrame,
+    QGraphicsDropShadowEffect,
+    QHBoxLayout,
     QLabel,
+    QSizePolicy,
     QToolButton,
     QVBoxLayout,
-    QHBoxLayout,
-    QSizePolicy,
-    QGraphicsDropShadowEffect,
 )
-from PySide6.QtGui import QIcon, QColor
-from PySide6.QtCore import QSize
 
 from wordle_gui import __version__ as game_version
 

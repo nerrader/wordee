@@ -1,5 +1,6 @@
-from platformdirs import PlatformDirs
 from pathlib import Path
+
+from platformdirs import PlatformDirs
 
 _dirs = PlatformDirs("wordle", appauthor="nerrader")
 MAIN_DATA_PATH: Path = _dirs.user_data_path

@@ -9,7 +9,7 @@ from loguru import logger
 def fetch_wordle_solution(httpx_client: httpx.Client) -> str:
     """Fetches the wordle solution for today from the New York Times API."""
     logger.debug("Starting fetch of wordle solution")
-    current_date = date.today()
+    current_date = date.today()  # noqa: DTZ011
     # no httpx client here because it only works when you talk to same domain anyway
     try:
         response = httpx_client.get(

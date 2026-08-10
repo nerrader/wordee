@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # noqa: F401

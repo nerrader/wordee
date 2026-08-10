@@ -1,11 +1,13 @@
 from typing import TYPE_CHECKING
+
 from loguru import logger
 
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
-    from wordle_gui.views.main_window import MainWindow
+
     from wordle_gui.models.game_logic import WordeeGame
     from wordle_gui.views.letter_statuses import WordeeStatusKey
+    from wordle_gui.views.main_window import MainWindow
 
 
 class GamePresenter:
