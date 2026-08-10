@@ -13,7 +13,7 @@ from wordle_gui.models.game_logic import WordeeGame
 from wordle_gui.presenters.game_presenter import GamePresenter
 
 # this import is required for the .qrc :/ virtual filepaths to work
-from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
+from wordle_gui.assets import resources_rc  # noqa: F401
 from wordle_gui import app_setup
 
 

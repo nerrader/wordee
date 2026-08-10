@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 from PySide6.QtCore import QTimer
 
 # this import is required for the .qrc :/ virtual filepaths to work
-from wordle_gui.assets import resources_rc  # type: ignore # noqa: F401
+from wordle_gui.assets import resources_rc  # noqa: F401
 
 
 class GameStats(QFrame):

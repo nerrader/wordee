@@ -19,7 +19,10 @@ def fetch_wordle_solution(httpx_client: httpx.Client) -> str:
         data: dict[str, Any] = response.json()
 
         logger.debug("Successfully fetched wordle solution.")
-        return data["solution"]
+
+        wordle_solution: str = data["solution"]
+        return wordle_solution
+
     except httpx.HTTPError as error:
         logger.error(f"Fetch wordle solution ({current_date}) failed: {error}")
         raise httpx.HTTPError("HTTP Error when fetching for wordle solution.")

@@ -1,3 +1,4 @@
+from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
     QGridLayout,
     QHBoxLayout,
@@ -17,7 +18,7 @@ class WordeeCell(QLabel):
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
 
-    def resizeEvent(self, event) -> None:
+    def resizeEvent(self, event: QResizeEvent) -> None:
         new_size = min(self.width(), self.height())
         self.resize(new_size, new_size)
 

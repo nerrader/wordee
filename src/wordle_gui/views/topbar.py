@@ -12,14 +12,14 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QIcon, QColor
 from PySide6.QtCore import QSize
 
-from wordle_gui.__init__ import __version__ as game_version
+from wordle_gui import __version__ as game_version
 
 if TYPE_CHECKING:
     from PySide6.QtGui import QResizeEvent
 
 
 class ResponsiveToolButton(QToolButton):
-    def resizeEvent(self, event: QResizeEvent):
+    def resizeEvent(self, event: QResizeEvent) -> None:
         new_icon_size = int(min(self.width(), self.height()) * 0.9)
         self.setIconSize(QSize(new_icon_size, new_icon_size))
         super().resizeEvent(event)
