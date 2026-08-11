@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
@@ -15,6 +16,7 @@ from wordle_gui.views.letter_statuses import LetterStatuses
 class RightGameArea(QFrame):
     def __init__(self) -> None:
         super().__init__()
+        self.setMaximumWidth(900)
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
@@ -31,14 +33,17 @@ class RightGameArea(QFrame):
 
         self.give_up_button = QPushButton("Give Up")
         self.give_up_button.setObjectName("give_up_button")
+        self.give_up_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.switch_to_unlimited_mode_button = QPushButton("Switch to Unlimited")
         self.switch_to_unlimited_mode_button.setObjectName(
             "switch_to_unlimited_mode_button"
         )
+        self.switch_to_unlimited_mode_button.setCursor(
+            QCursor(Qt.CursorShape.PointingHandCursor)
+        )
 
     def setup_layouts(self) -> None:
-
         misc_buttons_layout = QHBoxLayout()
         misc_buttons_layout.addWidget(self.give_up_button)
         misc_buttons_layout.addWidget(self.switch_to_unlimited_mode_button)
@@ -46,7 +51,9 @@ class RightGameArea(QFrame):
         right_game_area_layout = QVBoxLayout()
 
         right_game_area_layout.addWidget(self.puzzle_number_label)
-        right_game_area_layout.addWidget(self.game_stats)
+        right_game_area_layout.addWidget(
+            self.game_stats, alignment=Qt.AlignmentFlag.AlignCenter
+        )
         right_game_area_layout.addWidget(self.letter_statuses)
         right_game_area_layout.addLayout(misc_buttons_layout)
 
@@ -55,7 +62,7 @@ class RightGameArea(QFrame):
         right_game_area_layout.setStretch(2, 4)
         right_game_area_layout.setStretch(3, 1)
 
-        right_game_area_layout.setSpacing(30)
+        right_game_area_layout.setSpacing(20)
         right_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(right_game_area_layout)

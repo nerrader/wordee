@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/">
-        <file>images/cat-image.png</file>
         <file>icons/help-icon.svg</file>
         <file>icons/settings-icon.svg</file>
         <file>icons/statistics-icon.svg</file>

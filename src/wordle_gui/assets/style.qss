@@ -39,9 +39,8 @@ Topbar QToolButton {
 #status_label {
     background-color: #96D7FF;
     border-radius: 12;
-    font-weight: 500;
     font-size: 14pt;
-    padding: 20px
+    padding: 10px
 }
 
 QLabel[class="grid_label"] {
@@ -91,8 +90,9 @@ LetterStatuses {
 WordeeStatusKey {
     background-color: #dbdbdb;
     border-radius: 0;
-    font-size: 24pt;
+    font-size: 18pt;
 }
+
 WordeeStatusKey[status="absent"] {
     background-color: #a0a0a0;
 }
@@ -109,14 +109,15 @@ WordeeStatusKey[status="correct"] {
     background-color: #a1a0a0;
     font-size: 18pt;
     border-radius: 0;
-    padding: 10;
+    padding: 10px;
 }
 
 #enter_key {
     background-color: #7fbc8d;
     font-size: 18pt;
+    font-weight: bold;
     border-radius: 0;
-    padding: 10;
+    padding: 10px;
 }
 
 #game_stats_label_header {

@@ -1,4 +1,5 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
@@ -15,6 +16,8 @@ class WordeeStatusKey(QPushButton):
     def __init__(self, letter: str):
         super().__init__(letter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        self.setContentsMargins(10, 10, 10, 10)
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         # this signal will be passed into main_window.py, to be converted into the main alphabet_key_signal
         self.clicked.connect(lambda: self.key_pressed.emit(letter))
@@ -25,7 +28,6 @@ class LetterStatuses(QFrame):
     enter_signal = Signal()
 
     def __init__(self) -> None:
-
         super().__init__()
 
         self.setup_components()
@@ -41,6 +43,7 @@ class LetterStatuses(QFrame):
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.backspace_key.clicked.connect(self.backspace_signal.emit)
+        self.backspace_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.enter_key = QPushButton("Enter")
         self.enter_key.setObjectName("enter_key")
@@ -48,6 +51,7 @@ class LetterStatuses(QFrame):
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.enter_key.clicked.connect(self.enter_signal.emit)
+        self.enter_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.first_letter_row = [
             WordeeStatusKey(letter)
@@ -71,33 +75,35 @@ class LetterStatuses(QFrame):
 
     def setup_layouts(self) -> None:
         label_header_layout = QHBoxLayout()
+
         label_header_layout.addWidget(self.letter_status_label_header)
         label_header_layout.addWidget(self.backspace_key)
         label_header_layout.addWidget(self.enter_key)
+
+        label_header_layout.setSpacing(10)
 
         letter_statuses_layout = QVBoxLayout()
 
         first_row_layout = QHBoxLayout()
         for label in self.first_letter_row:
             first_row_layout.addWidget(label)
+        first_row_layout.setSpacing(7)
 
         second_row_layout = QHBoxLayout()
         for label in self.second_letter_row:
             second_row_layout.addWidget(label)
+        second_row_layout.setSpacing(7)
 
         third_row_layout = QHBoxLayout()
         for label in self.third_letter_row:
             third_row_layout.addWidget(label)
+        third_row_layout.setSpacing(7)
 
         letter_statuses_layout.addLayout(label_header_layout)
         letter_statuses_layout.addLayout(first_row_layout)
         letter_statuses_layout.addLayout(second_row_layout)
         letter_statuses_layout.addLayout(third_row_layout)
 
-        letter_statuses_layout.setStretch(0, 1)
-        letter_statuses_layout.setStretch(1, 1)
-        letter_statuses_layout.setStretch(2, 1)
-        letter_statuses_layout.setStretch(3, 1)
         letter_statuses_layout.setSpacing(7)
 
         letter_statuses_layout.setContentsMargins(20, 20, 20, 20)

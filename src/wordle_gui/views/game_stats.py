@@ -1,5 +1,5 @@
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # noqa: F401
@@ -8,6 +8,8 @@ from wordle_gui.assets import resources_rc  # noqa: F401
 class GameStats(QFrame):
     def __init__(self) -> None:
         super().__init__()
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
+        self.setContentsMargins(20, 10, 20, 10)
 
         self.setup_components()
         self.setup_layouts()

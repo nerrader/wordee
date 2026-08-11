@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
-from PySide6.QtCore import QSize
-from PySide6.QtGui import QColor, QIcon
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QColor, QCursor, QIcon
 from PySide6.QtWidgets import (
     QFrame,
     QGraphicsDropShadowEffect,
@@ -48,24 +48,28 @@ class Topbar(QFrame):
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.game_icon.setIcon(QIcon(":/icons/wordee-icon.svg"))
+        self.game_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.help_icon = ResponsiveToolButton()
         self.help_icon.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.help_icon.setIcon(QIcon(":/icons/help-icon.svg"))
+        self.help_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.statistics_icon = ResponsiveToolButton()
         self.statistics_icon.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.statistics_icon.setIcon(QIcon(":/icons/statistics-icon.svg"))
+        self.statistics_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.settings_icon = ResponsiveToolButton()
         self.settings_icon.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
         self.settings_icon.setIcon(QIcon(":/icons/settings-icon.svg"))
+        self.settings_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
     def setup_layouts(self) -> None:
         topbar_layout = QHBoxLayout()

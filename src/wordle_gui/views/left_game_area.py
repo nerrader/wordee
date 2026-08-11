@@ -17,12 +17,12 @@ class WordeeCell(QLabel):
         self.setProperty("class", "grid_label")
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        self.setContentsMargins(10, 10, 10, 10)
 
     def resizeEvent(self, event: QResizeEvent) -> None:
+        super().resizeEvent(event)
         new_size = min(self.width(), self.height())
         self.resize(new_size, new_size)
-
-        super().resizeEvent(event)
 
 
 class LeftGameArea(QFrame):
@@ -57,11 +57,15 @@ class LeftGameArea(QFrame):
         left_game_area_layout = QVBoxLayout()
         letter_grid_area_layout = QVBoxLayout()
         letter_grid_layout = QGridLayout()
-        letter_grid_layout.setSpacing(10)
+        letter_grid_layout.setSpacing(7)
 
         for row_index, row in enumerate(self.wordee_cells):
             for column_index, column in enumerate(row):
-                letter_grid_layout.addWidget(column, row_index, column_index)
+                letter_grid_layout.addWidget(
+                    column,
+                    row_index,
+                    column_index,
+                )
 
         letter_grid_area_layout.addWidget(self.letter_grid_label)
         letter_grid_area_layout.addLayout(letter_grid_layout)
@@ -69,7 +73,6 @@ class LeftGameArea(QFrame):
         letter_grid_area_layout.setStretch(1, 9)
         letter_grid_area_layout.setSpacing(10)
         letter_grid_area_layout.setContentsMargins(20, 20, 20, 20)
-        letter_grid_area_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.letter_grid_area_frame.setLayout(letter_grid_area_layout)
 
         # create a layout that centers the grid horizontally
@@ -77,11 +80,8 @@ class LeftGameArea(QFrame):
         container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         container_layout.addWidget(self.letter_grid_area_frame)
 
-        # left_game_area_layout.addWidget(self.letter_grid_area_frame)
         left_game_area_layout.addLayout(container_layout)
         left_game_area_layout.addWidget(self.status_label)
-        left_game_area_layout.setStretch(0, 9)
-        left_game_area_layout.setStretch(1, 1)
         left_game_area_layout.setSpacing(20)
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
