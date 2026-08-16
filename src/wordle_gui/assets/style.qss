@@ -2,13 +2,51 @@
     font-family: "Roboto Mono";
 }
 
+QLabel, QPushButton, QToolButton {
+    color: #1E1E1E
+}
+
 #main_container {
     background-color: #D7F0FE;
 }
 
-QLabel, QPushButton, QToolButton {
-    color: #1E1E1E
+GameOverDialog {
+    background-color: #D7F0FE;
 }
+
+#post_game_result_container[win="true"] {
+    background-color: #BBFF6D;
+    border-radius: 10px;
+}
+
+#post_game_result_container[win="false"] {
+    background-color: #BE7E70;
+    border-radius: 10px;
+}
+
+#post_game_result_label {
+    font-size: 32pt;
+    font-weight: bold;
+}
+
+#post_game_answer_label {
+    font-size: 14pt;
+}
+
+#post_game_play_again_button {
+    font-size: 18pt;
+    background-color: #96D7FF;
+    padding: 10px;
+    font-weight: medium;
+}
+
+#post_game_close_button {
+    background-color: red;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+}
+
 
 Topbar {
    background-color: #FFED6D;

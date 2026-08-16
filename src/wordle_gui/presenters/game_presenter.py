@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
+from wordle_gui.views.game_over_dialog import GameOverDialog
+
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
 
@@ -93,38 +95,6 @@ class GamePresenter:
         try:
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
-            color_feedback = self.model.get_color_feedback(user_guess)
-            self.view.right_game_area.game_stats.set_guesses_left(
-                self.model.guesses_left
-            )
-
-            STATUS_FROM_COLOR_MAP: dict[str, str] = {
-                "gray": "absent",
-                "yellow": "misplaced",
-                "green": "correct",
-            }
-
-            for label, color in zip(grid_row_cell_labels, color_feedback):
-                label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
-
-                label.style().unpolish(label)
-                label.style().polish(label)
-
-            letter_status_buttons: list[WordeeStatusKey] = [
-                self.view.right_game_area.letter_statuses.keyboard_map[letter.lower()]
-                for letter in user_guess
-            ]
-
-            for button, color in zip(letter_status_buttons, color_feedback):
-                # prevent already green buttons from turning yellow
-                if button.property("status") == "correct":
-                    continue
-
-                button.setProperty("status", STATUS_FROM_COLOR_MAP[color])
-
-                button.style().unpolish(button)
-                button.style().polish(button)
-
         except ValueError:
             self.view.left_game_area.status_label_invalid_animation()
             if len(user_guess) == 0:
@@ -133,17 +103,51 @@ class GamePresenter:
             self.status_label.setText("That is NOT a valid guess!")
             return
 
-        if self.model.game_state == "win":
-            self.status_label.setText(
+        color_feedback = self.model.get_color_feedback(user_guess)
+        self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
+
+        STATUS_FROM_COLOR_MAP: dict[str, str] = {
+            "gray": "absent",
+            "yellow": "misplaced",
+            "green": "correct",
+        }
+
+        for label, color in zip(grid_row_cell_labels, color_feedback):
+            label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
+
+            label.style().unpolish(label)
+            label.style().polish(label)
+
+        letter_status_buttons: list[WordeeStatusKey] = [
+            self.view.right_game_area.letter_statuses.keyboard_map[letter.lower()]
+            for letter in user_guess
+        ]
+
+        for button, color in zip(letter_status_buttons, color_feedback):
+            # prevent already green buttons from turning yellow
+            if button.property("status") == "correct":
+                continue
+
+            button.setProperty("status", STATUS_FROM_COLOR_MAP[color])
+
+            button.style().unpolish(button)
+            button.style().polish(button)
+
+        if self.model.game_state in ("win", "loss"):
+            result_message = (
                 f"Good job! The word was {self.model.target_word.upper()}"
+                if self.model.game_state == "win"
+                else f"Out of guesses. The word was {self.model.target_word.upper()}"
             )
+            self.view.left_game_area.status_label.setText(result_message)
+
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
-            return
-        elif self.model.game_state == "loss":
-            self.status_label.setText(
-                f"Out of guesses. The word was {self.model.target_word.upper()}"
-            )
-            self.view.right_game_area.game_stats.stop_time_elapsed_timer()
+
+            with self.view.dimmed():
+                GameOverDialog(
+                    self.model.game_state == "win",
+                    self.model.target_word.upper(),
+                ).exec()
             return
 
         if self.model.guesses_left > 1:

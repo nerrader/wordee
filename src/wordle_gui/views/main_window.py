@@ -1,7 +1,9 @@
+from collections.abc import Iterator
+from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
 
 from wordle_gui.views.left_game_area import LeftGameArea
 from wordle_gui.views.right_game_area import RightGameArea
@@ -55,6 +57,20 @@ class MainWindow(QMainWindow):
         main_container_layout.addLayout(game_area_layout)
 
         self.main_container.setLayout(main_container_layout)
+
+    @contextmanager
+    def dimmed(self) -> Iterator[None]:
+        overlay = QWidget(self)
+        overlay.setGeometry(self.rect())
+        overlay.setStyleSheet("background-color: rgba(0, 0, 0, 80)")
+        overlay.show()
+
+        # i dont understand what this means but basically
+        # the finally block is the __exit__ block
+        try:
+            yield
+        finally:
+            overlay.deleteLater()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         match event.key():
