@@ -1,4 +1,8 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import (
+    QPoint,
+    QPropertyAnimation,
+    Qt,
+)
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
     QFrame,
@@ -31,6 +35,7 @@ class LeftGameArea(QFrame):
 
         self.setup_components()
         self.setup_layouts()
+        self.setup_animation()
 
     def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
@@ -52,6 +57,29 @@ class LeftGameArea(QFrame):
                 grid_label = WordeeCell()
                 row_labels.append(grid_label)
             self.wordee_cells.append(row_labels)
+
+    def setup_animation(self) -> None:
+        self.shake_animation = QPropertyAnimation(self.status_label, b"pos")
+        self.shake_animation.setDuration(300)
+
+    # i do the rest here because the original_position will bug out if i dont
+    def status_label_invalid_animation(self) -> None:
+        # so the original position is locked
+        if not hasattr(self, "_status_label_original_position"):
+            self._status_label_original_position = self.status_label.pos()
+
+        original_position = self._status_label_original_position
+
+        self.shake_animation.stop()
+
+        self.shake_animation.setKeyValueAt(0.0, original_position)
+        self.shake_animation.setKeyValueAt(0.2, original_position + QPoint(-3, 0))
+        self.shake_animation.setKeyValueAt(0.4, original_position + QPoint(3, 0))
+        self.shake_animation.setKeyValueAt(0.6, original_position + QPoint(-2, 0))
+        self.shake_animation.setKeyValueAt(0.8, original_position + QPoint(2, 0))
+        self.shake_animation.setKeyValueAt(1.0, original_position)
+
+        self.shake_animation.start()
 
     def setup_layouts(self) -> None:
         left_game_area_layout = QVBoxLayout()

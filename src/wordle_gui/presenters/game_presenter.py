@@ -126,6 +126,7 @@ class GamePresenter:
                 button.style().polish(button)
 
         except ValueError:
+            self.view.left_game_area.status_label_invalid_animation()
             if len(user_guess) == 0:
                 self.status_label.setText("You submitted an empty guess.")
                 return
