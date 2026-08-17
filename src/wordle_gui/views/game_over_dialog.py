@@ -76,25 +76,25 @@ class GameOverDialog(QDialog):
         answer_label.setObjectName("post_game_answer_label")
         answer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        play_again_button = QPushButton("Play Again")
-        play_again_button.setObjectName("post_game_play_again_button")
-        play_again_button.clicked.connect(self.accept)
-        play_again_button.setSizePolicy(
+        play_unlimited_button = QPushButton("Play Unlimited Mode")
+        play_unlimited_button.setObjectName("post_game_play_unlimited_button")
+        play_unlimited_button.clicked.connect(self.accept)
+        play_unlimited_button.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        play_again_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        play_unlimited_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
-        play_again_shadow = QGraphicsDropShadowEffect(play_again_button)
+        play_again_shadow = QGraphicsDropShadowEffect(play_unlimited_button)
         play_again_shadow.setBlurRadius(15)
         play_again_shadow.setYOffset(5)
         play_again_shadow.setColor(QColor(58, 82, 95, 25))
 
-        play_again_button.setGraphicsEffect(play_again_shadow)
+        play_unlimited_button.setGraphicsEffect(play_again_shadow)
 
         layout.setSpacing(20)
         layout.addLayout(header_layout)
         layout.addWidget(result_container)
         layout.addWidget(answer_label)
-        layout.addWidget(play_again_button)
+        layout.addWidget(play_unlimited_button)
 
         self.setLayout(layout)
