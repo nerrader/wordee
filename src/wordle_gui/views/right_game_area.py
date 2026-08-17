@@ -1,7 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QCursor
+from PySide6.QtGui import QColor, QCursor
 from PySide6.QtWidgets import (
     QFrame,
+    QGraphicsDropShadowEffect,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -20,6 +21,7 @@ class RightGameArea(QFrame):
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
+        self.setup_shadows()
         self.setup_layouts()
 
     def setup_components(self) -> None:
@@ -66,3 +68,20 @@ class RightGameArea(QFrame):
         right_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(right_game_area_layout)
+
+    def setup_shadows(self) -> None:
+        give_up_button_shadow = QGraphicsDropShadowEffect(self.give_up_button)
+        give_up_button_shadow.setColor(QColor("#3A525F40"))
+        give_up_button_shadow.setBlurRadius(8)
+        give_up_button_shadow.setXOffset(0)
+        give_up_button_shadow.setYOffset(4)
+        self.give_up_button.setGraphicsEffect(give_up_button_shadow)
+
+        unlimited_button_shadow = QGraphicsDropShadowEffect(
+            self.switch_to_unlimited_mode_button
+        )
+        unlimited_button_shadow.setColor(QColor("#3A525F40"))
+        unlimited_button_shadow.setBlurRadius(8)
+        unlimited_button_shadow.setXOffset(0)
+        unlimited_button_shadow.setYOffset(4)
+        self.switch_to_unlimited_mode_button.setGraphicsEffect(unlimited_button_shadow)
