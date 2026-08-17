@@ -7,6 +7,7 @@ from wordle_gui.views.game_over_dialog import GameOverDialog
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
 
+    from wordle_gui.constants import GameMode
     from wordle_gui.models.game_logic import WordeeGame
     from wordle_gui.views.letter_statuses import WordeeStatusKey
     from wordle_gui.views.main_window import MainWindow
@@ -16,6 +17,7 @@ class GamePresenter:
     def __init__(self, view: MainWindow, model: WordeeGame) -> None:
         self.view = view
         self.model = model
+        self.game_mode: GameMode = "daily"
         self.setup_connections()
 
     @property
@@ -30,6 +32,9 @@ class GamePresenter:
         self.view.alphabet_key_signal.connect(self.handle_alphabet_key)
         self.view.backspace_key_signal.connect(self.handle_backspace_key)
         self.view.enter_key_signal.connect(self.handle_enter_key)
+        self.view.right_game_area.switch_mode_requested.connect(
+            self.handle_switch_modes
+        )
 
     def handle_alphabet_key(self, key: str) -> None:
         """Changes the label in the wordee grid to the letter.
@@ -155,3 +160,25 @@ class GamePresenter:
             return
 
         self.status_label.setText("Last guess. Make it count!")
+
+    def handle_switch_modes(self) -> None:
+        current_game_mode = self.game_mode
+
+        if current_game_mode == "daily":
+            self.game_mode = "unlimited"
+            self.switch_to_unlimited()
+        else:
+            self.game_mode = "daily"
+            self.switch_to_daily()
+
+    def switch_to_daily(self) -> None:
+        self.view.right_game_area.game_stats.set_game_mode("daily")
+        self.view.left_game_area.set_game_mode_grid_color("daily")
+        self.view.right_game_area.change_mode_button("unlimited")
+
+    def switch_to_unlimited(self) -> None:
+        # check here if the daily wordee is completed
+        # if so continue
+        self.view.right_game_area.game_stats.set_game_mode("unlimited")
+        self.view.left_game_area.set_game_mode_grid_color("unlimited")
+        self.view.right_game_area.change_mode_button("daily")

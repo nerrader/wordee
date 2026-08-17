@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 from platformdirs import PlatformDirs
 
@@ -9,3 +10,5 @@ CACHE_DIR_PATH: Path = MAIN_DATA_PATH / "cache"
 SOLUTIONS_CACHE_PATH = CACHE_DIR_PATH / "possible_solutions.txt"
 
 USER_AGENT = "WordleGUI (https://github.com/nerrader/wordle-gui)"
+
+GameMode = Literal["daily", "unlimited"]

@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # noqa: F401
+from wordle_gui.constants import GameMode
 
 
 class GameStats(QFrame):
@@ -43,6 +44,9 @@ class GameStats(QFrame):
 
     def set_guesses_left(self, guesses_left: int) -> None:
         self.guesses_left_label.setText(f"Guesses left -  {guesses_left}/6")
+
+    def set_game_mode(self, game_mode: GameMode) -> None:
+        self.guesses_left_label.setText(f"Mode - {game_mode.capitalize()}")
 
     def start_time_elapsed_timer(self) -> None:
         self.seconds_elapsed = 0

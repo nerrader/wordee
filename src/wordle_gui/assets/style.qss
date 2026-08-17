@@ -64,9 +64,16 @@ Topbar QToolButton {
     font-weight: bold;
 }
 
-#letter_grid_area_layout {
-    background-color: #3873E9;
+#letter_grid_area {
     border-radius: 20;
+}
+
+#letter_grid_area[mode="daily"] {
+    background-color: #3873E9;
+}
+
+#letter_grid_area[mode="unlimited"] {
+    background-color: #A541FC;
 }
 
 #letter_grid_header_label {
@@ -171,11 +178,19 @@ WordeeStatusKey[status="correct"] {
     padding: 10px;
 }
 
-#switch_to_unlimited_mode_button {
+#switch_modes_button {
     font-size: 16pt;
     border-radius: 8;
     background-color: #A791FF;
     border: none;
     font-weight: bold;
     padding: 10px;
+}
+
+#switch_modes_button[mode="daily"] {
+    background-color: #6493F0;
+}
+
+#switch_modes_button[mode="unlimited"] {
+    background-color: #A791FF;
 }

@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.constants import GameMode
+
 
 class WordeeCell(QLabel):
     def __init__(self) -> None:
@@ -39,7 +41,10 @@ class LeftGameArea(QFrame):
 
     def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
-        self.letter_grid_area_frame.setObjectName("letter_grid_area_layout")
+        self.letter_grid_area_frame.setObjectName("letter_grid_area")
+
+        # the default mode
+        self.letter_grid_area_frame.setProperty("mode", "daily")
 
         self.letter_grid_label = QLabel("WORDEE LETTER GRID")
         self.letter_grid_label.setObjectName("letter_grid_header_label")
@@ -114,3 +119,8 @@ class LeftGameArea(QFrame):
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)
+
+    def set_game_mode_grid_color(self, game_mode: GameMode) -> None:
+        self.letter_grid_area_frame.setProperty("mode", game_mode)
+        self.letter_grid_area_frame.style().unpolish(self.letter_grid_area_frame)
+        self.letter_grid_area_frame.style().polish(self.letter_grid_area_frame)
