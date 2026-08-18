@@ -2,9 +2,10 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
 
+from wordle_gui.game_signals import game_signals
 from wordle_gui.views.left_game_area import LeftGameArea
 from wordle_gui.views.right_game_area import RightGameArea
 from wordle_gui.views.topbar import Topbar
@@ -14,10 +15,6 @@ if TYPE_CHECKING:
 
 
 class MainWindow(QMainWindow):
-    alphabet_key_signal = Signal(str)
-    backspace_key_signal = Signal()
-    enter_key_signal = Signal()
-
     def __init__(self) -> None:
         super().__init__()
         self.setup_components()
@@ -31,16 +28,6 @@ class MainWindow(QMainWindow):
         self.topbar = Topbar()
         self.left_game_area = LeftGameArea()
         self.right_game_area = RightGameArea()
-
-        # make the buttons click signal connect with this main alphabet key signal
-        # so theres no two signals that do the exact same thing
-        letter_statuses = self.right_game_area.letter_statuses
-        for button in letter_statuses.keyboard_map.values():
-            button.key_pressed.connect(
-                lambda letter: self.alphabet_key_signal.emit(letter)
-            )
-        letter_statuses.backspace_signal.connect(self.backspace_key_signal)
-        letter_statuses.enter_signal.connect(self.enter_key_signal)
 
     def setup_layouts(self) -> None:
         main_container_layout = QVBoxLayout()
@@ -75,11 +62,11 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self, event: QKeyEvent) -> None:
         match event.key():
             case Qt.Key.Key_Backspace:
-                self.backspace_key_signal.emit()
+                game_signals.backspace_key_pressed.emit()
             case Qt.Key.Key_Return | Qt.Key.Key_Enter:
-                self.enter_key_signal.emit()
+                game_signals.enter_key_pressed.emit()
             case _:
                 if event.text().isalpha():
-                    self.alphabet_key_signal.emit(event.text().lower())
+                    game_signals.alphabet_key_pressed.emit(event.text().lower())
                 else:
                     return

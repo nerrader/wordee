@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import (
     QFrame,
@@ -9,10 +9,10 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.game_signals import game_signals
+
 
 class WordeeStatusKey(QPushButton):
-    key_pressed = Signal(str)
-
     def __init__(self, letter: str):
         super().__init__(letter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
@@ -20,13 +20,10 @@ class WordeeStatusKey(QPushButton):
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         # this signal will be passed into main_window.py, to be converted into the main alphabet_key_signal
-        self.clicked.connect(lambda: self.key_pressed.emit(letter))
+        self.clicked.connect(lambda: game_signals.alphabet_key_pressed.emit(letter))
 
 
 class LetterStatuses(QFrame):
-    backspace_signal = Signal()
-    enter_signal = Signal()
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -42,7 +39,7 @@ class LetterStatuses(QFrame):
         self.backspace_key.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        self.backspace_key.clicked.connect(self.backspace_signal.emit)
+        self.backspace_key.clicked.connect(game_signals.backspace_key_pressed.emit)
         self.backspace_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.enter_key = QPushButton("Enter")
@@ -50,7 +47,7 @@ class LetterStatuses(QFrame):
         self.enter_key.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        self.enter_key.clicked.connect(self.enter_signal.emit)
+        self.enter_key.clicked.connect(game_signals.enter_key_pressed.emit)
         self.enter_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.first_letter_row = [
