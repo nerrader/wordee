@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QCursor
 from PySide6.QtWidgets import (
     QFrame,
@@ -11,13 +11,12 @@ from PySide6.QtWidgets import (
 )
 
 from wordle_gui.constants import GameMode
+from wordle_gui.game_signals import game_signals
 from wordle_gui.views.game_stats import GameStats
 from wordle_gui.views.letter_statuses import LetterStatuses
 
 
 class RightGameArea(QFrame):
-    switch_mode_requested = Signal()
-
     def __init__(self) -> None:
         super().__init__()
         self.setMaximumWidth(900)
@@ -43,7 +42,9 @@ class RightGameArea(QFrame):
         self.switch_modes_button = QPushButton("Switch to Unlimited")
         self.switch_modes_button.setObjectName("switch_modes_button")
         self.switch_modes_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.switch_modes_button.clicked.connect(self.switch_mode_requested)
+        self.switch_modes_button.clicked.connect(
+            game_signals.switch_mode_requested.emit
+        )
 
         # the default mode
         self.switch_modes_button.setProperty("mode", "unlimited")

@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.game_signals import game_signals
+
 
 class GameOverDialog(QDialog):
     def __init__(self, won: bool, target_word: str):
@@ -76,25 +78,29 @@ class GameOverDialog(QDialog):
         answer_label.setObjectName("post_game_answer_label")
         answer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        play_unlimited_button = QPushButton("Play Unlimited Mode")
-        play_unlimited_button.setObjectName("post_game_play_unlimited_button")
-        play_unlimited_button.clicked.connect(self.accept)
-        play_unlimited_button.setSizePolicy(
+        self.play_unlimited_button = QPushButton("Play Unlimited Mode")
+        self.play_unlimited_button.setObjectName("post_game_play_unlimited_button")
+        self.play_unlimited_button.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        play_unlimited_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.play_unlimited_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.play_unlimited_button.clicked.connect(self._play_unlimited)
 
-        play_again_shadow = QGraphicsDropShadowEffect(play_unlimited_button)
+        play_again_shadow = QGraphicsDropShadowEffect(self.play_unlimited_button)
         play_again_shadow.setBlurRadius(15)
         play_again_shadow.setYOffset(5)
         play_again_shadow.setColor(QColor(58, 82, 95, 25))
 
-        play_unlimited_button.setGraphicsEffect(play_again_shadow)
+        self.play_unlimited_button.setGraphicsEffect(play_again_shadow)
 
         layout.setSpacing(20)
         layout.addLayout(header_layout)
         layout.addWidget(result_container)
         layout.addWidget(answer_label)
-        layout.addWidget(play_unlimited_button)
+        layout.addWidget(self.play_unlimited_button)
 
         self.setLayout(layout)
+
+    def _play_unlimited(self) -> None:
+        game_signals.switch_mode_requested.emit()
+        self.accept()

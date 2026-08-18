@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
+from wordle_gui.game_signals import game_signals
 from wordle_gui.views.game_over_dialog import GameOverDialog
 
 if TYPE_CHECKING:
@@ -29,12 +30,10 @@ class GamePresenter:
         return self.model.game_state == "playing"
 
     def setup_connections(self) -> None:
-        self.view.alphabet_key_signal.connect(self.handle_alphabet_key)
-        self.view.backspace_key_signal.connect(self.handle_backspace_key)
-        self.view.enter_key_signal.connect(self.handle_enter_key)
-        self.view.right_game_area.switch_mode_requested.connect(
-            self.handle_switch_modes
-        )
+        game_signals.alphabet_key_pressed.connect(self.handle_alphabet_key)
+        game_signals.backspace_key_pressed.connect(self.handle_backspace_key)
+        game_signals.enter_key_pressed.connect(self.handle_enter_key)
+        game_signals.switch_mode_requested.connect(self.handle_switch_modes)
 
     def handle_alphabet_key(self, key: str) -> None:
         """Changes the label in the wordee grid to the letter.
@@ -145,7 +144,6 @@ class GamePresenter:
                 else f"Out of guesses. The word was {self.model.target_word.upper()}"
             )
             self.view.left_game_area.status_label.setText(result_message)
-
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
             with self.view.dimmed():
