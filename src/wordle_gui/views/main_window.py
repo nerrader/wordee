@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
 
 from wordle_gui.game_signals import game_signals
@@ -17,6 +18,8 @@ if TYPE_CHECKING:
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
+        self.setWindowTitle("WORDEE")
+        self.setWindowIcon(QIcon(":/icons/wordee-icon.svg"))
         self.setup_components()
         self.setup_layouts()
 
