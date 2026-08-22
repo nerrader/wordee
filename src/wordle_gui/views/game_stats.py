@@ -64,3 +64,6 @@ class GameStats(QFrame):
 
     def stop_time_elapsed_timer(self) -> None:
         self.time_elapsed_timer.stop()
+
+    def reset_time_elapsed(self) -> None:
+        self.time_elapsed_label.setText("Time Elapsed - 00:00")

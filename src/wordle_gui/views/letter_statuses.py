@@ -105,3 +105,13 @@ class LetterStatuses(QFrame):
 
         letter_statuses_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(letter_statuses_layout)
+
+    def reset_letter_statuses(self) -> None:
+        all_letter_statuses = (
+            self.first_letter_row + self.second_letter_row + self.third_letter_row
+        )
+        for label in all_letter_statuses:
+            label.setProperty("status", None)
+
+            label.style().unpolish(label)
+            label.style().polish(label)

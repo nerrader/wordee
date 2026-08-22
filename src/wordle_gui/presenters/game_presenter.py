@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
     from wordle_gui.constants import GameMode
     from wordle_gui.models.game_logic import WordeeGame
+    from wordle_gui.views.left_game_area import WordeeCell
     from wordle_gui.views.letter_statuses import WordeeStatusKey
     from wordle_gui.views.main_window import MainWindow
 
@@ -51,7 +52,7 @@ class GamePresenter:
             self.view.right_game_area.game_stats.start_time_elapsed_timer()
             self.status_label.setText("Press ENTER to submit guess.")
 
-        grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
+        grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
         target_label: QLabel | None = next(
@@ -68,7 +69,7 @@ class GamePresenter:
             return
         logger.debug("Presenter received backspace key")
 
-        grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
+        grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
 
@@ -91,7 +92,7 @@ class GamePresenter:
             return
         logger.debug("Presenter received enter key")
 
-        grid_row_cell_labels: list[QLabel] = self.view.left_game_area.wordee_cells[
+        grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
         user_guess: str = "".join([label.text() for label in grid_row_cell_labels])
@@ -116,6 +117,7 @@ class GamePresenter:
             "green": "correct",
         }
 
+        # for the wordee grid color changing
         for label, color in zip(grid_row_cell_labels, color_feedback):
             label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
 
@@ -127,6 +129,7 @@ class GamePresenter:
             for letter in user_guess
         ]
 
+        # for the letter statuses color changing
         for button, color in zip(letter_status_buttons, color_feedback):
             # prevent already green buttons from turning yellow
             if button.property("status") == "correct":
@@ -180,3 +183,4 @@ class GamePresenter:
         self.view.right_game_area.game_stats.set_game_mode("unlimited")
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
         self.view.right_game_area.change_mode_button("daily")
+        self.view.reset_game_view()

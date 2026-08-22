@@ -88,22 +88,22 @@ Topbar QToolButton {
     padding: 10px
 }
 
-QLabel[class="grid_label"] {
+WordeeCell {
     background-color: #f5f5f5;
     border-radius: 0;
     font-size: 28pt;
     font-weight: bold;
 }
 
-QLabel[class="grid_label"][status="absent"] {
+WordeeCell[status="absent"] {
     background-color: #a0a0a0;
 }
 
-QLabel[class="grid_label"][status="misplaced"] {
+WordeeCell[status="misplaced"] {
     background-color: #FFD400;
 }
 
-QLabel[class="grid_label"][status="correct"] {
+WordeeCell[status="correct"] {
     background-color: #65E510;
 }
 

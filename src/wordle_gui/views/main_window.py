@@ -73,3 +73,8 @@ class MainWindow(QMainWindow):
                     game_signals.alphabet_key_pressed.emit(event.text().lower())
                 else:
                     return
+
+    def reset_game_view(self) -> None:
+        self.right_game_area.game_stats.reset_time_elapsed()
+        self.right_game_area.letter_statuses.reset_letter_statuses()
+        self.left_game_area.reset_wordee_cells()

@@ -20,7 +20,6 @@ class WordeeCell(QLabel):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setProperty("class", "grid_label")
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.setContentsMargins(10, 10, 10, 10)
@@ -29,6 +28,10 @@ class WordeeCell(QLabel):
         super().resizeEvent(event)
         new_size = min(self.width(), self.height())
         self.resize(new_size, new_size)
+
+    def reset_cell(self) -> None:
+        self.setText("")
+        self.setProperty("status", None)
 
 
 class LeftGameArea(QFrame):
@@ -50,14 +53,14 @@ class LeftGameArea(QFrame):
         self.letter_grid_label.setObjectName("letter_grid_header_label")
         self.letter_grid_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.wordee_cells: list[list[QLabel]] = []
+        self.wordee_cells: list[list[WordeeCell]] = []
 
         self.status_label = QLabel("Start typing to play WORDEE!")
         self.status_label.setObjectName("status_label")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         for _ in range(6):
-            row_labels: list[QLabel] = []
+            row_labels: list[WordeeCell] = []
             for _ in range(5):
                 grid_label = WordeeCell()
                 row_labels.append(grid_label)
@@ -124,3 +127,10 @@ class LeftGameArea(QFrame):
         self.letter_grid_area_frame.setProperty("mode", game_mode)
         self.letter_grid_area_frame.style().unpolish(self.letter_grid_area_frame)
         self.letter_grid_area_frame.style().polish(self.letter_grid_area_frame)
+
+    def reset_wordee_cells(self) -> None:
+        for row in self.wordee_cells:
+            for cell in row:
+                cell.reset_cell()
+                cell.style().unpolish(cell)
+                cell.style().polish(cell)
