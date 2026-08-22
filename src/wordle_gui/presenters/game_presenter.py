@@ -3,22 +3,23 @@ from typing import TYPE_CHECKING
 from loguru import logger
 
 from wordle_gui.game_signals import game_signals
+from wordle_gui.models.wordee_game_creation import WordeeGameFactory
 from wordle_gui.views.game_over_dialog import GameOverDialog
 
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
 
     from wordle_gui.constants import GameMode
-    from wordle_gui.models.game_logic import WordeeGame
     from wordle_gui.views.left_game_area import WordeeCell
     from wordle_gui.views.letter_statuses import WordeeStatusKey
     from wordle_gui.views.main_window import MainWindow
 
 
 class GamePresenter:
-    def __init__(self, view: MainWindow, model: WordeeGame) -> None:
+    def __init__(self, view: MainWindow, game_factory: WordeeGameFactory) -> None:
         self.view = view
-        self.model = model
+        self.game_factory = game_factory
+        self.model = game_factory.create_daily_game()
         self.game_mode: GameMode = "daily"
         self.setup_connections()
 
@@ -176,6 +177,8 @@ class GamePresenter:
         self.view.right_game_area.game_stats.set_game_mode("daily")
         self.view.left_game_area.set_game_mode_grid_color("daily")
         self.view.right_game_area.change_mode_button("unlimited")
+        self.view.reset_game_view()
+        self.model = self.game_factory.create_daily_game()
 
     def switch_to_unlimited(self) -> None:
         # check here if the daily wordee is completed
@@ -184,3 +187,4 @@ class GamePresenter:
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
         self.view.right_game_area.change_mode_button("daily")
         self.view.reset_game_view()
+        self.model = self.game_factory.create_unlimited_game()
