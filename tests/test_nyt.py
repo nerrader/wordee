@@ -1,10 +1,9 @@
 from datetime import date
 
 import respx
-from httpx import Client as httpxClient
 from httpx import Response
 
-from wordle_gui import nyt
+from wordle_gui.logic import nyt
 
 
 @respx.mock
@@ -15,6 +14,5 @@ def test_fetch_wordle_solution() -> None:
         return_value=Response(200, json={"solution": "pizza"})
     )
 
-    with httpxClient() as client:
-        solution = nyt.fetch_wordle_solution(client)
+    solution = nyt.fetch_wordle_solution("Testing")
     assert solution == "pizza"

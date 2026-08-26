@@ -1,10 +1,9 @@
 import pytest
 from PySide6.QtWidgets import QApplication
 
-from wordle_gui import app_setup
-
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordle_gui.assets import resources_rc  # noqa: F401
+from wordle_gui.logic import app_setup
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -26,7 +25,8 @@ def test_load_stylesheet() -> None:
 
     assert stylesheet_contents is not None
     assert "background-color" in stylesheet_contents
-    assert '[class="grid_label"]' in stylesheet_contents
+    assert "QPushButton" in stylesheet_contents
+    assert "LetterStatuses" in stylesheet_contents
 
 
 def test_load_nonexistant_stylesheet() -> None:
