@@ -19,11 +19,11 @@ class GameStats(QFrame):
         self.game_stats_label_header = QLabel("GAME STATS")
         self.game_stats_label_header.setObjectName("game_stats_label_header")
 
-        self.mode_label_header = QLabel("Mode - Daily")
-        self.mode_label_header.setProperty("class", "game_stats_label")
+        self.mode_label = QLabel("Mode - Daily")
+        self.mode_label.setProperty("class", "game_stats_label")
 
-        self.difficulty_label_header = QLabel("Difficulty - Normal")
-        self.difficulty_label_header.setProperty("class", "game_stats_label")
+        self.difficulty_label = QLabel("Difficulty - Normal")
+        self.difficulty_label.setProperty("class", "game_stats_label")
 
         self.time_elapsed_label = QLabel("Time Elapsed - 00:00")
         self.time_elapsed_label.setProperty("class", "game_stats_label")
@@ -35,8 +35,8 @@ class GameStats(QFrame):
         game_stats_layout = QVBoxLayout()
 
         game_stats_layout.addWidget(self.game_stats_label_header)
-        game_stats_layout.addWidget(self.mode_label_header)
-        game_stats_layout.addWidget(self.difficulty_label_header)
+        game_stats_layout.addWidget(self.mode_label)
+        game_stats_layout.addWidget(self.difficulty_label)
         game_stats_layout.addWidget(self.time_elapsed_label)
         game_stats_layout.addWidget(self.guesses_left_label)
 
@@ -46,7 +46,7 @@ class GameStats(QFrame):
         self.guesses_left_label.setText(f"Guesses left -  {guesses_left}/6")
 
     def set_game_mode(self, game_mode: GameMode) -> None:
-        self.guesses_left_label.setText(f"Mode - {game_mode.capitalize()}")
+        self.mode_label.setText(f"Mode - {game_mode.capitalize()}")
 
     def start_time_elapsed_timer(self) -> None:
         self.seconds_elapsed = 0
