@@ -22,6 +22,10 @@ class WordeeGame:
     def game_state(self) -> str:
         return self._game_state
 
+    @property
+    def can_switch_gamemodes(self) -> bool:
+        return self.guesses_left == 6 or self.game_state != "playing"
+
     def get_color_feedback(
         self, guess: str
     ) -> list[Literal["gray", "green", "yellow"]]:
@@ -33,19 +37,25 @@ class WordeeGame:
         "green" = The guessed letter is in the correct spot.
         """
         guess = guess.lower()
-        words_in_target_word = set(self.target_word)
 
-        color_feedback: list[Literal["gray", "green", "yellow"]] = []
+        color_feedback: list[Literal["gray", "green", "yellow"]] = ["gray"] * 5
+
+        # do all greens first
+        remaining_letters: list[str] = list(self.target_word)
         for index, letter in enumerate(guess):
             target_word_letter: str = self.target_word[index]
 
             if letter == target_word_letter:
-                color_feedback.append("green")
-            elif letter in words_in_target_word:
-                color_feedback.append("yellow")
-                words_in_target_word.remove(letter)
-            else:
-                color_feedback.append("gray")
+                color_feedback[index] = "green"
+                remaining_letters.remove(letter)
+
+        for index, letter in enumerate(guess):
+            if (
+                letter in remaining_letters  # so theres no double yellows
+                and color_feedback[index] == "gray"  # to prevent green to go yellow
+            ):
+                color_feedback[index] = "yellow"
+                remaining_letters.remove(letter)
 
         return color_feedback
 
