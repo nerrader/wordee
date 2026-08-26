@@ -9,27 +9,26 @@ from wordle_gui.views.game_over_dialog import GameOverDialog
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
 
-    from wordle_gui.constants import GameMode
+    from wordle_gui.state import WordeeState
     from wordle_gui.views.left_game_area import WordeeCell
     from wordle_gui.views.letter_statuses import WordeeStatusKey
     from wordle_gui.views.main_window import MainWindow
 
 
 class GamePresenter:
-    def __init__(self, view: MainWindow, game_factory: WordeeGameFactory) -> None:
+    def __init__(
+        self, view: MainWindow, game_factory: WordeeGameFactory, state: WordeeState
+    ) -> None:
         self.view = view
         self.game_factory = game_factory
         self.model = game_factory.create_daily_game()
-        self.game_mode: GameMode = "daily"
+        self.state = state
         self.setup_connections()
 
+    # basically just shortcuts cuz i was too lazy to type the full thing
     @property
     def status_label(self) -> QLabel:
         return self.view.left_game_area.status_label
-
-    @property
-    def is_playing(self) -> bool:
-        return self.model.game_state == "playing"
 
     def setup_connections(self) -> None:
         game_signals.alphabet_key_pressed.connect(self.handle_alphabet_key)
@@ -43,7 +42,7 @@ class GamePresenter:
         Args:
             key (str): The alphabetical letter that the user inputted.
         """
-        if not self.is_playing:
+        if self.model.game_state != "playing":
             return
         logger.debug(f"Presenter recieved alphabet key: {key}")
 
@@ -66,7 +65,7 @@ class GamePresenter:
         target_label.setText(key.upper())
 
     def handle_backspace_key(self) -> None:
-        if not self.is_playing:
+        if self.model.game_state != "playing":
             return
         logger.debug("Presenter received backspace key")
 
@@ -89,7 +88,7 @@ class GamePresenter:
         - Updates color of wordee grid and letter status cells.
         - Occassionally updates status label if something interesting happens.
         """
-        if not self.is_playing:
+        if self.model.game_state != "playing":
             return
         logger.debug("Presenter received enter key")
 
@@ -142,6 +141,7 @@ class GamePresenter:
             button.style().polish(button)
 
         if self.model.game_state in ("win", "loss"):
+            self.state.daily_completed = True
             result_message = (
                 f"Good job! The word was {self.model.target_word.upper()}"
                 if self.model.game_state == "win"
@@ -164,13 +164,20 @@ class GamePresenter:
         self.status_label.setText("Last guess. Make it count!")
 
     def handle_switch_modes(self) -> None:
-        current_game_mode = self.game_mode
+        if not self.model.can_switch_gamemodes:
+            # TODO: change it into a ui element later
+            logger.info(
+                "Cant switch games while playing. Give up your game or finish it to switch gamemodes."
+            )
+            return
+        self.view.right_game_area.game_stats.stop_time_elapsed_timer()
+        current_game_mode = self.state.current_game_mode
 
         if current_game_mode == "daily":
-            self.game_mode = "unlimited"
+            self.state.current_game_mode = "unlimited"
             self.switch_to_unlimited()
         else:
-            self.game_mode = "daily"
+            self.state.current_game_mode = "daily"
             self.switch_to_daily()
 
     def switch_to_daily(self) -> None:
@@ -179,12 +186,16 @@ class GamePresenter:
         self.view.right_game_area.change_mode_button("unlimited")
         self.view.reset_game_view()
         self.model = self.game_factory.create_daily_game()
+        self.state.current_game_mode = "daily"
 
     def switch_to_unlimited(self) -> None:
-        # check here if the daily wordee is completed
-        # if so continue
+        if not self.state.daily_completed:
+            logger.info("You must beat daily mode before switching to unlimited.")
+            return
         self.view.right_game_area.game_stats.set_game_mode("unlimited")
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
         self.view.right_game_area.change_mode_button("daily")
         self.view.reset_game_view()
         self.model = self.game_factory.create_unlimited_game()
+        self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
+        self.state.current_game_mode = "unlimited"

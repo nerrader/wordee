@@ -9,6 +9,7 @@ from wordle_gui.assets import resources_rc  # noqa: F401
 from wordle_gui.logic import app_setup, nyt
 from wordle_gui.models.wordee_game_creation import WordeeGameFactory
 from wordle_gui.presenters.game_presenter import GamePresenter
+from wordle_gui.state import WordeeState
 from wordle_gui.views.main_window import MainWindow
 
 
@@ -31,6 +32,7 @@ def main() -> None:
             valid_guesses | possible_solutions,
             nyt.fetch_wordle_solution(const.USER_AGENT),
         ),
+        WordeeState(),
     )
 
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
