@@ -9,10 +9,10 @@ path = "src/wordle_gui/__init__.py"
 packages = ["src/wordle_gui"]
 
 [tool.pyright]
+exclude = [".**/*", "**/__pycache__/**", "./src/wordle_gui/assets/**"]
 venvPath = "."
 venv = ".venv"
 typeCheckingMode = "standard"
-exclude = [".**/*", "**/__pycache__/**, ./src/wordle_gui/assets/**"]
 
 [tool.mypy]
 strict = true
