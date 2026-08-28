@@ -6,6 +6,7 @@ class GameSignals(QObject):
     enter_key_pressed = Signal()
     backspace_key_pressed = Signal()
     switch_mode_requested = Signal()
+    play_unlimited_again = Signal()
 
 
 game_signals = GameSignals()

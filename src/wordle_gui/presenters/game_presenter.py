@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
+from wordle_gui import constants as const
 from wordle_gui.game_signals import game_signals
 from wordle_gui.models.wordee_game_creation import WordeeGameFactory
 from wordle_gui.views.game_over_dialog import GameOverDialog
@@ -35,6 +36,7 @@ class GamePresenter:
         game_signals.backspace_key_pressed.connect(self.handle_backspace_key)
         game_signals.enter_key_pressed.connect(self.handle_enter_key)
         game_signals.switch_mode_requested.connect(self.handle_switch_modes)
+        game_signals.play_unlimited_again.connect(lambda: self.reset_game("unlimited"))
 
     def handle_alphabet_key(self, key: str) -> None:
         """Changes the label in the wordee grid to the letter.
@@ -154,6 +156,7 @@ class GamePresenter:
                 GameOverDialog(
                     self.model.game_state == "win",
                     self.model.target_word.upper(),
+                    self.state.current_game_mode,
                 ).exec()
             return
 
@@ -184,9 +187,7 @@ class GamePresenter:
         self.view.right_game_area.game_stats.set_game_mode("daily")
         self.view.left_game_area.set_game_mode_grid_color("daily")
         self.view.right_game_area.change_mode_button("unlimited")
-        self.view.reset_game_view()
-        self.model = self.game_factory.create_daily_game()
-        self.state.current_game_mode = "daily"
+        self.reset_game("daily")
 
     def switch_to_unlimited(self) -> None:
         if not self.state.daily_completed:
@@ -195,7 +196,13 @@ class GamePresenter:
         self.view.right_game_area.game_stats.set_game_mode("unlimited")
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
         self.view.right_game_area.change_mode_button("daily")
+        self.reset_game("unlimited")
+
+    def reset_game(self, gamemode: const.GameMode) -> None:
         self.view.reset_game_view()
-        self.model = self.game_factory.create_unlimited_game()
+        if gamemode == "unlimited":
+            self.model = self.game_factory.create_unlimited_game()
+        else:
+            self.model = self.game_factory.create_daily_game()
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
-        self.state.current_game_mode = "unlimited"
+        self.state.current_game_mode = gamemode

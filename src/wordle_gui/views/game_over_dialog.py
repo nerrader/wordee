@@ -13,11 +13,12 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.constants import GameMode
 from wordle_gui.game_signals import game_signals
 
 
 class GameOverDialog(QDialog):
-    def __init__(self, won: bool, target_word: str):
+    def __init__(self, won: bool, target_word: str, game_mode: GameMode):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
         layout = QVBoxLayout()
@@ -78,29 +79,37 @@ class GameOverDialog(QDialog):
         answer_label.setObjectName("post_game_answer_label")
         answer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.play_unlimited_button = QPushButton("Play Unlimited Mode")
-        self.play_unlimited_button.setObjectName("post_game_play_unlimited_button")
-        self.play_unlimited_button.setSizePolicy(
+        self.play_again_button = QPushButton(
+            "Play Unlimited Mode" if game_mode == "daily" else "Play Again"
+        )
+        self.play_again_button.setObjectName("post_game_play_again_button")
+        self.play_again_button.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        self.play_unlimited_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.play_unlimited_button.clicked.connect(self._play_unlimited)
+        self.play_again_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.play_again_button.clicked.connect(
+            self._play_unlimited if game_mode == "daily" else self._play_unlimited_again
+        )
 
-        play_again_shadow = QGraphicsDropShadowEffect(self.play_unlimited_button)
+        play_again_shadow = QGraphicsDropShadowEffect(self.play_again_button)
         play_again_shadow.setBlurRadius(15)
         play_again_shadow.setYOffset(5)
         play_again_shadow.setColor(QColor(58, 82, 95, 25))
 
-        self.play_unlimited_button.setGraphicsEffect(play_again_shadow)
+        self.play_again_button.setGraphicsEffect(play_again_shadow)
 
         layout.setSpacing(20)
         layout.addLayout(header_layout)
         layout.addWidget(result_container)
         layout.addWidget(answer_label)
-        layout.addWidget(self.play_unlimited_button)
+        layout.addWidget(self.play_again_button)
 
         self.setLayout(layout)
 
     def _play_unlimited(self) -> None:
         game_signals.switch_mode_requested.emit()
+        self.accept()
+
+    def _play_unlimited_again(self) -> None:
+        game_signals.play_unlimited_again.emit()
         self.accept()

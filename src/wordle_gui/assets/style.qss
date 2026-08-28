@@ -33,7 +33,7 @@ GameOverDialog {
     font-size: 14pt;
 }
 
-#post_game_play_unlimited_button {
+#post_game_play_again_button {
     font-size: 18pt;
     background-color: #96D7FF;
     padding: 10px;
