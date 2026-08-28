@@ -27,7 +27,7 @@ class RightGameArea(QFrame):
         self.setup_layouts()
 
     def setup_components(self) -> None:
-        self.puzzle_number_label = QLabel("Puzzle #NULL")
+        self.puzzle_number_label = QLabel("P#102")
         self.puzzle_number_label.setObjectName("puzzle_number_label")
         self.puzzle_number_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -98,3 +98,9 @@ class RightGameArea(QFrame):
 
         self.switch_modes_button.style().unpolish(self.switch_modes_button)
         self.switch_modes_button.style().polish(self.switch_modes_button)
+
+    def set_unlimited_puzzle_label(self) -> None:
+        self.puzzle_number_label.setText("P#UNLIMITED")
+
+    def set_numbered_puzzle_label(self, number: int) -> None:
+        self.puzzle_number_label.setText(f"P#{number}")

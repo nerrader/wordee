@@ -184,6 +184,7 @@ class GamePresenter:
             self.switch_to_daily()
 
     def switch_to_daily(self) -> None:
+        self.view.right_game_area.set_numbered_puzzle_label(0)
         self.view.right_game_area.game_stats.set_game_mode("daily")
         self.view.left_game_area.set_game_mode_grid_color("daily")
         self.view.right_game_area.change_mode_button("unlimited")
@@ -193,6 +194,7 @@ class GamePresenter:
         if not self.state.daily_completed:
             logger.info("You must beat daily mode before switching to unlimited.")
             return
+        self.view.right_game_area.set_unlimited_puzzle_label()
         self.view.right_game_area.game_stats.set_game_mode("unlimited")
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
         self.view.right_game_area.change_mode_button("daily")
