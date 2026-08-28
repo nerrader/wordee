@@ -40,6 +40,14 @@ GameOverDialog {
     font-weight: medium;
 }
 
+#play_again_button {
+    font-size: 16pt;
+    border-radius: 8;
+    background-color: #96D7FF;
+    padding: 10px;
+    font-weight: bold;
+}
+
 #post_game_close_button {
     background-color: red;
     font-weight: bold;

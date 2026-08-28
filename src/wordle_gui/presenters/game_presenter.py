@@ -152,6 +152,9 @@ class GamePresenter:
             self.view.left_game_area.status_label.setText(result_message)
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
+            if self.state.current_game_mode == "unlimited":
+                self.view.right_game_area.set_play_again_button()
+
             with self.view.dimmed():
                 GameOverDialog(
                     self.model.game_state == "win",
@@ -177,11 +180,11 @@ class GamePresenter:
         current_game_mode = self.state.current_game_mode
 
         if current_game_mode == "daily":
-            self.state.current_game_mode = "unlimited"
             self.switch_to_unlimited()
+            self.state.current_game_mode = "unlimited"
         else:
-            self.state.current_game_mode = "daily"
             self.switch_to_daily()
+            self.state.current_game_mode = "daily"
 
     def switch_to_daily(self) -> None:
         self.view.right_game_area.set_numbered_puzzle_label(0)
@@ -202,9 +205,11 @@ class GamePresenter:
 
     def reset_game(self, gamemode: const.GameMode) -> None:
         self.view.reset_game_view()
+
         if gamemode == "unlimited":
             self.model = self.game_factory.create_unlimited_game()
         else:
             self.model = self.game_factory.create_daily_game()
+
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
         self.state.current_game_mode = gamemode

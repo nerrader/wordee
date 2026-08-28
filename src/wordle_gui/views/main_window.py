@@ -80,3 +80,4 @@ class MainWindow(QMainWindow):
 
         self.right_game_area.game_stats.reset_time_elapsed()
         self.right_game_area.letter_statuses.reset_letter_statuses()
+        self.right_game_area.set_give_up_button()

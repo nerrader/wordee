@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton,
     QSizePolicy,
+    QStackedWidget,
     QVBoxLayout,
 )
 
@@ -39,6 +40,11 @@ class RightGameArea(QFrame):
         self.give_up_button.setObjectName("give_up_button")
         self.give_up_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
+        self.play_again_button = QPushButton("Play Again")
+        self.play_again_button.setObjectName("play_again_button")
+        self.play_again_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.play_again_button.clicked.connect(game_signals.play_unlimited_again)
+
         self.switch_modes_button = QPushButton("Switch to Unlimited")
         self.switch_modes_button.setObjectName("switch_modes_button")
         self.switch_modes_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -49,10 +55,20 @@ class RightGameArea(QFrame):
         # the default mode
         self.switch_modes_button.setProperty("mode", "unlimited")
 
+        self.action_widget = QStackedWidget()
+        self.action_widget.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum
+        )
+        self.action_widget.addWidget(self.give_up_button)
+        self.action_widget.addWidget(self.play_again_button)
+        self.action_widget.setCurrentWidget(self.give_up_button)
+
     def setup_layouts(self) -> None:
         misc_buttons_layout = QHBoxLayout()
-        misc_buttons_layout.addWidget(self.give_up_button)
+        misc_buttons_layout.addWidget(self.action_widget)
         misc_buttons_layout.addWidget(self.switch_modes_button)
+        misc_buttons_layout.setStretch(0, 1)
+        misc_buttons_layout.setStretch(1, 1)
 
         right_game_area_layout = QVBoxLayout()
 
@@ -66,7 +82,7 @@ class RightGameArea(QFrame):
         right_game_area_layout.setStretch(0, 1)
         right_game_area_layout.setStretch(1, 3)
         right_game_area_layout.setStretch(2, 4)
-        right_game_area_layout.setStretch(3, 1)
+        right_game_area_layout.setStretch(3, 0)
 
         right_game_area_layout.setSpacing(20)
         right_game_area_layout.setContentsMargins(20, 20, 20, 20)
@@ -81,12 +97,19 @@ class RightGameArea(QFrame):
         give_up_button_shadow.setYOffset(4)
         self.give_up_button.setGraphicsEffect(give_up_button_shadow)
 
-        unlimited_button_shadow = QGraphicsDropShadowEffect(self.switch_modes_button)
-        unlimited_button_shadow.setColor(QColor("#3A525F40"))
-        unlimited_button_shadow.setBlurRadius(8)
-        unlimited_button_shadow.setXOffset(0)
-        unlimited_button_shadow.setYOffset(4)
-        self.switch_modes_button.setGraphicsEffect(unlimited_button_shadow)
+        play_again_shadow = QGraphicsDropShadowEffect(self.play_again_button)
+        play_again_shadow.setColor(QColor("#3A525F40"))
+        play_again_shadow.setBlurRadius(8)
+        play_again_shadow.setXOffset(0)
+        play_again_shadow.setYOffset(4)
+        self.play_again_button.setGraphicsEffect(play_again_shadow)
+
+        switch_modes_button_shadow = QGraphicsDropShadowEffect(self.switch_modes_button)
+        switch_modes_button_shadow.setColor(QColor("#3A525F40"))
+        switch_modes_button_shadow.setBlurRadius(8)
+        switch_modes_button_shadow.setXOffset(0)
+        switch_modes_button_shadow.setYOffset(4)
+        self.switch_modes_button.setGraphicsEffect(switch_modes_button_shadow)
 
     def change_mode_button(self, game_mode: GameMode) -> None:
         if game_mode == "daily":
@@ -104,3 +127,9 @@ class RightGameArea(QFrame):
 
     def set_numbered_puzzle_label(self, number: int) -> None:
         self.puzzle_number_label.setText(f"P#{number}")
+
+    def set_give_up_button(self) -> None:
+        self.action_widget.setCurrentWidget(self.give_up_button)
+
+    def set_play_again_button(self) -> None:
+        self.action_widget.setCurrentWidget(self.play_again_button)
