@@ -134,3 +134,6 @@ class LeftGameArea(QFrame):
                 cell.reset_cell()
                 cell.style().unpolish(cell)
                 cell.style().polish(cell)
+
+    def reset_status_label(self) -> None:
+        self.status_label.setText("Start typing to play WORDEE!")
