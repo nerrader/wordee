@@ -5,6 +5,7 @@ from loguru import logger
 from wordle_gui import constants as const
 from wordle_gui.game_signals import game_signals
 from wordle_gui.models.wordee_game_creation import WordeeGameFactory
+from wordle_gui.views.block_switch_mode_dialog import BlockSwitchModeDialog
 from wordle_gui.views.game_over_dialog import GameOverDialog
 
 if TYPE_CHECKING:
@@ -179,12 +180,14 @@ class GamePresenter:
         self.status_label.setText("Last guess. Make it count!")
 
     def handle_switch_modes(self) -> None:
-        if not self.model.can_switch_gamemodes:
-            # TODO: change it into a ui element later
+        if not self.state.daily_completed or not self.model.can_switch_gamemodes:
+            with self.view.dimmed():
+                BlockSwitchModeDialog(self.state.current_game_mode).exec()
             logger.info(
                 "Cant switch games while playing. Give up your game or finish it to switch gamemodes."
             )
             return
+
         self.view.right_game_area.game_stats.stop_time_elapsed_timer()
         current_game_mode = self.state.current_game_mode
 
@@ -203,9 +206,6 @@ class GamePresenter:
         self.reset_game("daily")
 
     def switch_to_unlimited(self) -> None:
-        if not self.state.daily_completed:
-            logger.info("You must beat daily mode before switching to unlimited.")
-            return
         self.view.right_game_area.set_unlimited_puzzle_label()
         self.view.right_game_area.game_stats.set_game_mode("unlimited")
         self.view.left_game_area.set_game_mode_grid_color("unlimited")
@@ -227,8 +227,9 @@ class GamePresenter:
         if not self.view.right_game_area.give_up_button_enabled:
             return
 
+        self.model.give_up_game()
+
         if self.state.current_game_mode == "daily":
-            self.model.give_up_game()
             self.state.daily_completed = True
 
         self.view.right_game_area.game_stats.stop_time_elapsed_timer()

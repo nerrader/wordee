@@ -60,6 +60,30 @@ GameOverDialog {
     padding: 5px;
 }
 
+BlockSwitchModeDialog {
+    background-color: #D7F0FE;
+}
+
+#block_switch_mode_stop_header_label {
+    background-color: #FF8686;
+    font-weight: bold;
+    font-size: 32pt;
+    padding: 10px;
+    border-radius: 8;
+}
+
+#block_switch_mode_contents_label {
+    font-size: 13pt;
+}
+
+#block_switch_mode_ok_button {
+    background-color: #96D7FF;
+    font-weight: bold;
+    font-size: 16pt;
+    padding: 10px;
+    border-radius: 8;
+
+}
 
 Topbar {
    background-color: #FFED6D;
