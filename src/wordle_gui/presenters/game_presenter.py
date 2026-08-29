@@ -37,6 +37,7 @@ class GamePresenter:
         game_signals.enter_key_pressed.connect(self.handle_enter_key)
         game_signals.switch_mode_requested.connect(self.handle_switch_modes)
         game_signals.play_unlimited_again.connect(lambda: self.reset_game("unlimited"))
+        game_signals.give_up_signal.connect(self.handle_give_up)
 
     def handle_alphabet_key(self, key: str) -> None:
         """Changes the label in the wordee grid to the letter.
@@ -92,6 +93,7 @@ class GamePresenter:
         """
         if self.model.game_state != "playing":
             return
+
         logger.debug("Presenter received enter key")
 
         grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
@@ -109,6 +111,10 @@ class GamePresenter:
                 return
             self.status_label.setText("That is NOT a valid guess!")
             return
+
+        # if the user did their first successful guess
+        if self.model.guesses_left == 5:
+            self.view.right_game_area.enable_give_up_button()
 
         color_feedback = self.model.get_color_feedback(user_guess)
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
@@ -143,7 +149,9 @@ class GamePresenter:
             button.style().polish(button)
 
         if self.model.game_state in ("win", "loss"):
-            self.state.daily_completed = True
+            if self.state.current_game_mode == "daily":
+                self.state.daily_completed = True
+
             result_message = (
                 f"Good job! The word was {self.model.target_word.upper()}"
                 if self.model.game_state == "win"
@@ -152,12 +160,13 @@ class GamePresenter:
             self.view.left_game_area.status_label.setText(result_message)
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
+            self.view.right_game_area.disable_give_up_button()
             if self.state.current_game_mode == "unlimited":
                 self.view.right_game_area.set_play_again_button()
 
             with self.view.dimmed():
                 GameOverDialog(
-                    self.model.game_state == "win",
+                    "won" if self.model.game_state == "win" else "lost",
                     self.model.target_word.upper(),
                     self.state.current_game_mode,
                 ).exec()
@@ -213,3 +222,27 @@ class GamePresenter:
 
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
         self.state.current_game_mode = gamemode
+
+    def handle_give_up(self) -> None:
+        if not self.view.right_game_area.give_up_button_enabled:
+            return
+
+        if self.state.current_game_mode == "daily":
+            self.model.give_up_game()
+            self.state.daily_completed = True
+
+        self.view.right_game_area.game_stats.stop_time_elapsed_timer()
+
+        result_message = f"You gave up. The word was {self.model.target_word}"
+        self.view.left_game_area.status_label.setText(result_message)
+        self.view.right_game_area.game_stats.stop_time_elapsed_timer()
+
+        if self.state.current_game_mode == "unlimited":
+            self.view.right_game_area.set_play_again_button()
+
+        with self.view.dimmed():
+            GameOverDialog(
+                game_result="gave_up",
+                target_word=self.model.target_word,
+                game_mode=self.state.current_game_mode,
+            ).exec()

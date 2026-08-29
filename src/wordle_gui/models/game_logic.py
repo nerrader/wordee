@@ -79,3 +79,6 @@ class WordeeGame:
         elif guess == self.target_word:
             logger.info("The user won the game.")
             self._game_state = "win"
+
+    def give_up_game(self) -> None:
+        self._game_state = "loss"

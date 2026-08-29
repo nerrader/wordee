@@ -14,13 +14,18 @@ GameOverDialog {
     background-color: #D7F0FE;
 }
 
-#post_game_result_container[win="true"] {
+#post_game_result_container[game_result="won"] {
     background-color: #BBFF6D;
     border-radius: 10px;
 }
 
-#post_game_result_container[win="false"] {
+#post_game_result_container[game_result="lost"] {
     background-color: #BE7E70;
+    border-radius: 10px;
+}
+
+#post_game_result_container[game_result="gave_up"] {
+    background-color: #8D8D8D;
     border-radius: 10px;
 }
 

@@ -1,8 +1,9 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QCursor
+from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
     QFrame,
     QGraphicsDropShadowEffect,
+    QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -22,6 +23,8 @@ class RightGameArea(QFrame):
         super().__init__()
         self.setMaximumWidth(900)
 
+        self.give_up_button_enabled: bool = False
+
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
         self.setup_shadows()
@@ -38,16 +41,17 @@ class RightGameArea(QFrame):
 
         self.give_up_button = QPushButton("Give Up")
         self.give_up_button.setObjectName("give_up_button")
-        self.give_up_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.give_up_button.clicked.connect(game_signals.give_up_signal)
+        self.disable_give_up_button()
 
         self.play_again_button = QPushButton("Play Again")
         self.play_again_button.setObjectName("play_again_button")
-        self.play_again_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.play_again_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.play_again_button.clicked.connect(game_signals.play_unlimited_again)
 
         self.switch_modes_button = QPushButton("Switch to Unlimited")
         self.switch_modes_button.setObjectName("switch_modes_button")
-        self.switch_modes_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.switch_modes_button.setCursor(Qt.CursorShape.PointingHandCursor)
         self.switch_modes_button.clicked.connect(
             game_signals.switch_mode_requested.emit
         )
@@ -90,13 +94,6 @@ class RightGameArea(QFrame):
         self.setLayout(right_game_area_layout)
 
     def setup_shadows(self) -> None:
-        give_up_button_shadow = QGraphicsDropShadowEffect(self.give_up_button)
-        give_up_button_shadow.setColor(QColor("#3A525F40"))
-        give_up_button_shadow.setBlurRadius(8)
-        give_up_button_shadow.setXOffset(0)
-        give_up_button_shadow.setYOffset(4)
-        self.give_up_button.setGraphicsEffect(give_up_button_shadow)
-
         play_again_shadow = QGraphicsDropShadowEffect(self.play_again_button)
         play_again_shadow.setColor(QColor("#3A525F40"))
         play_again_shadow.setBlurRadius(8)
@@ -133,3 +130,24 @@ class RightGameArea(QFrame):
 
     def set_play_again_button(self) -> None:
         self.action_widget.setCurrentWidget(self.play_again_button)
+
+    def disable_give_up_button(self) -> None:
+        self.give_up_button_enabled = False
+
+        self.give_up_button.setCursor(Qt.CursorShape.ForbiddenCursor)
+
+        give_up_button_transparency_effect = QGraphicsOpacityEffect(self.give_up_button)
+        give_up_button_transparency_effect.setOpacity(0.5)
+        self.give_up_button.setGraphicsEffect(give_up_button_transparency_effect)
+
+    def enable_give_up_button(self) -> None:
+        self.give_up_button_enabled = True
+        self.give_up_button.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        # replaces the opacity effect
+        give_up_button_shadow = QGraphicsDropShadowEffect(self.give_up_button)
+        give_up_button_shadow.setColor(QColor("#3A525F40"))
+        give_up_button_shadow.setBlurRadius(8)
+        give_up_button_shadow.setXOffset(0)
+        give_up_button_shadow.setYOffset(4)
+        self.give_up_button.setGraphicsEffect(give_up_button_shadow)

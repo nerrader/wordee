@@ -1,4 +1,5 @@
 from random import choice
+from typing import Literal
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QCursor
@@ -18,7 +19,12 @@ from wordle_gui.game_signals import game_signals
 
 
 class GameOverDialog(QDialog):
-    def __init__(self, won: bool, target_word: str, game_mode: GameMode):
+    def __init__(
+        self,
+        game_result: Literal["won", "lost", "gave_up"],
+        target_word: str,
+        game_mode: GameMode,
+    ):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
         layout = QVBoxLayout()
@@ -35,10 +41,7 @@ class GameOverDialog(QDialog):
         header_layout.addStretch()
         header_layout.addWidget(close_button)
 
-        result_label = QLabel(f"YOU {'WON!' if won else 'lost.'}")
-        result_label.setObjectName("post_game_result_label")
-
-        extra_win_labels = (
+        extra_win_labels: tuple[str, ...] = (
             "congratulations!",
             "you got good vocab",
             "you didn't google it up right",
@@ -46,7 +49,7 @@ class GameOverDialog(QDialog):
             "actual tryhard",
         )
 
-        extra_loss_lables = (
+        extra_loss_lables: tuple[str, ...] = (
             "better luck next time",
             "you should get better at english",
             "your english teacher would be disappointed",
@@ -56,14 +59,33 @@ class GameOverDialog(QDialog):
             "well, that wasn't exactly your day",
         )
 
-        extra_label = QLabel(
-            choice(extra_win_labels) if won else choice(extra_loss_lables)
+        extra_gave_up_labels: tuple[str, ...] = (
+            "you didn't even try man",
+            "what the fuck man",
+            "really man",
+            "come on i thought you were better than this",
+            "ok bro",
+            "i mean you could've atleast tried, just sayin",
+            "godo job.",
         )
+
+        match game_result:
+            case "won":
+                result_label = QLabel("You WON!")
+                extra_label = QLabel(choice(extra_win_labels))
+            case "lost":
+                result_label = QLabel("You lost.")
+                extra_label = QLabel(choice(extra_loss_lables))
+            case "gave_up":
+                result_label = QLabel("you gave up.")
+                extra_label = QLabel(choice(extra_gave_up_labels))
+
+        result_label.setObjectName("post_game_result_label")
         extra_label.setObjectName("post_game_extra_label")
 
         result_container = QFrame()
         result_container.setObjectName("post_game_result_container")
-        result_container.setProperty("win", won)
+        result_container.setProperty("game_result", game_result)
         result_container.setContentsMargins(10, 10, 10, 10)
 
         result_container_layout = QVBoxLayout()
