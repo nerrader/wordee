@@ -2,6 +2,8 @@ from typing import Literal
 
 from loguru import logger
 
+from wordle_gui.constants import WordeeCellColor
+
 
 class WordeeGame:
     def __init__(self, target_word: str, valid_guesses: set[str]) -> None:
@@ -26,9 +28,7 @@ class WordeeGame:
     def can_switch_gamemodes(self) -> bool:
         return self.guesses_left == 6 or self.game_state != "playing"
 
-    def get_color_feedback(
-        self, guess: str
-    ) -> list[Literal["gray", "green", "yellow"]]:
+    def get_color_feedback(self, guess: str) -> list[WordeeCellColor]:
         """From the guess and the current target word, get a list that
         returns "gray"/"yellow"/"green" for every letter in the guess.
 
@@ -38,7 +38,7 @@ class WordeeGame:
         """
         guess = guess.lower()
 
-        color_feedback: list[Literal["gray", "green", "yellow"]] = ["gray"] * 5
+        color_feedback: list[WordeeCellColor] = ["gray"] * 5
 
         # do all greens first
         remaining_letters: list[str] = list(self.target_word)

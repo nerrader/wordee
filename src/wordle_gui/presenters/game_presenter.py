@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 
     from wordle_gui.state import WordeeState
     from wordle_gui.views.left_game_area import WordeeCell
-    from wordle_gui.views.letter_statuses import WordeeStatusKey
     from wordle_gui.views.main_window import MainWindow
 
 
@@ -120,34 +119,16 @@ class GamePresenter:
         color_feedback = self.model.get_color_feedback(user_guess)
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
 
-        STATUS_FROM_COLOR_MAP: dict[str, str] = {
-            "gray": "absent",
-            "yellow": "misplaced",
-            "green": "correct",
-        }
+        # 6 - guesses_left is to identify the row to update
+        # example: we just submitted the guess, guesses_left = 2
+        # should be the 4th row, 6-2 = 4
+        self.view.left_game_area.update_wordee_cells(
+            (6 - self.model.guesses_left), color_feedback
+        )
 
-        # for the wordee grid color changing
-        for label, color in zip(grid_row_cell_labels, color_feedback):
-            label.setProperty("status", STATUS_FROM_COLOR_MAP[color])
-
-            label.style().unpolish(label)
-            label.style().polish(label)
-
-        letter_status_buttons: list[WordeeStatusKey] = [
-            self.view.right_game_area.letter_statuses.keyboard_map[letter.lower()]
-            for letter in user_guess
-        ]
-
-        # for the letter statuses color changing
-        for button, color in zip(letter_status_buttons, color_feedback):
-            # prevent already green buttons from turning yellow
-            if button.property("status") == "correct":
-                continue
-
-            button.setProperty("status", STATUS_FROM_COLOR_MAP[color])
-
-            button.style().unpolish(button)
-            button.style().polish(button)
+        self.view.right_game_area.letter_statuses.update_letter_statuses(
+            {letter: color for letter, color in zip(user_guess.lower(), color_feedback)}
+        )
 
         if self.model.game_state in ("win", "loss"):
             if self.state.current_game_mode == "daily":

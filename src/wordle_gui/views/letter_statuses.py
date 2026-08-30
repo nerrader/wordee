@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.constants import WordeeCellColor
 from wordle_gui.game_signals import game_signals
 
 
@@ -107,11 +108,25 @@ class LetterStatuses(QFrame):
         self.setLayout(letter_statuses_layout)
 
     def reset_letter_statuses(self) -> None:
-        all_letter_statuses = (
-            self.first_letter_row + self.second_letter_row + self.third_letter_row
-        )
-        for label in all_letter_statuses:
+        for label in self.keyboard_map.values():
             label.setProperty("status", None)
 
             label.style().unpolish(label)
             label.style().polish(label)
+
+    def update_letter_statuses(self, statuses: dict[str, WordeeCellColor]) -> None:
+        for letter, color in statuses.items():
+            letter_status: WordeeStatusKey = self.keyboard_map[letter.lower()]
+
+            # to prevent statuses downgrading
+            if (
+                letter_status.property("color") == "green"
+                or letter_status.property("color") == "yellow"
+                and color != "green"
+            ):
+                continue
+
+            letter_status.setProperty("color", color)
+
+            letter_status.style().unpolish(letter_status)
+            letter_status.style().polish(letter_status)

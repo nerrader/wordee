@@ -12,3 +12,4 @@ SOLUTIONS_CACHE_PATH = CACHE_DIR_PATH / "possible_solutions.txt"
 USER_AGENT = "WordleGUI (https://github.com/nerrader/wordle-gui)"
 
 GameMode = Literal["daily", "unlimited"]
+WordeeCellColor = Literal["gray", "yellow", "green"]

@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui.constants import GameMode
+from wordle_gui.constants import GameMode, WordeeCellColor
 
 
 class WordeeCell(QLabel):
@@ -137,3 +137,20 @@ class LeftGameArea(QFrame):
 
     def reset_status_label(self) -> None:
         self.status_label.setText("Start typing to play WORDEE!")
+
+    def update_wordee_cells(
+        self, row: int, color_feedback: list[WordeeCellColor]
+    ) -> None:
+        """Updates the wordee cells in the wordee grid.
+
+        Args:
+            row: The row number from 1-6
+            color_feedback: The color to give to the cells in that row.
+        """
+        # for the wordee grid color changing
+        grid_row: list[WordeeCell] = self.wordee_cells[row - 1]
+        for label, color in zip(grid_row, color_feedback):
+            label.setProperty("color", color)
+
+            label.style().unpolish(label)
+            label.style().polish(label)

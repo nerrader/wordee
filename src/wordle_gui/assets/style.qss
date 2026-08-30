@@ -132,15 +132,15 @@ WordeeCell {
     font-weight: bold;
 }
 
-WordeeCell[status="absent"] {
+WordeeCell[color="gray"] {
     background-color: #a0a0a0;
 }
 
-WordeeCell[status="misplaced"] {
+WordeeCell[color="yellow"] {
     background-color: #FFD400;
 }
 
-WordeeCell[status="correct"] {
+WordeeCell[color="green"] {
     background-color: #65E510;
 }
 
@@ -175,15 +175,15 @@ WordeeStatusKey {
     font-size: 18pt;
 }
 
-WordeeStatusKey[status="absent"] {
+WordeeStatusKey[color="gray"] {
     background-color: #a0a0a0;
 }
 
-WordeeStatusKey[status="misplaced"] {
+WordeeStatusKey[color="yellow"] {
     background-color: #FFD400;
 }
 
-WordeeStatusKey[status="correct"] {
+WordeeStatusKey[color="green"] {
     background-color: #65E510;
 }
 
