@@ -31,7 +31,7 @@ class WordeeCell(QLabel):
 
     def reset_cell(self) -> None:
         self.setText("")
-        self.setProperty("status", None)
+        self.setProperty("color", None)
 
 
 class LeftGameArea(QFrame):

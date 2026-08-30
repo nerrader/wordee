@@ -215,7 +215,7 @@ class GamePresenter:
 
         self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
-        result_message = f"You gave up. The word was {self.model.target_word}"
+        result_message = f"You gave up. The word was {self.model.target_word.upper()}."
         self.view.left_game_area.status_label.setText(result_message)
         self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 

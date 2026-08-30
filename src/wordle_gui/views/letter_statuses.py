@@ -109,7 +109,7 @@ class LetterStatuses(QFrame):
 
     def reset_letter_statuses(self) -> None:
         for label in self.keyboard_map.values():
-            label.setProperty("status", None)
+            label.setProperty("color", None)
 
             label.style().unpolish(label)
             label.style().polish(label)
