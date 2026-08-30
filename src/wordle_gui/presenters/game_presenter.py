@@ -161,11 +161,11 @@ class GamePresenter:
         self.status_label.setText("Last guess. Make it count!")
 
     def handle_switch_modes(self) -> None:
-        if not self.state.daily_completed or not self.model.can_switch_gamemodes:
+        if not self.state.daily_completed or not self.model.can_switch_game_modes:
             with self.view.dimmed():
                 BlockSwitchModeDialog(self.state.current_game_mode).exec()
             logger.info(
-                "Cant switch games while playing. Give up your game or finish it to switch gamemodes."
+                "Cant switch games while playing. Give up your game or finish it to switch game_modes."
             )
             return
 
@@ -193,16 +193,16 @@ class GamePresenter:
         self.view.right_game_area.change_mode_button("daily")
         self.reset_game("unlimited")
 
-    def reset_game(self, gamemode: const.GameMode) -> None:
+    def reset_game(self, game_mode: const.GameMode) -> None:
         self.view.reset_game_view()
 
-        if gamemode == "unlimited":
+        if game_mode == "unlimited":
             self.model = self.game_factory.create_unlimited_game()
         else:
             self.model = self.game_factory.create_daily_game()
 
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
-        self.state.current_game_mode = gamemode
+        self.state.current_game_mode = game_mode
 
     def handle_give_up(self) -> None:
         if not self.view.right_game_area.give_up_button_enabled:

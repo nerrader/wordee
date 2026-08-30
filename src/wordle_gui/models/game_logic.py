@@ -25,7 +25,7 @@ class WordeeGame:
         return self._game_state
 
     @property
-    def can_switch_gamemodes(self) -> bool:
+    def can_switch_game_modes(self) -> bool:
         return self.guesses_left == 6 or self.game_state != "playing"
 
     def get_color_feedback(self, guess: str) -> list[WordeeCellColor]:
