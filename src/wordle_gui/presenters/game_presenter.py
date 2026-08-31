@@ -5,8 +5,7 @@ from loguru import logger
 from wordle_gui import constants as const
 from wordle_gui.game_signals import game_signals
 from wordle_gui.models.wordee_game_creation import WordeeGameFactory
-from wordle_gui.views.block_switch_mode_dialog import BlockSwitchModeDialog
-from wordle_gui.views.game_over_dialog import GameOverDialog
+from wordle_gui.views.dialogs import BlockSwitchModeDialog, GameOverDialog
 
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
