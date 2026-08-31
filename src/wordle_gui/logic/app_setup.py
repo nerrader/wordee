@@ -9,10 +9,11 @@ from PySide6.QtGui import QFontDatabase
 from wordle_gui.logic import cache
 
 
-def setup_logger(logging_path: Path) -> None:
+def setup_logger(logging_path: Path, verbose_mode: bool = False) -> None:
     logger.remove()
     logger.add(sink=logging_path, diagnose=False, retention=0, rotation="00:00")
-    logger.add(sink=sys.stderr, level="INFO", diagnose=False)
+    if verbose_mode:
+        logger.add(sink=sys.stderr, level="DEBUG", diagnose=False)
 
 
 def load_words_data(cache_dirpath: Path) -> tuple[set[str], set[str]]:
