@@ -16,9 +16,7 @@ from wordle_gui.views.main_window import MainWindow
 def main() -> None:
     app_setup.setup_logger(const.LOG_FILE_PATH)
 
-    possible_solutions, valid_guesses = app_setup.load_words_data(
-        const.CACHE_DIR_PATH, const.USER_AGENT
-    )
+    possible_solutions, valid_guesses = app_setup.load_words_data(const.CACHE_DIR_PATH)
 
     app = QApplication(sys.argv)
 

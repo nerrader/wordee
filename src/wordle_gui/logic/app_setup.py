@@ -15,26 +15,29 @@ def setup_logger(logging_path: Path) -> None:
     logger.add(sink=sys.stderr, level="INFO", diagnose=False)
 
 
-def load_words_data(cache_dirpath: Path, user_agent: str) -> tuple[set[str], set[str]]:
+def load_words_data(cache_dirpath: Path) -> tuple[set[str], set[str]]:
     """Loads and syncs the possible_solutions and valid_guesses cache.
 
     Args:
         cache_dirpath: The path to the cache/ directory.
-        user_agent: The user agent needed to sync cache.
 
     Returns:
         tuple[set[str], set[str]]: The possible_solutions and valid_guesses in a tuple.
     """
     cache_dirpath.mkdir(parents=True, exist_ok=True)
 
-    with httpx_client(timeout=10.0, headers={"User-Agent": user_agent}) as client:
-        cache.sync_cache("possible_solutions", cache_dirpath, client)
-        cache.sync_cache("valid_guesses", cache_dirpath, client)
-
     possible_solutions: set[str] = cache.read_cache("possible_solutions", cache_dirpath)
     valid_guesses: set[str] = cache.read_cache("valid_guesses", cache_dirpath)
 
     return (possible_solutions, valid_guesses)
+
+
+def sync_caches(cache_dirpath: Path, user_agent: str) -> None:
+    cache_dirpath.mkdir(parents=True, exist_ok=True)
+
+    with httpx_client(headers={"User-Agent": user_agent}) as client:
+        cache.sync_cache("possible_solutions", cache_dirpath, client)
+        cache.sync_cache("valid_guesses", cache_dirpath, client)
 
 
 def load_application_font(font_path: str) -> None:
