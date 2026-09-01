@@ -25,11 +25,15 @@ class GameStats(QFrame):
         self.difficulty_label = QLabel("Difficulty - Normal")
         self.difficulty_label.setProperty("class", "game_stats_label")
 
+        self.seconds_elapsed = 0
         self.time_elapsed_label = QLabel("Time Elapsed - 00:00")
         self.time_elapsed_label.setProperty("class", "game_stats_label")
 
         self.guesses_left_label = QLabel("Guesses Left - 6/6")
         self.guesses_left_label.setProperty("class", "game_stats_label")
+
+        # this is to initialize it so the check in start_time_elapsed_timer() works
+        self.time_elapsed_timer = QTimer()
 
     def setup_layouts(self) -> None:
         game_stats_layout = QVBoxLayout()
@@ -49,13 +53,22 @@ class GameStats(QFrame):
         self.mode_label.setText(f"Mode - {game_mode.capitalize()}")
 
     def start_time_elapsed_timer(self) -> None:
-        self.seconds_elapsed = 0
-        self.time_elapsed_timer = QTimer()
-        self.time_elapsed_timer.timeout.connect(self._update_time_elapsed_timer)
+        if self.time_elapsed_timer.isActive():
+            return
+
+        self.time_elapsed_timer.timeout.connect(self.update_time_elapsed_timer)
         self.time_elapsed_timer.start(1000)
 
-    def _update_time_elapsed_timer(self) -> None:
-        self.seconds_elapsed += 1
+    def update_time_elapsed_timer(self, increment: int = 1) -> None:
+        self.seconds_elapsed += increment
+
+        minutes = self.seconds_elapsed // 60
+        seconds = self.seconds_elapsed % 60
+
+        self.time_elapsed_label.setText(f"Time Elapsed - {minutes:02d}:{seconds:02d}")
+
+    def set_time_elapsed(self, seconds: int) -> None:
+        self.seconds_elapsed = seconds
 
         minutes = self.seconds_elapsed // 60
         seconds = self.seconds_elapsed % 60
@@ -63,7 +76,8 @@ class GameStats(QFrame):
         self.time_elapsed_label.setText(f"Time Elapsed - {minutes:02d}:{seconds:02d}")
 
     def stop_time_elapsed_timer(self) -> None:
-        self.time_elapsed_timer.stop()
+        if self.time_elapsed_timer is not None and self.time_elapsed_timer.isActive():
+            self.time_elapsed_timer.stop()
 
     def reset_time_elapsed(self) -> None:
         self.time_elapsed_label.setText("Time Elapsed - 00:00")

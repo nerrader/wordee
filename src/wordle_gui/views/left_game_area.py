@@ -138,7 +138,7 @@ class LeftGameArea(QFrame):
     def reset_status_label(self) -> None:
         self.status_label.setText("Start typing to play WORDEE!")
 
-    def update_wordee_cells(
+    def update_wordee_row_cell_colors(
         self, row: int, color_feedback: list[WordeeCellColor]
     ) -> None:
         """Updates the wordee cells in the wordee grid.
@@ -154,3 +154,22 @@ class LeftGameArea(QFrame):
 
             label.style().unpolish(label)
             label.style().polish(label)
+
+    def get_wordee_grid(self) -> list[list[tuple[str, WordeeCellColor | None]]]:
+        return [
+            [(cell.text(), cell.property("color")) for cell in row]
+            for row in self.wordee_cells
+        ]
+
+    def update_wordee_grid(
+        self, board: list[list[tuple[str, WordeeCellColor | None]]]
+    ) -> None:
+        for target_row, saved_row in zip(self.wordee_cells, board):
+            for target_cell, saved_cell in zip(target_row, saved_row):
+                # cell is the tuple[str, str] in this case
+                saved_letter, saved_color = saved_cell
+                target_cell.setText(saved_letter.upper())
+                target_cell.setProperty("color", saved_color)
+
+                target_cell.style().unpolish(target_cell)
+                target_cell.style().polish(target_cell)

@@ -23,7 +23,9 @@ class RightGameArea(QFrame):
         super().__init__()
         self.setMaximumWidth(900)
 
-        self.give_up_button_enabled: bool = False
+        # only reason this is true is for the disable_give_up_button()
+        # later on in setup_components to actually work
+        self.give_up_button_enabled: bool = True
 
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
@@ -132,6 +134,9 @@ class RightGameArea(QFrame):
         self.action_widget.setCurrentWidget(self.play_again_button)
 
     def disable_give_up_button(self) -> None:
+        if self.give_up_button_enabled is False:
+            return
+
         self.give_up_button_enabled = False
 
         self.give_up_button.setCursor(Qt.CursorShape.ForbiddenCursor)
@@ -141,6 +146,9 @@ class RightGameArea(QFrame):
         self.give_up_button.setGraphicsEffect(give_up_button_transparency_effect)
 
     def enable_give_up_button(self) -> None:
+        if self.give_up_button_enabled is True:
+            return
+
         self.give_up_button_enabled = True
         self.give_up_button.setCursor(Qt.CursorShape.PointingHandCursor)
 

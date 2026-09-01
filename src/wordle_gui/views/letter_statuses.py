@@ -114,7 +114,9 @@ class LetterStatuses(QFrame):
             label.style().unpolish(label)
             label.style().polish(label)
 
-    def update_letter_statuses(self, statuses: dict[str, WordeeCellColor]) -> None:
+    def update_letter_statuses(
+        self, statuses: dict[str, WordeeCellColor | None]
+    ) -> None:
         for letter, color in statuses.items():
             letter_status: WordeeStatusKey = self.keyboard_map[letter.lower()]
 
@@ -130,3 +132,9 @@ class LetterStatuses(QFrame):
 
             letter_status.style().unpolish(letter_status)
             letter_status.style().polish(letter_status)
+
+    def get_letter_statuses(self) -> dict[str, WordeeCellColor | None]:
+        returned_dict = {}
+        for letter, letter_status in self.keyboard_map.items():
+            returned_dict[letter] = letter_status.property("color")
+        return returned_dict

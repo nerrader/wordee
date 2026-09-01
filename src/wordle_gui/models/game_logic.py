@@ -1,16 +1,20 @@
-from typing import Literal
-
 from loguru import logger
 
-from wordle_gui.constants import WordeeCellColor
+from wordle_gui.constants import GameStatus, WordeeCellColor
 
 
 class WordeeGame:
-    def __init__(self, target_word: str, valid_guesses: set[str]) -> None:
+    def __init__(
+        self,
+        target_word: str,
+        valid_guesses: set[str],
+        guesses_left: int = 6,
+        game_state: GameStatus = "playing",
+    ) -> None:
         self._target_word: str = target_word.lower()
         self._valid_guesses: set[str] = valid_guesses
-        self._guesses_left: int = 6
-        self._game_state: Literal["win", "loss", "playing"] = "playing"
+        self._guesses_left: int = guesses_left
+        self._game_state: GameStatus = game_state
 
     @property
     def target_word(self) -> str:
@@ -21,7 +25,7 @@ class WordeeGame:
         return self._guesses_left
 
     @property
-    def game_state(self) -> str:
+    def game_state(self) -> GameStatus:
         return self._game_state
 
     @property

@@ -18,6 +18,9 @@ typeCheckingMode = "standard"
 strict = true
 exclude = "^src/wordle_gui/assets/"
 
+[tool.ruff.lint]
+ignore = ["DTZ011"]
+
 [project]
 name = "wordle-gui"
 dynamic = ["version"]
