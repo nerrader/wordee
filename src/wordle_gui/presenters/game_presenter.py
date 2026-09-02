@@ -37,10 +37,8 @@ class GamePresenter:
         # if the state is still default values aka first time opening up the thingy
         # fill it in with the actual default values
         if not self.state.daily_board:
-            print("It got in the daily board ====")
             self.state.daily_board = self.view.left_game_area.get_wordee_grid()
         if not self.state.daily_letter_statuses:
-            print("It got in the daily_letter_statuses")
             self.state.daily_letter_statuses = (
                 self.view.right_game_area.letter_statuses.get_letter_statuses()
             )
@@ -138,7 +136,6 @@ class GamePresenter:
             return
 
         logger.debug("Presenter received enter key")
-        print(self.view.right_game_area.game_stats.seconds_elapsed)
 
         grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
