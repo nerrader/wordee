@@ -57,11 +57,6 @@ class GamePresenter:
         if self.model.guesses_left <= 5 and self.model.game_state == "playing":
             self.view.right_game_area.enable_give_up_button()
 
-    # basically just shortcuts cuz i was too lazy to type the full thing
-    @property
-    def status_label(self) -> QLabel:
-        return self.view.left_game_area.status_label
-
     def setup_connections(self) -> None:
         game_signals.alphabet_key_pressed.connect(self.handle_alphabet_key)
         game_signals.backspace_key_pressed.connect(self.handle_backspace_key)
@@ -80,11 +75,6 @@ class GamePresenter:
             return
 
         logger.debug(f"Presenter recieved alphabet key: {key}")
-
-        # when the user first starts the game and types, to give them more indication on what to do
-        # after theyve entered a guess
-        if self.model.guesses_left == 6:
-            self.status_label.setText("Press ENTER to submit guess.")
 
         grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
@@ -140,6 +130,7 @@ class GamePresenter:
         grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
+
         guess_row_number = 7 - self.model.guesses_left
         user_guess: str = "".join(label.text() for label in grid_row_cell_labels)
 
@@ -148,18 +139,10 @@ class GamePresenter:
             self.model.submit_guess(user_guess)
         except ValueError:
             self.view.left_game_area.invalid_row_annimation(guess_row_number)
-            if len(user_guess) == 0:
-                self.status_label.setText("You submitted an empty guess.")
-                return
-            self.status_label.setText("That is NOT a valid guess!")
-            return
 
         color_feedback = self.model.get_color_feedback(user_guess)
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
 
-        # 6 - guesses_left is to identify the row to update
-        # example: we just submitted the guess, guesses_left = 2
-        # should be the 4th row, 6-2 = 4
         self.view.left_game_area.update_wordee_row_cell_colors(
             guess_row_number, color_feedback
         )
@@ -180,12 +163,6 @@ class GamePresenter:
             )
 
         if self.model.game_state in ("win", "loss"):
-            result_message = (
-                f"Good job! The word was {self.model.target_word.upper()}"
-                if self.model.game_state == "win"
-                else f"Out of guesses. The word was {self.model.target_word.upper()}"
-            )
-            self.view.left_game_area.status_label.setText(result_message)
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
             if self.current_game_mode == "daily":
@@ -205,12 +182,6 @@ class GamePresenter:
                     self.current_game_mode,
                 ).exec()
             return
-
-        if self.model.guesses_left > 1:
-            self.status_label.setText("Nice guess! Try another word.")
-            return
-
-        self.status_label.setText("Last guess. Make it count!")
 
     def handle_switch_modes(self) -> None:
         if (
@@ -276,9 +247,6 @@ class GamePresenter:
             )
 
         self.view.right_game_area.game_stats.stop_time_elapsed_timer()
-
-        result_message = f"You gave up. The word was {self.model.target_word.upper()}."
-        self.view.left_game_area.status_label.setText(result_message)
 
         if self.current_game_mode == "unlimited":
             self.view.right_game_area.set_play_again_button()

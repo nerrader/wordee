@@ -118,13 +118,6 @@ Topbar QToolButton {
     font-weight: bold;
 }
 
-#status_label {
-    background-color: #96D7FF;
-    border-radius: 12;
-    font-size: 14pt;
-    padding: 10px
-}
-
 WordeeCell {
     background-color: #f5f5f5;
     border-radius: 0;

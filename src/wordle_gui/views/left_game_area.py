@@ -50,10 +50,6 @@ class LeftGameArea(QFrame):
 
         self.wordee_cells: list[list[WordeeCell]] = []
 
-        self.status_label = QLabel("Start typing to play WORDEE!")
-        self.status_label.setObjectName("status_label")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
         for _ in range(6):
             row_labels: list[WordeeCell] = []
             for _ in range(5):
@@ -126,8 +122,6 @@ class LeftGameArea(QFrame):
         container_layout.addWidget(self.letter_grid_area_frame)
 
         left_game_area_layout.addLayout(container_layout)
-        left_game_area_layout.addWidget(self.status_label)
-        left_game_area_layout.setSpacing(20)
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)
@@ -143,9 +137,6 @@ class LeftGameArea(QFrame):
                 cell.reset_cell()
                 cell.style().unpolish(cell)
                 cell.style().polish(cell)
-
-    def reset_status_label(self) -> None:
-        self.status_label.setText("Start typing to play WORDEE!")
 
     def update_wordee_row_cell_colors(
         self, row: int, color_feedback: list[WordeeCellColor]

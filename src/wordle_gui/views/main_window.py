@@ -75,7 +75,6 @@ class MainWindow(QMainWindow):
                     return
 
     def reset_game_view(self) -> None:
-        self.left_game_area.reset_status_label()
         self.left_game_area.reset_wordee_cells()
 
         self.right_game_area.game_stats.reset_time_elapsed()
