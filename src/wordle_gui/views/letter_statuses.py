@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import (
     QFrame,
@@ -9,10 +9,11 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.constants import WordeeCellColor
+from wordle_gui.game_signals import game_signals
+
 
 class WordeeStatusKey(QPushButton):
-    key_pressed = Signal(str)
-
     def __init__(self, letter: str):
         super().__init__(letter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
@@ -20,13 +21,10 @@ class WordeeStatusKey(QPushButton):
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         # this signal will be passed into main_window.py, to be converted into the main alphabet_key_signal
-        self.clicked.connect(lambda: self.key_pressed.emit(letter))
+        self.clicked.connect(lambda: game_signals.alphabet_key_pressed.emit(letter))
 
 
 class LetterStatuses(QFrame):
-    backspace_signal = Signal()
-    enter_signal = Signal()
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -42,7 +40,7 @@ class LetterStatuses(QFrame):
         self.backspace_key.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        self.backspace_key.clicked.connect(self.backspace_signal.emit)
+        self.backspace_key.clicked.connect(game_signals.backspace_key_pressed.emit)
         self.backspace_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.enter_key = QPushButton("Enter")
@@ -50,7 +48,7 @@ class LetterStatuses(QFrame):
         self.enter_key.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
-        self.enter_key.clicked.connect(self.enter_signal.emit)
+        self.enter_key.clicked.connect(game_signals.enter_key_pressed.emit)
         self.enter_key.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.first_letter_row = [
@@ -108,3 +106,35 @@ class LetterStatuses(QFrame):
 
         letter_statuses_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(letter_statuses_layout)
+
+    def reset_letter_statuses(self) -> None:
+        for label in self.keyboard_map.values():
+            label.setProperty("color", None)
+
+            label.style().unpolish(label)
+            label.style().polish(label)
+
+    def update_letter_statuses(
+        self, statuses: dict[str, WordeeCellColor | None]
+    ) -> None:
+        for letter, color in statuses.items():
+            letter_status: WordeeStatusKey = self.keyboard_map[letter.lower()]
+
+            # to prevent statuses downgrading
+            if (
+                letter_status.property("color") == "green"
+                or letter_status.property("color") == "yellow"
+                and color != "green"
+            ):
+                continue
+
+            letter_status.setProperty("color", color)
+
+            letter_status.style().unpolish(letter_status)
+            letter_status.style().polish(letter_status)
+
+    def get_letter_statuses(self) -> dict[str, WordeeCellColor | None]:
+        returned_dict = {}
+        for letter, letter_status in self.keyboard_map.items():
+            returned_dict[letter] = letter_status.property("color")
+        return returned_dict

@@ -13,12 +13,13 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from wordle_gui.constants import GameMode, WordeeCellColor
+
 
 class WordeeCell(QLabel):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setProperty("class", "grid_label")
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.setContentsMargins(10, 10, 10, 10)
@@ -27,6 +28,10 @@ class WordeeCell(QLabel):
         super().resizeEvent(event)
         new_size = min(self.width(), self.height())
         self.resize(new_size, new_size)
+
+    def reset_cell(self) -> None:
+        self.setText("")
+        self.setProperty("color", None)
 
 
 class LeftGameArea(QFrame):
@@ -39,20 +44,23 @@ class LeftGameArea(QFrame):
 
     def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
-        self.letter_grid_area_frame.setObjectName("letter_grid_area_layout")
+        self.letter_grid_area_frame.setObjectName("letter_grid_area")
+
+        # the default mode
+        self.letter_grid_area_frame.setProperty("mode", "daily")
 
         self.letter_grid_label = QLabel("WORDEE LETTER GRID")
         self.letter_grid_label.setObjectName("letter_grid_header_label")
         self.letter_grid_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.wordee_cells: list[list[QLabel]] = []
+        self.wordee_cells: list[list[WordeeCell]] = []
 
         self.status_label = QLabel("Start typing to play WORDEE!")
         self.status_label.setObjectName("status_label")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         for _ in range(6):
-            row_labels: list[QLabel] = []
+            row_labels: list[WordeeCell] = []
             for _ in range(5):
                 grid_label = WordeeCell()
                 row_labels.append(grid_label)
@@ -114,3 +122,54 @@ class LeftGameArea(QFrame):
         left_game_area_layout.setContentsMargins(20, 20, 20, 20)
 
         self.setLayout(left_game_area_layout)
+
+    def set_game_mode_grid_color(self, game_mode: GameMode) -> None:
+        self.letter_grid_area_frame.setProperty("mode", game_mode)
+        self.letter_grid_area_frame.style().unpolish(self.letter_grid_area_frame)
+        self.letter_grid_area_frame.style().polish(self.letter_grid_area_frame)
+
+    def reset_wordee_cells(self) -> None:
+        for row in self.wordee_cells:
+            for cell in row:
+                cell.reset_cell()
+                cell.style().unpolish(cell)
+                cell.style().polish(cell)
+
+    def reset_status_label(self) -> None:
+        self.status_label.setText("Start typing to play WORDEE!")
+
+    def update_wordee_row_cell_colors(
+        self, row: int, color_feedback: list[WordeeCellColor]
+    ) -> None:
+        """Updates the wordee cells in the wordee grid.
+
+        Args:
+            row: The row number from 1-6
+            color_feedback: The color to give to the cells in that row.
+        """
+        # for the wordee grid color changing
+        grid_row: list[WordeeCell] = self.wordee_cells[row - 1]
+        for label, color in zip(grid_row, color_feedback):
+            label.setProperty("color", color)
+
+            label.style().unpolish(label)
+            label.style().polish(label)
+
+    def get_wordee_grid(self) -> list[list[tuple[str, WordeeCellColor | None]]]:
+        return [
+            [(cell.text(), cell.property("color")) for cell in row]
+            for row in self.wordee_cells
+        ]
+
+    def update_wordee_grid(
+        self, board: list[list[tuple[str, WordeeCellColor | None]]]
+    ) -> None:
+        for target_row, saved_row in zip(self.wordee_cells, board):
+            for target_cell, saved_cell in zip(target_row, saved_row):
+                # cell is the tuple[str, str] in this case
+                saved_letter, saved_color = saved_cell
+                target_cell.setText(saved_letter.upper())
+                target_cell.setProperty("color", saved_color)
+
+                target_cell.style().unpolish(target_cell)
+                target_cell.style().polish(target_cell)

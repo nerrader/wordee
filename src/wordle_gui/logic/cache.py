@@ -47,7 +47,6 @@ def sync_cache(
         if response.headers.get("ETag"):
             (cache_dir / f"{cache_type}.etag").write_text(response.headers["ETag"])
         logger.success(f"Cache for {cache_type} downloaded and saved.")
-        logger.success(f"Cache for {cache_type} downloaded and saved.")
 
     except httpx.HTTPStatusError as error:
         logger.error(f"Failed to sync cache while fetching {cache_type}: {error}")

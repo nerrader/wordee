@@ -1,14 +1,20 @@
-from typing import Literal
-
 from loguru import logger
+
+from wordle_gui.constants import GameStatus, WordeeCellColor
 
 
 class WordeeGame:
-    def __init__(self, target_word: str, valid_guesses: set[str]) -> None:
+    def __init__(
+        self,
+        target_word: str,
+        valid_guesses: set[str],
+        guesses_left: int = 6,
+        game_state: GameStatus = "playing",
+    ) -> None:
         self._target_word: str = target_word.lower()
         self._valid_guesses: set[str] = valid_guesses
-        self._guesses_left: int = 6
-        self._game_state: Literal["win", "loss", "playing"] = "playing"
+        self._guesses_left: int = guesses_left
+        self._game_state: GameStatus = game_state
 
     @property
     def target_word(self) -> str:
@@ -19,12 +25,14 @@ class WordeeGame:
         return self._guesses_left
 
     @property
-    def game_state(self) -> str:
+    def game_state(self) -> GameStatus:
         return self._game_state
 
-    def get_color_feedback(
-        self, guess: str
-    ) -> list[Literal["gray", "green", "yellow"]]:
+    @property
+    def can_switch_game_modes(self) -> bool:
+        return self.guesses_left == 6 or self.game_state != "playing"
+
+    def get_color_feedback(self, guess: str) -> list[WordeeCellColor]:
         """From the guess and the current target word, get a list that
         returns "gray"/"yellow"/"green" for every letter in the guess.
 
@@ -33,19 +41,25 @@ class WordeeGame:
         "green" = The guessed letter is in the correct spot.
         """
         guess = guess.lower()
-        words_in_target_word = set(self.target_word)
 
-        color_feedback: list[Literal["gray", "green", "yellow"]] = []
+        color_feedback: list[WordeeCellColor] = ["gray"] * 5
+
+        # do all greens first
+        remaining_letters: list[str] = list(self.target_word)
         for index, letter in enumerate(guess):
             target_word_letter: str = self.target_word[index]
 
             if letter == target_word_letter:
-                color_feedback.append("green")
-            elif letter in words_in_target_word:
-                color_feedback.append("yellow")
-                words_in_target_word.remove(letter)
-            else:
-                color_feedback.append("gray")
+                color_feedback[index] = "green"
+                remaining_letters.remove(letter)
+
+        for index, letter in enumerate(guess):
+            if (
+                letter in remaining_letters  # so theres no double yellows
+                and color_feedback[index] == "gray"  # to prevent green to go yellow
+            ):
+                color_feedback[index] = "yellow"
+                remaining_letters.remove(letter)
 
         return color_feedback
 
@@ -69,3 +83,6 @@ class WordeeGame:
         elif guess == self.target_word:
             logger.info("The user won the game.")
             self._game_state = "win"
+
+    def give_up_game(self) -> None:
+        self._game_state = "loss"

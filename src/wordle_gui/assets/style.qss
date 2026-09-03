@@ -14,13 +14,18 @@ GameOverDialog {
     background-color: #D7F0FE;
 }
 
-#post_game_result_container[win="true"] {
+#post_game_result_container[game_result="won"] {
     background-color: #BBFF6D;
     border-radius: 10px;
 }
 
-#post_game_result_container[win="false"] {
+#post_game_result_container[game_result="lost"] {
     background-color: #BE7E70;
+    border-radius: 10px;
+}
+
+#post_game_result_container[game_result="gave_up"] {
+    background-color: #8D8D8D;
     border-radius: 10px;
 }
 
@@ -33,11 +38,19 @@ GameOverDialog {
     font-size: 14pt;
 }
 
-#post_game_play_unlimited_button {
+#post_game_play_again_button {
     font-size: 18pt;
     background-color: #96D7FF;
     padding: 10px;
     font-weight: medium;
+}
+
+#play_again_button {
+    font-size: 16pt;
+    border-radius: 8;
+    background-color: #96D7FF;
+    padding: 10px;
+    font-weight: bold;
 }
 
 #post_game_close_button {
@@ -47,6 +60,30 @@ GameOverDialog {
     padding: 5px;
 }
 
+BlockSwitchModeDialog {
+    background-color: #D7F0FE;
+}
+
+#block_switch_mode_stop_header_label {
+    background-color: #FF8686;
+    font-weight: bold;
+    font-size: 32pt;
+    padding: 10px;
+    border-radius: 8;
+}
+
+#block_switch_mode_contents_label {
+    font-size: 13pt;
+}
+
+#block_switch_mode_ok_button {
+    background-color: #96D7FF;
+    font-weight: bold;
+    font-size: 16pt;
+    padding: 10px;
+    border-radius: 8;
+
+}
 
 Topbar {
    background-color: #FFED6D;
@@ -64,9 +101,16 @@ Topbar QToolButton {
     font-weight: bold;
 }
 
-#letter_grid_area_layout {
-    background-color: #3873E9;
+#letter_grid_area {
     border-radius: 20;
+}
+
+#letter_grid_area[mode="daily"] {
+    background-color: #3873E9;
+}
+
+#letter_grid_area[mode="unlimited"] {
+    background-color: #A541FC;
 }
 
 #letter_grid_header_label {
@@ -81,22 +125,22 @@ Topbar QToolButton {
     padding: 10px
 }
 
-QLabel[class="grid_label"] {
+WordeeCell {
     background-color: #f5f5f5;
     border-radius: 0;
     font-size: 28pt;
     font-weight: bold;
 }
 
-QLabel[class="grid_label"][status="absent"] {
+WordeeCell[color="gray"] {
     background-color: #a0a0a0;
 }
 
-QLabel[class="grid_label"][status="misplaced"] {
+WordeeCell[color="yellow"] {
     background-color: #FFD400;
 }
 
-QLabel[class="grid_label"][status="correct"] {
+WordeeCell[color="green"] {
     background-color: #65E510;
 }
 
@@ -131,15 +175,15 @@ WordeeStatusKey {
     font-size: 18pt;
 }
 
-WordeeStatusKey[status="absent"] {
+WordeeStatusKey[color="gray"] {
     background-color: #a0a0a0;
 }
 
-WordeeStatusKey[status="misplaced"] {
+WordeeStatusKey[color="yellow"] {
     background-color: #FFD400;
 }
 
-WordeeStatusKey[status="correct"] {
+WordeeStatusKey[color="green"] {
     background-color: #65E510;
 }
 
@@ -171,11 +215,19 @@ WordeeStatusKey[status="correct"] {
     padding: 10px;
 }
 
-#switch_to_unlimited_mode_button {
+#switch_modes_button {
     font-size: 16pt;
     border-radius: 8;
     background-color: #A791FF;
     border: none;
     font-weight: bold;
     padding: 10px;
+}
+
+#switch_modes_button[mode="daily"] {
+    background-color: #6493F0;
+}
+
+#switch_modes_button[mode="unlimited"] {
+    background-color: #A791FF;
 }

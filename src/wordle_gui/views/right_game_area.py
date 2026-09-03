@@ -1,15 +1,19 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QCursor
+from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
     QFrame,
     QGraphicsDropShadowEffect,
+    QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
     QPushButton,
     QSizePolicy,
+    QStackedWidget,
     QVBoxLayout,
 )
 
+from wordle_gui.constants import GameMode
+from wordle_gui.game_signals import game_signals
 from wordle_gui.views.game_stats import GameStats
 from wordle_gui.views.letter_statuses import LetterStatuses
 
@@ -19,13 +23,17 @@ class RightGameArea(QFrame):
         super().__init__()
         self.setMaximumWidth(900)
 
+        # only reason this is true is for the disable_give_up_button()
+        # later on in setup_components to actually work
+        self.give_up_button_enabled: bool = True
+
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup_components()
         self.setup_shadows()
         self.setup_layouts()
 
     def setup_components(self) -> None:
-        self.puzzle_number_label = QLabel("Puzzle #NULL")
+        self.puzzle_number_label = QLabel("P#102")
         self.puzzle_number_label.setObjectName("puzzle_number_label")
         self.puzzle_number_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -35,20 +43,38 @@ class RightGameArea(QFrame):
 
         self.give_up_button = QPushButton("Give Up")
         self.give_up_button.setObjectName("give_up_button")
-        self.give_up_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.give_up_button.clicked.connect(game_signals.give_up_signal)
+        self.disable_give_up_button()
 
-        self.switch_to_unlimited_mode_button = QPushButton("Switch to Unlimited")
-        self.switch_to_unlimited_mode_button.setObjectName(
-            "switch_to_unlimited_mode_button"
+        self.play_again_button = QPushButton("Play Again")
+        self.play_again_button.setObjectName("play_again_button")
+        self.play_again_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.play_again_button.clicked.connect(game_signals.play_unlimited_again)
+
+        self.switch_modes_button = QPushButton("Switch to Unlimited")
+        self.switch_modes_button.setObjectName("switch_modes_button")
+        self.switch_modes_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.switch_modes_button.clicked.connect(
+            game_signals.switch_mode_requested.emit
         )
-        self.switch_to_unlimited_mode_button.setCursor(
-            QCursor(Qt.CursorShape.PointingHandCursor)
+
+        # the default mode
+        self.switch_modes_button.setProperty("mode", "unlimited")
+
+        self.action_widget = QStackedWidget()
+        self.action_widget.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum
         )
+        self.action_widget.addWidget(self.give_up_button)
+        self.action_widget.addWidget(self.play_again_button)
+        self.action_widget.setCurrentWidget(self.give_up_button)
 
     def setup_layouts(self) -> None:
         misc_buttons_layout = QHBoxLayout()
-        misc_buttons_layout.addWidget(self.give_up_button)
-        misc_buttons_layout.addWidget(self.switch_to_unlimited_mode_button)
+        misc_buttons_layout.addWidget(self.action_widget)
+        misc_buttons_layout.addWidget(self.switch_modes_button)
+        misc_buttons_layout.setStretch(0, 1)
+        misc_buttons_layout.setStretch(1, 1)
 
         right_game_area_layout = QVBoxLayout()
 
@@ -62,7 +88,7 @@ class RightGameArea(QFrame):
         right_game_area_layout.setStretch(0, 1)
         right_game_area_layout.setStretch(1, 3)
         right_game_area_layout.setStretch(2, 4)
-        right_game_area_layout.setStretch(3, 1)
+        right_game_area_layout.setStretch(3, 0)
 
         right_game_area_layout.setSpacing(20)
         right_game_area_layout.setContentsMargins(20, 20, 20, 20)
@@ -70,18 +96,66 @@ class RightGameArea(QFrame):
         self.setLayout(right_game_area_layout)
 
     def setup_shadows(self) -> None:
+        play_again_shadow = QGraphicsDropShadowEffect(self.play_again_button)
+        play_again_shadow.setColor(QColor("#3A525F40"))
+        play_again_shadow.setBlurRadius(8)
+        play_again_shadow.setXOffset(0)
+        play_again_shadow.setYOffset(4)
+        self.play_again_button.setGraphicsEffect(play_again_shadow)
+
+        switch_modes_button_shadow = QGraphicsDropShadowEffect(self.switch_modes_button)
+        switch_modes_button_shadow.setColor(QColor("#3A525F40"))
+        switch_modes_button_shadow.setBlurRadius(8)
+        switch_modes_button_shadow.setXOffset(0)
+        switch_modes_button_shadow.setYOffset(4)
+        self.switch_modes_button.setGraphicsEffect(switch_modes_button_shadow)
+
+    def change_mode_button(self, game_mode: GameMode) -> None:
+        if game_mode == "daily":
+            self.switch_modes_button.setText("Switch to Daily")
+            self.switch_modes_button.setProperty("mode", "daily")
+        if game_mode == "unlimited":
+            self.switch_modes_button.setText("Switch to Unlimited")
+            self.switch_modes_button.setProperty("mode", "unlimited")
+
+        self.switch_modes_button.style().unpolish(self.switch_modes_button)
+        self.switch_modes_button.style().polish(self.switch_modes_button)
+
+    def set_unlimited_puzzle_label(self) -> None:
+        self.puzzle_number_label.setText("P#UNLIMITED")
+
+    def set_numbered_puzzle_label(self, number: int) -> None:
+        self.puzzle_number_label.setText(f"P#{number}")
+
+    def set_give_up_button(self) -> None:
+        self.action_widget.setCurrentWidget(self.give_up_button)
+
+    def set_play_again_button(self) -> None:
+        self.action_widget.setCurrentWidget(self.play_again_button)
+
+    def disable_give_up_button(self) -> None:
+        if self.give_up_button_enabled is False:
+            return
+
+        self.give_up_button_enabled = False
+
+        self.give_up_button.setCursor(Qt.CursorShape.ForbiddenCursor)
+
+        give_up_button_transparency_effect = QGraphicsOpacityEffect(self.give_up_button)
+        give_up_button_transparency_effect.setOpacity(0.5)
+        self.give_up_button.setGraphicsEffect(give_up_button_transparency_effect)
+
+    def enable_give_up_button(self) -> None:
+        if self.give_up_button_enabled is True:
+            return
+
+        self.give_up_button_enabled = True
+        self.give_up_button.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        # replaces the opacity effect
         give_up_button_shadow = QGraphicsDropShadowEffect(self.give_up_button)
         give_up_button_shadow.setColor(QColor("#3A525F40"))
         give_up_button_shadow.setBlurRadius(8)
         give_up_button_shadow.setXOffset(0)
         give_up_button_shadow.setYOffset(4)
         self.give_up_button.setGraphicsEffect(give_up_button_shadow)
-
-        unlimited_button_shadow = QGraphicsDropShadowEffect(
-            self.switch_to_unlimited_mode_button
-        )
-        unlimited_button_shadow.setColor(QColor("#3A525F40"))
-        unlimited_button_shadow.setBlurRadius(8)
-        unlimited_button_shadow.setXOffset(0)
-        unlimited_button_shadow.setYOffset(4)
-        self.switch_to_unlimited_mode_button.setGraphicsEffect(unlimited_button_shadow)
