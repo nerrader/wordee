@@ -140,13 +140,14 @@ class GamePresenter:
         grid_row_cell_labels: list[WordeeCell] = self.view.left_game_area.wordee_cells[
             -self.model.guesses_left
         ]
+        guess_row_number = 7 - self.model.guesses_left
         user_guess: str = "".join(label.text() for label in grid_row_cell_labels)
 
         try:
             # no need to check for length as submit guess does the validation for us
             self.model.submit_guess(user_guess)
         except ValueError:
-            self.view.left_game_area.status_label_invalid_animation()
+            self.view.left_game_area.invalid_row_annimation(guess_row_number)
             if len(user_guess) == 0:
                 self.status_label.setText("You submitted an empty guess.")
                 return
@@ -160,7 +161,7 @@ class GamePresenter:
         # example: we just submitted the guess, guesses_left = 2
         # should be the 4th row, 6-2 = 4
         self.view.left_game_area.update_wordee_row_cell_colors(
-            (6 - self.model.guesses_left), color_feedback
+            guess_row_number, color_feedback
         )
 
         self.view.right_game_area.letter_statuses.update_letter_statuses(

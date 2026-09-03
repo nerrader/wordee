@@ -1,8 +1,4 @@
-from PySide6.QtCore import (
-    QPoint,
-    QPropertyAnimation,
-    Qt,
-)
+from PySide6.QtCore import QParallelAnimationGroup, QPoint, QPropertyAnimation, Qt
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
     QFrame,
@@ -40,7 +36,6 @@ class LeftGameArea(QFrame):
 
         self.setup_components()
         self.setup_layouts()
-        self.setup_animation()
 
     def setup_components(self) -> None:
         self.letter_grid_area_frame = QFrame()
@@ -66,28 +61,42 @@ class LeftGameArea(QFrame):
                 row_labels.append(grid_label)
             self.wordee_cells.append(row_labels)
 
-    def setup_animation(self) -> None:
-        self.shake_animation = QPropertyAnimation(self.status_label, b"pos")
-        self.shake_animation.setDuration(300)
-
     # i do the rest here because the original_position will bug out if i dont
-    def status_label_invalid_animation(self) -> None:
-        # so the original position is locked
-        if not hasattr(self, "_status_label_original_position"):
-            self._status_label_original_position = self.status_label.pos()
+    def invalid_row_annimation(self, row: int) -> None:
+        """This displays the shaking animation on the invalid guess row.
 
-        original_position = self._status_label_original_position
+        Args:
+            row: The row number from 1-6.
+        """
+        # so the original positions are locked
+        if not hasattr(self, "_wordee_cells_original_positions"):
+            self._wordee_cells_original_positions = []
+            for wordee_row in self.wordee_cells:
+                row_cells = []
+                for cell in wordee_row:
+                    row_cells.append(cell.pos())
+                self._wordee_cells_original_positions.append(row_cells)
 
-        self.shake_animation.stop()
+        grid_row: list[WordeeCell] = self.wordee_cells[row - 1]
+        original_position_row = self._wordee_cells_original_positions[row - 1]
 
-        self.shake_animation.setKeyValueAt(0.0, original_position)
-        self.shake_animation.setKeyValueAt(0.2, original_position + QPoint(-3, 0))
-        self.shake_animation.setKeyValueAt(0.4, original_position + QPoint(3, 0))
-        self.shake_animation.setKeyValueAt(0.6, original_position + QPoint(-2, 0))
-        self.shake_animation.setKeyValueAt(0.8, original_position + QPoint(2, 0))
-        self.shake_animation.setKeyValueAt(1.0, original_position)
+        self.animation_group = QParallelAnimationGroup(self)
+        self.animation_group.stop()
 
-        self.shake_animation.start()
+        for cell, original_position in zip(grid_row, original_position_row):
+            shake_animation = QPropertyAnimation(cell, b"pos")
+            shake_animation.setDuration(300)
+
+            shake_animation.setKeyValueAt(0.0, original_position)
+            shake_animation.setKeyValueAt(0.2, original_position + QPoint(-3, 0))
+            shake_animation.setKeyValueAt(0.4, original_position + QPoint(3, 0))
+            shake_animation.setKeyValueAt(0.6, original_position + QPoint(-2, 0))
+            shake_animation.setKeyValueAt(0.8, original_position + QPoint(2, 0))
+            shake_animation.setKeyValueAt(1.0, original_position)
+
+            self.animation_group.addAnimation(shake_animation)
+
+        self.animation_group.start()
 
     def setup_layouts(self) -> None:
         left_game_area_layout = QVBoxLayout()
