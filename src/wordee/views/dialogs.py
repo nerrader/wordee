@@ -14,8 +14,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui.constants import GameMode
-from wordle_gui.game_signals import game_signals
+from wordee.constants import GameMode
+from wordee.game_signals import game_signals
 
 
 class GameOverDialog(QDialog):

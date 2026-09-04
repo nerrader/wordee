@@ -36,4 +36,4 @@ repos:
             language: system
             types: [python]
             args: [--strict]
-            exclude: ^src/wordle_gui/assets/
+            exclude: ^src/wordee/assets/

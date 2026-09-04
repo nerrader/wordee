@@ -3,10 +3,10 @@ requires = ["hatchling>=1.26"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/wordle_gui/__init__.py"
+path = "src/wordee/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/wordle_gui"]
+packages = ["src/wordee"]
 
 [tool.pyright]
 exclude = [".**/*", "**/__pycache__/**", "./src/wordle_gui/assets/**"]
@@ -16,15 +16,15 @@ typeCheckingMode = "standard"
 
 [tool.mypy]
 strict = true
-exclude = "^src/wordle_gui/assets/"
+exclude = "^src/wordee/assets/"
 
 [tool.ruff.lint]
 ignore = ["DTZ011"]
 
 [project]
-name = "wordle-gui"
+name = "wordee"
 dynamic = ["version"]
-description = "Wordle application"
+description = "This is my own version of Wordle in a custom GUI desktop application format."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -35,7 +35,7 @@ dependencies = [
 ]
 
 [project.scripts]
-wordle = "wordle_gui.main:main"
+wordle = "wordee.main:main"
 
 [dependency-groups]
 dev = [

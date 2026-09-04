@@ -1,7 +1,7 @@
 from random import choice
 
-from wordle_gui.constants import GameStatus
-from wordle_gui.models.game_logic import WordeeGame
+from wordee.constants import GameStatus
+from wordee.models.game_logic import WordeeGame
 
 
 class WordeeGameFactory:

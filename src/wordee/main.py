@@ -2,15 +2,15 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from wordle_gui import constants as const
-from wordle_gui import state
+from wordee import app_setup, state
+from wordee import constants as const
 
 # this import is required for the .qrc :/ virtual filepaths to work
-from wordle_gui.assets import resources_rc  # noqa: F401
-from wordle_gui.logic import app_setup, nyt
-from wordle_gui.models.wordee_game_creation import WordeeGameFactory
-from wordle_gui.presenters.game_presenter import GamePresenter
-from wordle_gui.views.main_window import MainWindow
+from wordee.assets import resources_rc  # noqa: F401
+from wordee.logic import nyt
+from wordee.models.wordee_game_creation import WordeeGameFactory
+from wordee.presenters.game_presenter import GamePresenter
+from wordee.views.main_window import MainWindow
 
 
 def main() -> None:

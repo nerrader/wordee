@@ -3,7 +3,7 @@ from datetime import date
 import respx
 from httpx import Response
 
-from wordle_gui.logic import nyt
+from wordee.logic import nyt
 
 
 @respx.mock

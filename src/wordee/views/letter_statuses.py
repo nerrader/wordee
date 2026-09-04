@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui.constants import WordeeCellColor
-from wordle_gui.game_signals import game_signals
+from wordee.constants import WordeeCellColor
+from wordee.game_signals import game_signals
 
 
 class WordeeStatusKey(QPushButton):

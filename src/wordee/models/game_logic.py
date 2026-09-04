@@ -1,6 +1,6 @@
 from loguru import logger
 
-from wordle_gui.constants import GameStatus, WordeeCellColor
+from wordee.constants import GameStatus, WordeeCellColor
 
 
 class WordeeGame:

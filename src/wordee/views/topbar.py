@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui import __version__ as game_version
+from wordee import __version__ as game_version
 
 if TYPE_CHECKING:
     from PySide6.QtGui import QResizeEvent

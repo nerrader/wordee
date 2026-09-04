@@ -2,7 +2,7 @@ from pathlib import Path
 
 import httpx
 
-from wordle_gui.logic import cache
+from wordee.logic import cache
 
 
 def test_sync_cache(tmp_path: Path) -> None:

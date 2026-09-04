@@ -12,10 +12,10 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui.constants import GameMode
-from wordle_gui.game_signals import game_signals
-from wordle_gui.views.game_stats import GameStats
-from wordle_gui.views.letter_statuses import LetterStatuses
+from wordee.constants import GameMode
+from wordee.game_signals import game_signals
+from wordee.views.game_stats import GameStats
+from wordee.views.letter_statuses import LetterStatuses
 
 
 class RightGameArea(QFrame):

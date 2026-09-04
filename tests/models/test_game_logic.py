@@ -1,6 +1,6 @@
 import pytest
 
-from wordle_gui.models.game_logic import WordeeGame
+from wordee.models.game_logic import WordeeGame
 
 
 @pytest.fixture

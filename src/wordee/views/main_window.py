@@ -6,10 +6,10 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
 
-from wordle_gui.game_signals import game_signals
-from wordle_gui.views.left_game_area import LeftGameArea
-from wordle_gui.views.right_game_area import RightGameArea
-from wordle_gui.views.topbar import Topbar
+from wordee.game_signals import game_signals
+from wordee.views.left_game_area import LeftGameArea
+from wordee.views.right_game_area import RightGameArea
+from wordee.views.topbar import Topbar
 
 if TYPE_CHECKING:
     from PySide6.QtGui import QKeyEvent

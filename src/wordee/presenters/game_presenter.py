@@ -2,17 +2,17 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
-from wordle_gui import constants as const
-from wordle_gui.game_signals import game_signals
-from wordle_gui.models.wordee_game_creation import WordeeGameFactory
-from wordle_gui.views.dialogs import BlockSwitchModeDialog, GameOverDialog
+from wordee import constants as const
+from wordee.game_signals import game_signals
+from wordee.models.wordee_game_creation import WordeeGameFactory
+from wordee.views.dialogs import BlockSwitchModeDialog, GameOverDialog
 
 if TYPE_CHECKING:
     from PySide6.QtWidgets import QLabel
 
-    from wordle_gui.state import DailyGameState
-    from wordle_gui.views.left_game_area import WordeeCell
-    from wordle_gui.views.main_window import MainWindow
+    from wordee.state import DailyGameState
+    from wordee.views.left_game_area import WordeeCell
+    from wordee.views.main_window import MainWindow
 
 
 class GamePresenter:
@@ -139,6 +139,7 @@ class GamePresenter:
             self.model.submit_guess(user_guess)
         except ValueError:
             self.view.left_game_area.invalid_row_annimation(guess_row_number)
+            return
 
         color_feedback = self.model.get_color_feedback(user_guess)
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)

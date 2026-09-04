@@ -511,7 +511,7 @@ wheels = [
 ]
 
 [[package]]
-name = "wordle-gui"
+name = "wordee"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },

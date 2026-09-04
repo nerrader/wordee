@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordle_gui.constants import GameMode, WordeeCellColor
+from wordee.constants import GameMode, WordeeCellColor
 
 
 class WordeeCell(QLabel):
