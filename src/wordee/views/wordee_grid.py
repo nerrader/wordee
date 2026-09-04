@@ -6,7 +6,6 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QHBoxLayout,
     QLabel,
-    QSizePolicy,
     QVBoxLayout,
 )
 
@@ -18,7 +17,6 @@ class WordeeCell(QLabel):
         super().__init__()
 
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.setContentsMargins(10, 10, 10, 10)
 
     def resizeEvent(self, event: QResizeEvent) -> None:
