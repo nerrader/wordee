@@ -35,14 +35,17 @@ def test_submit_invalid_guess(wordee_game: WordeeGame) -> None:
 
 def test_submit_guess_is_case_insensitive(wordee_game: WordeeGame) -> None:
     wordee_game.submit_guess("sHeeP")
+    assert wordee_game.guesses_left == 5
 
 
 def test_submit_guess_state_remains_playing(wordee_game: WordeeGame) -> None:
     wordee_game.submit_guess("STRAY")
     assert wordee_game.game_state == "playing"
+    assert wordee_game.guesses_left == 5
 
     wordee_game.submit_guess("sheep")
     assert wordee_game.game_state == "playing"
+    assert wordee_game.guesses_left == 4
 
 
 def test_submit_guess_sets_state_to_win(wordee_game: WordeeGame) -> None:
