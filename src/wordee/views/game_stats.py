@@ -34,6 +34,7 @@ class GameStats(QFrame):
 
         # this is to initialize it so the check in start_time_elapsed_timer() works
         self.time_elapsed_timer = QTimer()
+        self.time_elapsed_timer.timeout.connect(self.update_time_elapsed_timer)
 
     def setup_layouts(self) -> None:
         game_stats_layout = QVBoxLayout()
@@ -56,7 +57,6 @@ class GameStats(QFrame):
         if self.time_elapsed_timer.isActive():
             return
 
-        self.time_elapsed_timer.timeout.connect(self.update_time_elapsed_timer)
         self.time_elapsed_timer.start(1000)
 
     def update_time_elapsed_timer(self, increment: int = 1) -> None:
@@ -81,3 +81,4 @@ class GameStats(QFrame):
 
     def reset_time_elapsed(self) -> None:
         self.time_elapsed_label.setText("Time Elapsed - 00:00")
+        self.seconds_elapsed = 0

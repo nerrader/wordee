@@ -196,7 +196,7 @@ class GamePresenter:
             )
             return
 
-        self.view.right_game_area.game_stats.stop_time_elapsed_timer()
+        self.view.right_game_area.game_stats.reset_time_elapsed()
         current_game_mode = self.current_game_mode
 
         if current_game_mode == "daily":
