@@ -14,7 +14,7 @@ def test_load_words_data(tmp_path: Path) -> None:
     possible_solutions = {"arise", "crane"}
     valid_guesses = {"arise", "crane", "apple"}
 
-    with patch("wordee.words.cache.read_cache") as read_cache:
+    with patch("wordee.logic.cache.read_cache") as read_cache:
         read_cache.side_effect = [possible_solutions, valid_guesses]
 
         result = app_setup.load_words_data(tmp_path)
