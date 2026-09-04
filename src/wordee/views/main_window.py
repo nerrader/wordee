@@ -7,9 +7,9 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
 
 from wordee.game_signals import game_signals
-from wordee.views.left_game_area import LeftGameArea
 from wordee.views.right_game_area import RightGameArea
 from wordee.views.topbar import Topbar
+from wordee.views.wordee_grid import WordeeGrid
 
 if TYPE_CHECKING:
     from PySide6.QtGui import QKeyEvent
@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_container)
 
         self.topbar = Topbar()
-        self.left_game_area = LeftGameArea()
+        self.wordee_grid = WordeeGrid()
         self.right_game_area = RightGameArea()
 
     def setup_layouts(self) -> None:
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         main_container_layout.setContentsMargins(0, 0, 0, 0)
 
         game_area_layout = QHBoxLayout()
-        game_area_layout.addWidget(self.left_game_area)
+        game_area_layout.addWidget(self.wordee_grid)
         game_area_layout.addWidget(self.right_game_area)
         game_area_layout.setSpacing(20)
 
@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
                     return
 
     def reset_game_view(self) -> None:
-        self.left_game_area.reset_wordee_cells()
+        self.wordee_grid.reset_wordee_cells()
 
         self.right_game_area.game_stats.reset_time_elapsed()
         self.right_game_area.letter_statuses.reset_letter_statuses()

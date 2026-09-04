@@ -1,3 +1,4 @@
+from loguru import logger
 from PySide6.QtCore import QParallelAnimationGroup, QPoint, QPropertyAnimation, Qt
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
@@ -30,7 +31,7 @@ class WordeeCell(QLabel):
         self.setProperty("color", None)
 
 
-class LeftGameArea(QFrame):
+class WordeeGrid(QFrame):
     def __init__(self) -> None:
         super().__init__()
 
@@ -44,9 +45,9 @@ class LeftGameArea(QFrame):
         # the default mode
         self.letter_grid_area_frame.setProperty("mode", "daily")
 
-        self.letter_grid_label = QLabel("WORDEE LETTER GRID")
-        self.letter_grid_label.setObjectName("letter_grid_header_label")
-        self.letter_grid_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.header_label = QLabel("WORDEE LETTER GRID")
+        self.header_label.setObjectName("letter_grid_header_label")
+        self.header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.wordee_cells: list[list[WordeeCell]] = []
 
@@ -58,7 +59,7 @@ class LeftGameArea(QFrame):
             self.wordee_cells.append(row_labels)
 
     # i do the rest here because the original_position will bug out if i dont
-    def invalid_row_annimation(self, row: int) -> None:
+    def invalid_row_animation(self, row: int) -> None:
         """This displays the shaking animation on the invalid guess row.
 
         Args:
@@ -108,7 +109,7 @@ class LeftGameArea(QFrame):
                     column_index,
                 )
 
-        letter_grid_area_layout.addWidget(self.letter_grid_label)
+        letter_grid_area_layout.addWidget(self.header_label)
         letter_grid_area_layout.addLayout(letter_grid_layout)
         letter_grid_area_layout.setStretch(0, 1)
         letter_grid_area_layout.setStretch(1, 9)
@@ -173,3 +174,27 @@ class LeftGameArea(QFrame):
 
                 target_cell.style().unpolish(target_cell)
                 target_cell.style().polish(target_cell)
+
+    def add_letter_to_grid(self, letter: str, row: int) -> None:
+        cell = next(
+            (cell for cell in self.wordee_cells[row - 1] if not cell.text()), None
+        )
+
+        if cell is not None:
+            cell.setText(letter.upper())
+            return
+
+        logger.info("No cells to update.")
+
+    def delete_last_grid_letter(self, row: int) -> None:
+        cell = next(
+            (cell for cell in reversed(self.wordee_cells[row - 1]) if cell.text()), None
+        )
+
+        if cell is not None:
+            cell.setText("")
+            return
+        logger.info("No cell text to delete.")
+
+    def get_wordee_row_text(self, row: int) -> str:
+        return "".join(cell.text() for cell in self.wordee_cells[row - 1])

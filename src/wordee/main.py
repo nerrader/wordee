@@ -14,7 +14,7 @@ from wordee.views.main_window import MainWindow
 
 
 def main() -> None:
-    app_setup.setup_logger(const.LOG_FILE_PATH)
+    app_setup.setup_logger(const.LOG_FILE_PATH, True)
 
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
 
