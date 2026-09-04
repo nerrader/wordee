@@ -117,6 +117,13 @@ class LetterStatuses(QFrame):
     def update_letter_statuses(
         self, statuses: dict[str, WordeeCellColor | None]
     ) -> None:
+        """Updates the letter_statuses board.
+
+        Args:
+            statuses: This is a dictionary containing:
+                str -> status letter
+                WordeeCellColor -> the status color
+        """
         for letter, color in statuses.items():
             letter_status: WordeeStatusKey = self.keyboard_map[letter.lower()]
 

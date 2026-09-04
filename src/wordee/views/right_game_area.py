@@ -114,6 +114,7 @@ class RightGameArea(QFrame):
         if game_mode == "daily":
             self.switch_modes_button.setText("Switch to Daily")
             self.switch_modes_button.setProperty("mode", "daily")
+
         if game_mode == "unlimited":
             self.switch_modes_button.setText("Switch to Unlimited")
             self.switch_modes_button.setProperty("mode", "unlimited")

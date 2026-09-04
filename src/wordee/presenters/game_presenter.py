@@ -13,6 +13,11 @@ if TYPE_CHECKING:
 
 
 class GamePresenter:
+    """This class coordinates most of the events and their actions,
+    including the switching of current gamemodes and saving of
+    the persistent daily state.
+    """
+
     def __init__(
         self,
         view: MainWindow,
@@ -42,6 +47,11 @@ class GamePresenter:
         game_signals.give_up_signal.connect(self.handle_give_up)
 
     def sync_daily_state(self) -> None:
+        """Syncs the daily state with the model and view states.
+
+        Raises:
+            RuntimeError: If the current gamemode is not daily.
+        """
         if self.current_game_mode != "daily":
             raise RuntimeError("The current game_mode is not daily.")
 
@@ -56,6 +66,9 @@ class GamePresenter:
         self.state.daily_game_status = self.model.game_state
 
     def restore_daily_view(self) -> None:
+        """Restores the daily view by using the persistent daily state to update
+        the daily_board, letter statuses, time_elapsed, and setting the state of the
+        give up button"""
         # if the state is still default values aka first time opening up the thingy
         # fill it in with the actual default values
         if not self.state.daily_board:
@@ -88,11 +101,6 @@ class GamePresenter:
         self.view.right_game_area.change_mode_button("unlimited")
 
     def handle_alphabet_key(self, key: str) -> None:
-        """Changes the label in the wordee grid to the letter.
-
-        Args:
-            key (str): The alphabetical letter that the user inputted.
-        """
         if self.model.game_state != "playing":
             return
 
@@ -166,6 +174,10 @@ class GamePresenter:
             return
 
     def handle_switch_modes(self) -> None:
+        """Handles the switching of current gamemode, daily to unlimited and vice versa
+        This will execute the retrospective switch_to_{mode} functions.
+
+        You cannot switch modes while playing in a game."""
         if (
             self.state.daily_game_status not in ("win", "loss")
             or not self.model.can_switch_game_modes

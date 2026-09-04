@@ -19,6 +19,8 @@ from wordee.game_signals import game_signals
 
 
 class GameOverDialog(QDialog):
+    """Contains the dialog when you win/lose the game."""
+
     def __init__(
         self,
         game_result: Literal["won", "lost", "gave_up"],
@@ -138,6 +140,9 @@ class GameOverDialog(QDialog):
 
 
 class BlockSwitchModeDialog(QDialog):
+    """This dialog shows up to block the switching of modes when you
+    are currently playing a game."""
+
     def __init__(self, game_mode: GameMode):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)

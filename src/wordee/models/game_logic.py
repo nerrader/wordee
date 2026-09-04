@@ -4,6 +4,9 @@ from wordee.constants import GameStatus, WordeeCellColor
 
 
 class WordeeGame:
+    """This model represents one game of wordee.
+    Whether that be the daily game, or an unlimited game."""
+
     def __init__(
         self,
         target_word: str,

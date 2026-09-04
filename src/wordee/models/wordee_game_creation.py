@@ -5,6 +5,8 @@ from wordee.models.game_logic import WordeeGame
 
 
 class WordeeGameFactory:
+    """This class simplifies and abstracts the process of making a WordeeGame."""
+
     def __init__(
         self, possible_solutions: set[str], valid_guesses: set[str], daily_word: str
     ) -> None:
