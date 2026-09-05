@@ -6,7 +6,7 @@ import httpx
 from loguru import logger
 
 
-def fetch_wordle_solution(user_agent: str) -> str:
+def fetch_wordle_solution(user_agent: str) -> tuple[str, int]:
     """Fetches the wordle solution for today from the New York Times API."""
     logger.debug("Starting fetch of wordle solution")
     current_date = date.today()
@@ -22,7 +22,8 @@ def fetch_wordle_solution(user_agent: str) -> str:
         logger.debug("Successfully fetched wordle solution.")
 
         wordle_solution: str = data["solution"]
-        return wordle_solution
+        puzzle_number: int = data["days_since_launch"]
+        return (wordle_solution, puzzle_number)
 
     except httpx.HTTPError as error:
         logger.error(f"Fetch wordle solution ({current_date}) failed: {error}")

@@ -23,14 +23,14 @@ def main() -> None:
     app = QApplication(sys.argv)
 
     window = MainWindow()
+    target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
+    wordee_state.daily_puzzle_number = puzzle_number
 
     # i dont need to assign it to anything since all the connecting stuff is in __init__()
     presenter = GamePresenter(  # noqa: F841
         window,
         WordeeGameFactory(
-            possible_solutions,
-            valid_guesses | possible_solutions,
-            nyt.fetch_wordle_solution(const.USER_AGENT),
+            possible_solutions, valid_guesses | possible_solutions, target_word
         ),
         wordee_state,
     )

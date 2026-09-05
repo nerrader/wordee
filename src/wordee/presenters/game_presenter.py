@@ -93,7 +93,9 @@ class GamePresenter:
 
         # 0 is jsut a placeholder number, itll have the days_since_launch
         # from the nyt in the real game
-        self.view.right_game_area.set_numbered_puzzle_label(0)
+        self.view.right_game_area.set_numbered_puzzle_label(
+            self.state.daily_puzzle_number
+        )
         self.view.right_game_area.game_stats.set_game_mode("daily")
         self.view.wordee_grid.set_game_mode_grid_color("daily")
 
