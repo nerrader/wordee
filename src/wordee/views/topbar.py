@@ -3,6 +3,7 @@ from PySide6.QtGui import QColor, QCursor, QIcon
 from PySide6.QtWidgets import (
     QFrame,
     QGraphicsDropShadowEffect,
+    QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -59,6 +60,14 @@ class Topbar(QFrame):
         self.statistics_icon.setMinimumSize(50, 50)
         self.statistics_icon.setIconSize(QSize(50, 50))
 
+        # to show that this is coming soon pretty much / unavailable
+        self.statistics_icon.setToolTip("Coming Soon!")
+        self.statistics_icon.setCursor(Qt.CursorShape.ForbiddenCursor)
+
+        statistics_opacity_effect = QGraphicsOpacityEffect(self.statistics_icon)
+        statistics_opacity_effect.setOpacity(0.5)
+        self.statistics_icon.setGraphicsEffect(statistics_opacity_effect)
+
         self.settings_icon = QPushButton()
         self.settings_icon.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
@@ -67,6 +76,14 @@ class Topbar(QFrame):
         self.settings_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.settings_icon.setMinimumSize(50, 50)
         self.settings_icon.setIconSize(QSize(50, 50))
+
+        # to show that this is coming soon pretty much / unavailable
+        self.settings_icon.setToolTip("Coming Soon!")
+        self.settings_icon.setCursor(Qt.CursorShape.ForbiddenCursor)
+
+        settings_opacity_effect = QGraphicsOpacityEffect(self.settings_icon)
+        settings_opacity_effect.setOpacity(0.5)
+        self.settings_icon.setGraphicsEffect(settings_opacity_effect)
 
     def setup_layouts(self) -> None:
         topbar_layout = QHBoxLayout()

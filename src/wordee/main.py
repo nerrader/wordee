@@ -32,8 +32,6 @@ def main() -> None:
         NoInternetDialog().exec()
         return
 
-    NoInternetDialog().exec()
-
     window = MainWindow()
     wordee_state.daily_puzzle_number = puzzle_number
 
