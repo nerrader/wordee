@@ -1,16 +1,20 @@
 # WORDEE GUI Project
 
-This project was primarily made for fun, to tinker around with PySide6 and see
-what I can do with GUI libraries.
+This project is my own version of Wordle, the famous web minigame, as a
+PySide6 Desktop Application, that I made for fun.
+
+## Features
+
+- The core features, including the classic board and the letter
+status keyboard.
+- A give up button if you don't feel like solving the word.
+- Two game modes: daily and unlimited, and a button to switch between them.
+- A help menu to help new players get into the game.
 
 ## Upcoming Features
 
-- Adding a win/lose pop-up window.
-- Adding functionality to the give up button.
-- Adding the unlimited gamemode
-- Adding the help window
-- Adding the statistics window
-- Adding the configuration/settings window
+- Adding viewable statistics.
+- Adding configurable settings.
 
 ## Tech Stack
 
