@@ -3,7 +3,7 @@
 }
 
 QLabel, QPushButton, QToolButton {
-    color: #1E1E1E
+    color: #1E1E1E;
 }
 
 QLabel[class="help_menu_context"] {
@@ -22,40 +22,48 @@ QPushButton[class="close_button"] {
     padding: 5px;
 }
 
-#main_container {
+#main_container,
+GameOverDialog,
+HelpMenu,
+BlockSwitchModeDialog {
     background-color: #D7F0FE;
 }
 
-GameOverDialog {
-    background-color: #D7F0FE;
+WordeeCell[color="gray"],
+#help_menu_example_cell[color="gray"],
+WordeeStatusKey[color="gray"] {
+    background-color: #a0a0a0;
 }
 
-HelpMenu {
-    background-color: #D7F0FE;
+WordeeCell[color="yellow"],
+#help_menu_example_cell[color="yellow"],
+WordeeStatusKey[color="yellow"] {
+    background-color: #FFD400;
+}
+
+WordeeCell[color="green"],
+#help_menu_example_cell[color="green"],
+WordeeStatusKey[color="green"] {
+    background-color: #65E510;
 }
 
 #help_menu_topbar {
    background-color: #FFED6D;
 }
 
-#help_menu_header {
-    font-size: 24pt;
-    font-weight: bold;
-}
-
 #help_menu_legend_green_frame {
     background-color: #65E510;
-    border: 1px solid #1e1e1e
+    border: 1px solid #1e1e1e;
 }
 
 #help_menu_legend_yellow_frame {
     background-color: #FFD400;
-    border: 1px solid #1e1e1e
+    border: 1px solid #1e1e1e;
 }
 
 #help_menu_legend_gray_frame {
     background-color: #a0a0a0;
-    border: 1px solid #1e1e1e
+    border: 1px solid #1e1e1e;
 }
 
 #post_game_result_container[game_result="won"] {
@@ -97,10 +105,6 @@ HelpMenu {
     font-weight: bold;
 }
 
-BlockSwitchModeDialog {
-    background-color: #D7F0FE;
-}
-
 #block_switch_mode_stop_header_label {
     background-color: #FF8686;
     font-weight: bold;
@@ -126,12 +130,6 @@ Topbar {
    background-color: #FFED6D;
    padding: 10px;
 }
-
-/*
-Topbar QToolButton {
-    background-color: #ffffff
-}
-*/
 
 #title_label {
     font-size: 42pt;
@@ -162,35 +160,11 @@ WordeeCell {
     font-weight: bold;
 }
 
-WordeeCell[color="gray"] {
-    background-color: #a0a0a0;
-}
-
-WordeeCell[color="yellow"] {
-    background-color: #FFD400;
-}
-
-WordeeCell[color="green"] {
-    background-color: #65E510;
-}
-
 #help_menu_example_cell {
     background-color: #f5f5f5;
     border-radius: 0;
     font-size: 20pt;
     font-weight: bold;
-}
-
-#help_menu_example_cell[color="gray"] {
-    background-color: #a0a0a0;
-}
-
-#help_menu_example_cell[color="yellow"] {
-    background-color: #FFD400;
-}
-
-#help_menu_example_cell[color="green"] {
-    background-color: #65E510;
 }
 
 #help_menu_legend_container {
@@ -225,18 +199,6 @@ WordeeStatusKey {
     background-color: #dbdbdb;
     border-radius: 0;
     font-size: 18pt;
-}
-
-WordeeStatusKey[color="gray"] {
-    background-color: #a0a0a0;
-}
-
-WordeeStatusKey[color="yellow"] {
-    background-color: #FFD400;
-}
-
-WordeeStatusKey[color="green"] {
-    background-color: #65E510;
 }
 
 #backspace_key {
