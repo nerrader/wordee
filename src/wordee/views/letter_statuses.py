@@ -33,7 +33,7 @@ class LetterStatuses(QFrame):
 
     def setup_components(self) -> None:
         self.letter_status_label_header = QLabel("LETTER STATUSES")
-        self.letter_status_label_header.setObjectName("letter_statuses_header_label")
+        self.letter_status_label_header.setProperty("class", "header")
 
         self.backspace_key = QPushButton("Backspace")
         self.backspace_key.setObjectName("backspace_key")

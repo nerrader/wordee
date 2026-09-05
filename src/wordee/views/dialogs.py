@@ -224,13 +224,14 @@ class HelpMenu(QDialog):
         self.topbar.setLayout(topbar_layout)
 
         header_label = QLabel("HOW TO PLAY")
-        header_label.setProperty("class", "help_menu_header")
+        header_label.setProperty("class", "header")
 
         close_button = QPushButton("x")
         close_button.setProperty("class", "close_button")
         close_button.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
+        close_button.setCursor(Qt.CursorShape.PointingHandCursor)
         close_button.clicked.connect(self.accept)
 
         topbar_layout.addWidget(header_label)
@@ -252,7 +253,7 @@ class HelpMenu(QDialog):
         self.setup_legend_container()
 
         header_example_label = QLabel("EXAMPLE")
-        header_example_label.setProperty("class", "help_menu_header")
+        header_example_label.setProperty("class", "header")
 
         example_row_layout = QHBoxLayout()
         example_row_layout.addSpacing(7)
@@ -298,7 +299,7 @@ class HelpMenu(QDialog):
         self.legend_container.setLayout(legend_layout)
 
         legend_header = QLabel("LEGEND")
-        legend_header.setProperty("class", "help_menu_header")
+        legend_header.setProperty("class", "header")
         legend_layout.addWidget(legend_header)
 
         legend_data = {
@@ -321,3 +322,54 @@ class HelpMenu(QDialog):
             legend_row.addWidget(color_context)
 
             legend_layout.addLayout(legend_row)
+
+
+class NoInternetDialog(QDialog):
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
+        self.setContentsMargins(0, 0, 0, 0)
+
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+
+        topbar_layout = QHBoxLayout()
+        topbar = QFrame()
+        topbar.setContentsMargins(10, 10, 10, 10)
+        topbar.setObjectName("no_internet_topbar")
+        topbar.setLayout(topbar_layout)
+
+        header_label = QLabel("NO INTERNET")
+        header_label.setProperty("class", "header")
+        header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        topbar_layout.addWidget(header_label)
+
+        contents_layout = QVBoxLayout()
+        contents_layout.setContentsMargins(10, 10, 10, 10)
+
+        context_label = QLabel(
+            "Wordee could not connect to the internet to get today's puzzle.\n\n"
+            "Please try again later.",
+        )
+        # placeholder property value, we will make the context label universal later
+        context_label.setProperty("class", "help_menu_context")
+        context_label.setWordWrap(True)
+
+        ok_button = QPushButton("ok")
+        ok_button.setContentsMargins(10, 10, 10, 10)
+        ok_button.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        ok_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        ok_button.setObjectName("no_internet_ok_button")
+        ok_button.clicked.connect(self.accept)
+
+        contents_layout.addWidget(context_label)
+        contents_layout.addWidget(ok_button)
+
+        main_layout.addWidget(topbar)
+        main_layout.addLayout(contents_layout)
+
+        self.setLayout(main_layout)

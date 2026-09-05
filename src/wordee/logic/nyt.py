@@ -25,6 +25,6 @@ def fetch_wordle_solution(user_agent: str) -> tuple[str, int]:
         puzzle_number: int = data["days_since_launch"]
         return (wordle_solution, puzzle_number)
 
-    except httpx.HTTPError as error:
+    except httpx.ConnectError as error:
         logger.error(f"Fetch wordle solution ({current_date}) failed: {error}")
-        raise httpx.HTTPError("HTTP Error when fetching for wordle solution.")
+        raise httpx.ConnectError("HTTP Error when fetching for wordle solution.")

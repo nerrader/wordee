@@ -10,7 +10,7 @@ QLabel[class="help_menu_context"] {
     font-size: 12pt;
 }
 
-QLabel[class="help_menu_header"] {
+QLabel[class="header"] {
     font-size: 24pt;
     font-weight: bold;
 }
@@ -23,9 +23,10 @@ QPushButton[class="close_button"] {
 }
 
 #main_container,
-GameOverDialog,
 HelpMenu,
-BlockSwitchModeDialog {
+GameOverDialog,
+BlockSwitchModeDialog,
+NoInternetDialog {
     background-color: #D7F0FE;
 }
 
@@ -47,7 +48,13 @@ WordeeStatusKey[color="green"] {
     background-color: #65E510;
 }
 
-#help_menu_topbar {
+Topbar {
+   background-color: #FFED6D;
+   padding: 10px;
+}
+
+#help_menu_topbar,
+#no_internet_topbar {
    background-color: #FFED6D;
 }
 
@@ -123,12 +130,14 @@ WordeeStatusKey[color="green"] {
     font-size: 16pt;
     padding: 10px;
     border-radius: 8;
-
 }
 
-Topbar {
-   background-color: #FFED6D;
-   padding: 10px;
+#no_internet_ok_button {
+    background-color: #96D7FF;
+    font-weight: bold;
+    font-size: 16pt;
+    padding: 10px;
+    border-radius: 8;
 }
 
 #title_label {
@@ -146,11 +155,6 @@ Topbar {
 
 #letter_grid_area[mode="unlimited"] {
     background-color: #A541FC;
-}
-
-#letter_grid_header_label {
-    font-size: 24pt;
-    font-weight: bold;
 }
 
 WordeeCell {
@@ -190,11 +194,6 @@ LetterStatuses {
     border-radius: 20;
 }
 
-#letter_statuses_header_label {
-    font-weight: bold;
-    font-size: 24pt;
-}
-
 WordeeStatusKey {
     background-color: #dbdbdb;
     border-radius: 0;
@@ -214,11 +213,6 @@ WordeeStatusKey {
     font-weight: bold;
     border-radius: 0;
     padding: 10px;
-}
-
-#game_stats_label_header {
-    font-weight: bold;
-    font-size: 24pt;
 }
 
 #give_up_button {

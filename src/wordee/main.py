@@ -1,5 +1,6 @@
 import sys
 
+from httpx import ConnectError
 from PySide6.QtWidgets import QApplication
 
 from wordee import app_setup, state
@@ -10,6 +11,7 @@ from wordee.assets import resources_rc  # noqa: F401
 from wordee.logic import nyt
 from wordee.models.wordee_game_creation import WordeeGameFactory
 from wordee.presenters.game_presenter import GamePresenter
+from wordee.views.dialogs import NoInternetDialog
 from wordee.views.main_window import MainWindow
 
 
@@ -21,9 +23,18 @@ def main() -> None:
     possible_solutions, valid_guesses = app_setup.load_words_data(const.CACHE_DIR_PATH)
 
     app = QApplication(sys.argv)
+    app_setup.load_application_font(":/fonts/RobotoMono.ttf")
+    app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
+
+    try:
+        target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
+    except ConnectError:
+        NoInternetDialog().exec()
+        return
+
+    NoInternetDialog().exec()
 
     window = MainWindow()
-    target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
     wordee_state.daily_puzzle_number = puzzle_number
 
     # i dont need to assign it to anything since all the connecting stuff is in __init__()
@@ -34,9 +45,6 @@ def main() -> None:
         ),
         wordee_state,
     )
-
-    app_setup.load_application_font(":/fonts/RobotoMono.ttf")
-    app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
 
     app.aboutToQuit.connect(
         lambda: save_state(

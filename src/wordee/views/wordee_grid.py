@@ -44,7 +44,7 @@ class WordeeGrid(QFrame):
         self.letter_grid_area_frame.setProperty("mode", "daily")
 
         self.header_label = QLabel("WORDEE LETTER GRID")
-        self.header_label.setObjectName("letter_grid_header_label")
+        self.header_label.setProperty("class", "header")
         self.header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.wordee_cells: list[list[WordeeCell]] = []

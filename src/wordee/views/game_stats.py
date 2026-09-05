@@ -17,7 +17,7 @@ class GameStats(QFrame):
 
     def setup_components(self) -> None:
         self.game_stats_label_header = QLabel("GAME STATS")
-        self.game_stats_label_header.setObjectName("game_stats_label_header")
+        self.game_stats_label_header.setProperty("class", "header")
 
         self.mode_label = QLabel("Mode - Daily")
         self.mode_label.setProperty("class", "game_stats_label")
