@@ -199,8 +199,16 @@ class GamePresenter:
             self.switch_to_unlimited()
             self.current_game_mode = "unlimited"
         else:
-            self.restore_daily_view()
+            self.switch_to_daily()
             self.current_game_mode = "daily"
+
+    def switch_to_daily(self) -> None:
+        self.restore_daily_view()
+
+        self.model = self.game_factory.create_daily_game(
+            self.state.daily_guesses_left, self.state.daily_game_status
+        )
+        self.view.right_game_area.game_stats.stop_time_elapsed_timer()
 
     def switch_to_unlimited(self) -> None:
         self.view.right_game_area.set_unlimited_puzzle_label()
