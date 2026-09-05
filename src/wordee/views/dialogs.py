@@ -32,7 +32,7 @@ class GameOverDialog(QDialog):
         layout = QVBoxLayout()
 
         close_button = QPushButton("x")
-        close_button.setObjectName("post_game_close_button")
+        close_button.setProperty("class", "close_button")
         close_button.setSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
@@ -191,3 +191,133 @@ class BlockSwitchModeDialog(QDialog):
         layout.addWidget(ok_button)
 
         self.setLayout(layout)
+
+
+class HelpMenu(QDialog):
+    def __init__(self) -> None:
+        super().__init__()
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
+        self.setContentsMargins(0, 0, 0, 0)
+
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.setup_topbar()
+        self.setup_help_contents()
+
+        main_layout.addWidget(self.topbar)
+        main_layout.addLayout(self.help_contents_layout)
+        main_layout.setStretch(0, 1)
+        main_layout.setStretch(1, 9)
+
+        self.setLayout(main_layout)
+
+    def setup_topbar(self) -> None:
+        topbar_layout = QHBoxLayout()
+
+        self.topbar = QFrame()
+        self.topbar.setContentsMargins(10, 10, 10, 10)
+        self.topbar.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
+        )
+        self.topbar.setObjectName("help_menu_topbar")
+        self.topbar.setLayout(topbar_layout)
+
+        header_label = QLabel("HOW TO PLAY")
+        header_label.setProperty("class", "help_menu_header")
+
+        close_button = QPushButton("x")
+        close_button.setProperty("class", "close_button")
+        close_button.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        close_button.clicked.connect(self.accept)
+
+        topbar_layout.addWidget(header_label)
+        topbar_layout.addStretch()
+        topbar_layout.addWidget(close_button)
+
+    def setup_help_contents(self) -> None:
+        self.help_contents_layout = QVBoxLayout()
+        self.help_contents_layout.setContentsMargins(10, 10, 10, 10)
+        introduction_label = QLabel(
+            "Wordee is a GUI application for a game called Wordle.\n\n"
+            "Wordle is a game where you have six tries to guess a five-letter word.\n\n"
+            "Each guess must be a valid word, and each color of the tile will change "
+            "depending on how close your guess was to the word."
+        )
+        introduction_label.setWordWrap(True)
+        introduction_label.setProperty("class", "help_menu_context")
+
+        self.setup_legend_container()
+
+        header_example_label = QLabel("EXAMPLE")
+        header_example_label.setProperty("class", "help_menu_header")
+
+        example_row_layout = QHBoxLayout()
+        example_row_layout.addSpacing(7)
+
+        example_row_data = {
+            "F": "gray",
+            "R": "gray",
+            "A": "green",
+            "M": "yellow",
+            "E": "green",
+        }
+
+        for letter, color in example_row_data.items():
+            example_cell = QLabel(letter)
+            example_cell.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            example_cell.setContentsMargins(10, 10, 10, 10)
+
+            example_cell.setProperty("color", color)
+            example_cell.setObjectName("help_menu_example_cell")
+
+            example_row_layout.addWidget(example_cell)
+
+        example_context = QLabel(
+            "For context, the word is AMAZE.\n\n"
+            "- A and E are in the correct spots, so they are green.\n"
+            "- M is misplaced, so it is yellow.\n"
+            "- F and R are not in the word, so they are gray."
+        )
+        example_context.setProperty("class", "help_menu_context")
+
+        self.help_contents_layout.addWidget(introduction_label)
+        self.help_contents_layout.addWidget(self.legend_container)
+
+        self.help_contents_layout.addWidget(header_example_label)
+        self.help_contents_layout.addLayout(example_row_layout)
+        self.help_contents_layout.addWidget(example_context)
+
+    def setup_legend_container(self) -> None:
+        legend_layout = QVBoxLayout()
+        self.legend_container = QFrame()
+        self.legend_container.setContentsMargins(10, 10, 10, 10)
+        self.legend_container.setObjectName("help_menu_legend_container")
+        self.legend_container.setLayout(legend_layout)
+
+        legend_header = QLabel("LEGEND")
+        legend_header.setProperty("class", "help_menu_header")
+        legend_layout.addWidget(legend_header)
+
+        legend_data = {
+            "green": "This letter is in the correct position.",
+            "yellow": "This letter is in the wrong spot.",
+            "gray": "This letter is not in the word.",
+        }
+
+        for color, context in legend_data.items():
+            legend_row = QHBoxLayout()
+
+            color_frame = QFrame()
+            color_frame.setObjectName(f"help_menu_legend_{color}_frame")
+            color_frame.setMaximumSize(30, 30)
+
+            color_context = QLabel(context)
+            color_context.setProperty("class", "help_menu_context")
+
+            legend_row.addWidget(color_frame)
+            legend_row.addWidget(color_context)
+
+            legend_layout.addLayout(legend_row)

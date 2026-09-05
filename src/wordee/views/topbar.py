@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from wordee import __version__ as game_version
+from wordee.game_signals import game_signals
 
 
 class Topbar(QFrame):
@@ -47,6 +48,7 @@ class Topbar(QFrame):
         self.help_icon.setIcon(QIcon(":/icons/help-icon.svg"))
         self.help_icon.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.help_icon.setIconSize(QSize(50, 50))
+        self.help_icon.clicked.connect(game_signals.help_menu_signal)
 
         self.statistics_icon = QPushButton()
         self.statistics_icon.setSizePolicy(

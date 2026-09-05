@@ -6,12 +6,56 @@ QLabel, QPushButton, QToolButton {
     color: #1E1E1E
 }
 
+QLabel[class="help_menu_context"] {
+    font-size: 12pt;
+}
+
+QLabel[class="help_menu_header"] {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+QPushButton[class="close_button"] {
+    background-color: red;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+}
+
 #main_container {
     background-color: #D7F0FE;
 }
 
 GameOverDialog {
     background-color: #D7F0FE;
+}
+
+HelpMenu {
+    background-color: #D7F0FE;
+}
+
+#help_menu_topbar {
+   background-color: #FFED6D;
+}
+
+#help_menu_header {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+#help_menu_legend_green_frame {
+    background-color: #65E510;
+    border: 1px solid #1e1e1e
+}
+
+#help_menu_legend_yellow_frame {
+    background-color: #FFD400;
+    border: 1px solid #1e1e1e
+}
+
+#help_menu_legend_gray_frame {
+    background-color: #a0a0a0;
+    border: 1px solid #1e1e1e
 }
 
 #post_game_result_container[game_result="won"] {
@@ -51,13 +95,6 @@ GameOverDialog {
     background-color: #96D7FF;
     padding: 10px;
     font-weight: bold;
-}
-
-#post_game_close_button {
-    background-color: red;
-    font-weight: bold;
-    border: none;
-    padding: 5px;
 }
 
 BlockSwitchModeDialog {
@@ -137,6 +174,28 @@ WordeeCell[color="green"] {
     background-color: #65E510;
 }
 
+#help_menu_example_cell {
+    background-color: #f5f5f5;
+    border-radius: 0;
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+#help_menu_example_cell[color="gray"] {
+    background-color: #a0a0a0;
+}
+
+#help_menu_example_cell[color="yellow"] {
+    background-color: #FFD400;
+}
+
+#help_menu_example_cell[color="green"] {
+    background-color: #65E510;
+}
+
+#help_menu_legend_container {
+    background-color: #96D7FF;
+}
 #puzzle_number_label {
     font-size: 32pt;
     font-weight: bold;

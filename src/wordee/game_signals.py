@@ -9,5 +9,7 @@ class GameSignals(QObject):
     play_unlimited_again = Signal()
     give_up_signal = Signal()
 
+    help_menu_signal = Signal()
+
 
 game_signals = GameSignals()

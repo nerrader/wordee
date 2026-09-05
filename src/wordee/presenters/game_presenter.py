@@ -4,7 +4,7 @@ from loguru import logger
 
 from wordee.game_signals import game_signals
 from wordee.models.wordee_game_creation import WordeeGameFactory
-from wordee.views.dialogs import BlockSwitchModeDialog, GameOverDialog
+from wordee.views.dialogs import BlockSwitchModeDialog, GameOverDialog, HelpMenu
 
 if TYPE_CHECKING:
     from wordee.constants import GameMode
@@ -45,6 +45,7 @@ class GamePresenter:
         game_signals.switch_mode_requested.connect(self.handle_switch_modes)
         game_signals.play_unlimited_again.connect(self.reset_unlimited_game)
         game_signals.give_up_signal.connect(self.handle_give_up)
+        game_signals.help_menu_signal.connect(self.handle_help_menu_signal)
 
     def sync_daily_state(self) -> None:
         """Syncs the daily state with the model and view states.
@@ -234,3 +235,7 @@ class GamePresenter:
                 target_word=self.model.target_word,
                 game_mode=self.current_game_mode,
             ).exec()
+
+    def handle_help_menu_signal(self) -> None:
+        with self.view.dimmed():
+            HelpMenu().exec()
