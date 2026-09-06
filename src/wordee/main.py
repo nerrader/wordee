@@ -33,7 +33,16 @@ def main() -> None:
 
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
 
-    possible_solutions, valid_guesses = app_setup.load_words_data(const.CACHE_DIR_PATH)
+    try:
+        possible_solutions, valid_guesses = app_setup.load_words_data(
+            const.CACHE_DIR_PATH
+        )
+    except FileNotFoundError:
+        logger.info("Word cache file not found. Syncing caches.")
+        app_setup.sync_caches(const.CACHE_DIR_PATH, const.USER_AGENT)
+        possible_solutions, valid_guesses = app_setup.load_words_data(
+            const.CACHE_DIR_PATH
+        )
 
     app = QApplication(sys.argv)
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")
