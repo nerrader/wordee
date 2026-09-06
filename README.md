@@ -35,3 +35,4 @@ Language: Python
 - pytest
 - respx
 - ruff
+- nuitka
