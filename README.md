@@ -13,6 +13,7 @@ status keyboard.
 
 ## Upcoming Features
 
+- Automatic cache syncing based on date.
 - Adding viewable statistics.
 - Adding configurable settings.
 
