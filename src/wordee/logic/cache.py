@@ -27,7 +27,7 @@ def sync_cache(
             else {}
         )
         response = client.get(
-            f"https://raw.githubusercontent.com/nerrader/wordle-gui/refs/heads/main/data/{cache_type}.txt",
+            f"https://raw.githubusercontent.com/nerrader/wordee/refs/heads/main/data/{cache_type}.txt",
             headers=request_headers,
         )
         if response.status_code == 304:
