@@ -12,8 +12,10 @@ from wordee.logic import cache
 def setup_logger(logging_path: Path, verbose_mode: bool = False) -> None:
     logger.remove()
     logger.add(sink=logging_path, diagnose=False, retention=0, rotation="00:00")
+
     if verbose_mode:
         logger.add(sink=sys.stderr, level="DEBUG", diagnose=False)
+        logger.info("Verbose mode enabled.")
 
 
 def load_words_data(cache_dirpath: Path) -> tuple[set[str], set[str]]:
@@ -39,6 +41,8 @@ def sync_caches(cache_dirpath: Path, user_agent: str) -> None:
     with httpx_client(headers={"User-Agent": user_agent}) as client:
         cache.sync_cache("possible_solutions", cache_dirpath, client)
         cache.sync_cache("valid_guesses", cache_dirpath, client)
+
+    logger.info("Succesfully synced cache for both word lists.")
 
 
 def load_application_font(font_path: str) -> None:

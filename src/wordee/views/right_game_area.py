@@ -1,3 +1,4 @@
+from loguru import logger
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
@@ -130,9 +131,11 @@ class RightGameArea(QFrame):
 
     def set_give_up_button(self) -> None:
         self.action_widget.setCurrentWidget(self.give_up_button)
+        logger.debug("Action button changed to give up button.")
 
     def set_play_again_button(self) -> None:
         self.action_widget.setCurrentWidget(self.play_again_button)
+        logger.debug("Action button changed to play again button.")
 
     def disable_give_up_button(self) -> None:
         if self.give_up_button_enabled is False:
@@ -145,6 +148,8 @@ class RightGameArea(QFrame):
         give_up_button_transparency_effect = QGraphicsOpacityEffect(self.give_up_button)
         give_up_button_transparency_effect.setOpacity(0.5)
         self.give_up_button.setGraphicsEffect(give_up_button_transparency_effect)
+
+        logger.debug("Give up button disabled.")
 
     def enable_give_up_button(self) -> None:
         if self.give_up_button_enabled is True:
@@ -160,3 +165,5 @@ class RightGameArea(QFrame):
         give_up_button_shadow.setXOffset(0)
         give_up_button_shadow.setYOffset(4)
         self.give_up_button.setGraphicsEffect(give_up_button_shadow)
+
+        logger.debug("Give up button enabled.")

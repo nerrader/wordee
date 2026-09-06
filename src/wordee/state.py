@@ -4,6 +4,8 @@ from datetime import date
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from loguru import logger
+
 if TYPE_CHECKING:
     from wordee.constants import GameStatus, WordeeCellColor
 
@@ -59,10 +61,13 @@ def load_daily_state(filepath: Path) -> DailyGameState:
 
 def load_or_create_daily_state(filepath: Path) -> DailyGameState:
     if not filepath.exists():
+        logger.info("Daily state doesn't exist, returning default state.")
         return DailyGameState()
 
     daily_state = load_daily_state(filepath)
     if daily_state.date != date.today().isoformat():
+        logger.info("Daily state is outdated, returning default state.")
         return DailyGameState()
 
+    logger.info("Returning state from state.json")
     return daily_state

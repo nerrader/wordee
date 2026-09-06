@@ -34,6 +34,8 @@ class GamePresenter:
         self.setup_connections()
         self.restore_daily_view()
 
+        logger.debug("GamePresenter initialized.")
+
     @property
     def guess_row_number(self) -> int:
         return 7 - self.model.guesses_left
@@ -46,6 +48,8 @@ class GamePresenter:
         game_signals.play_unlimited_again.connect(self.reset_unlimited_game)
         game_signals.give_up_signal.connect(self.handle_give_up)
         game_signals.help_menu_signal.connect(self.handle_help_menu_signal)
+
+        logger.debug("GamePresenter signal connections are set up.")
 
     def sync_daily_state(self) -> None:
         """Syncs the daily state with the model and view states.
@@ -70,6 +74,8 @@ class GamePresenter:
         """Restores the daily view by using the persistent daily state to update
         the daily_board, letter statuses, time_elapsed, and setting the state of the
         give up button"""
+
+        logger.debug("Restoring daily game state.")
         # if the state is still default values aka first time opening up the thingy
         # fill it in with the actual default values
         if not self.state.daily_board:
@@ -103,11 +109,13 @@ class GamePresenter:
         # this means, switch the mode button to say switch to unlimited
         self.view.right_game_area.change_mode_button("unlimited")
 
+        logger.info("successfully restored daily game state.")
+
     def handle_alphabet_key(self, key: str) -> None:
         if self.model.game_state != "playing":
             return
 
-        logger.debug(f"Presenter recieved alphabet key: {key}")
+        logger.trace("Presenter received alphabet key: {}", key)
         self.view.wordee_grid.add_letter_to_grid(key, self.guess_row_number)
 
         # it checks if its started or not in the function, so just do this
@@ -120,7 +128,7 @@ class GamePresenter:
         if self.model.game_state != "playing":
             return
 
-        logger.debug("Presenter received backspace key")
+        logger.trace("Presenter received backspace key")
         self.view.wordee_grid.delete_last_grid_letter(self.guess_row_number)
 
         if self.current_game_mode == "daily":
@@ -130,7 +138,7 @@ class GamePresenter:
         if self.model.game_state != "playing":
             return
 
-        logger.debug("Presenter received enter key")
+        logger.trace("Presenter received enter key")
 
         user_guess = self.view.wordee_grid.get_wordee_row_text(self.guess_row_number)
         # im saving it now cuz itll change when we submit guess
@@ -141,6 +149,7 @@ class GamePresenter:
             self.model.submit_guess(user_guess)
         except ValueError:
             self.view.wordee_grid.invalid_row_animation(user_guess_row)
+            logger.debug("Invalid guess: {}", user_guess)
             return
 
         color_feedback = self.model.get_color_feedback(user_guess)
@@ -162,6 +171,10 @@ class GamePresenter:
             self.sync_daily_state()
 
         if self.model.game_state in ("win", "loss"):
+            logger.info(
+                "User has {} the {} game", self.model.game_state, self.current_game_mode
+            )
+
             self.view.right_game_area.game_stats.stop_time_elapsed_timer()
             self.view.right_game_area.disable_give_up_button()
 
@@ -201,6 +214,11 @@ class GamePresenter:
         else:
             self.switch_to_daily()
             self.current_game_mode = "daily"
+        logger.info(
+            "successfully switched game mode from {} to {}",
+            current_game_mode,
+            self.current_game_mode,
+        )
 
     def switch_to_daily(self) -> None:
         self.restore_daily_view()
@@ -237,6 +255,8 @@ class GamePresenter:
         if self.current_game_mode == "unlimited":
             self.view.right_game_area.set_play_again_button()
 
+        logger.info("User has given up the {} game", self.current_game_mode)
+
         with self.view.dimmed():
             GameOverDialog(
                 game_result="gave_up",
@@ -245,5 +265,6 @@ class GamePresenter:
             ).exec()
 
     def handle_help_menu_signal(self) -> None:
+        logger.trace("Help menu button has been clicked.")
         with self.view.dimmed():
             HelpMenu().exec()

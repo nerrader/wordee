@@ -2,6 +2,7 @@ import argparse
 import sys
 
 from httpx import ConnectError
+from loguru import logger
 from PySide6.QtWidgets import QApplication
 
 from wordee import app_setup, state
@@ -18,17 +19,17 @@ from wordee.views.main_window import MainWindow
 
 def main() -> None:
     argparser = argparse.ArgumentParser()
-
     argparser.add_argument(
         "--verbose",
         "-v",
         action="store_true",
         help="Enables verbose logging to the terminal.",
     )
-
     args = argparser.parse_args()
 
     app_setup.setup_logger(const.LOG_FILE_PATH, args.verbose)
+
+    logger.info("Starting up wordee")
 
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
 
@@ -41,6 +42,7 @@ def main() -> None:
     try:
         target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
     except ConnectError:
+        logger.warning("Could not connect to the NYT API. Check your internet.")
         NoInternetDialog().exec()
         return
 
@@ -67,11 +69,14 @@ def main() -> None:
 
 
 def save_state(wordee_state: state.DailyGameState, seconds_elapsed: int) -> None:
+    logger.info("User quit the game.")
     # if the daily game is not done yet
     if wordee_state.daily_time_elapsed == 0:
         wordee_state.daily_time_elapsed = seconds_elapsed
 
+    logger.debug("Saving persistent daily state")
     state.save_daily_state(const.STATE_PATH, wordee_state)
+    logger.debug("Successfully saved daily persistent state.")
 
 
 if __name__ == "__main__":

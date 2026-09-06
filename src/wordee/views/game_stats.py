@@ -1,3 +1,4 @@
+from loguru import logger
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QFrame, QLabel, QSizePolicy, QVBoxLayout
 
@@ -58,6 +59,7 @@ class GameStats(QFrame):
             return
 
         self.time_elapsed_timer.start(1000)
+        logger.debug("Time elapsed timer has started.")
 
     def update_time_elapsed_timer(self, increment: int = 1) -> None:
         self.seconds_elapsed += increment
@@ -74,11 +76,15 @@ class GameStats(QFrame):
         seconds = self.seconds_elapsed % 60
 
         self.time_elapsed_label.setText(f"Time Elapsed - {minutes:02d}:{seconds:02d}")
+        logger.debug("Time elapsed timer set to {}s.", seconds)
 
     def stop_time_elapsed_timer(self) -> None:
         if self.time_elapsed_timer is not None and self.time_elapsed_timer.isActive():
             self.time_elapsed_timer.stop()
+            logger.debug("Time elapsed timer has stopped.")
 
     def reset_time_elapsed(self) -> None:
         self.time_elapsed_label.setText("Time Elapsed - 00:00")
         self.seconds_elapsed = 0
+
+        logger.debug("Time elapsed timer has been reset.")
