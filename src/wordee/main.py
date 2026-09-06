@@ -1,3 +1,4 @@
+import argparse
 import sys
 
 from httpx import ConnectError
@@ -16,7 +17,18 @@ from wordee.views.main_window import MainWindow
 
 
 def main() -> None:
-    app_setup.setup_logger(const.LOG_FILE_PATH, True)
+    argparser = argparse.ArgumentParser()
+
+    argparser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enables verbose logging to the terminal.",
+    )
+
+    args = argparser.parse_args()
+
+    app_setup.setup_logger(const.LOG_FILE_PATH, args.verbose)
 
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
 
