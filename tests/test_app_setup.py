@@ -1,16 +1,19 @@
 from pathlib import Path
+from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-from PySide6.QtWidgets import QApplication
 
 from wordee import app_setup
 
 # this import is required for the .qrc :/ virtual filepaths to work
 from wordee.assets import resources_rc  # noqa: F401
 
+if TYPE_CHECKING:
+    from PySide6.QtWidgets import QApplication
 
-def test_load_words_data(tmp_path: Path) -> None:
+
+def test_load_words_data(tmp_path: Path, qapp: QApplication) -> None:
     possible_solutions = {"arise", "crane"}
     valid_guesses = {"arise", "crane", "apple"}
 
@@ -24,11 +27,6 @@ def test_load_words_data(tmp_path: Path) -> None:
     assert read_cache.call_count == 2
     read_cache.assert_any_call("possible_solutions", tmp_path)
     read_cache.assert_any_call("valid_guesses", tmp_path)
-
-
-@pytest.fixture(scope="session", autouse=True)
-def qapplication() -> QApplication:
-    return QApplication()
 
 
 def test_load_valid_application_font() -> None:
