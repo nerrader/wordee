@@ -47,7 +47,10 @@ jobs:
       - name: Get dependencies
         run: uv sync --locked
 
-      - name: Install System Dependencies
+      # i dont know why this works
+      # just know it does work, dont change it unless you know
+      # what you're doing
+      - name: Install PySide6 Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -63,6 +66,8 @@ jobs:
             libxkbcommon-x11-0
 
       - name: Test with pytest
+
+        # also dont know why we need this
         env:
           QT_QPA_PLATFORM: offscreen
         run: uv run pytest
