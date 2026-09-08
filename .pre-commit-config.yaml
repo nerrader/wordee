@@ -36,12 +36,6 @@ repos:
         types: [python]
         pass_filenames: false
 
-      - id: generate-resource-file
-        name: generate-resource-file
-        entry: uv run pyside6-rcc src/wordee/assets/resources.qrc -o src/wordee/assets/resources_rc.py
-        language: system
-        pass_filenames: false
-
       - id: validate-commit-message
         name: validate-commit-message
         entry: uv run ./scripts/hooks/check_commit_message.py
