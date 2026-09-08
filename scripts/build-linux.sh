@@ -2,8 +2,9 @@
 set -e
 
 uv run nuitka \
-  --standalone \
+  --mode=app \
   --enable-plugin=pyside6 \
+  --product-name=WORDEE \
   --linux-create-installer \
   --linux-app-icon=assets/wordee-icon.png \
   --output-filename=wordee \
