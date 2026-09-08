@@ -21,6 +21,9 @@ exclude = "^src/wordee/assets/"
 [tool.ruff.lint]
 ignore = ["DTZ011"]
 
+[tool.ruff]
+exclude = ["src/wordee/assets/resources_rc.py"]
+
 [project]
 name = "wordee"
 dynamic = ["version"]
