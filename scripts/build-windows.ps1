@@ -1,9 +1,7 @@
 # run this from the project root
+# all the other configs are in the project root
 uv run nuitka `
     --onefile `
-    --enable-plugin=pyside6 `
     --windows-console-mode=disable `
     --windows-icon-from-ico=assets/wordee-icon.ico `
-    --output-filename=wordee `
-    --output-dir=dist `
     src/wordee/main.py
