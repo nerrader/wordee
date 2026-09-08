@@ -7,4 +7,5 @@ uv run nuitka \
   --linux-create-installer \
   --linux-app-icon=assets/wordee-icon.png \
   --output-filename=wordee \
+  --output-dir=dist \
   src/wordee/main.py

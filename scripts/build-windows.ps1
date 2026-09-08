@@ -4,5 +4,6 @@ uv run nuitka `
     --enable-plugin=pyside6 `
     --windows-console-mode=disable `
     --windows-icon-from-ico=assets/wordee-icon.ico `
-    --output-filename=wordee
+    --output-filename=wordee `
+    --output-dir=dist `
     src/wordee/main.py

@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  check-main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Check tag is on main
+        run: |
+          git fetch origin main
+
+          # check if tag is in main branch
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" "origin/main"; then
+            echo "ERROR: Release tag must point to a commit on main."
+            exit 1
+          fi
+
+  build:
+    needs: check-main
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux
+            build: bash scripts/build-linux.sh
+
+          - os: macos-latest
+            build: bash scripts/build-macos.sh
+            name: macos
+
+          - os: windows-latest
+            name: windows
+            build: pwsh scripts/build-windows.ps1
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install Python using UV
+        run: uv python install
+
+      - name: Get dependencies
+        run: uv sync --locked
+
+      - name: Build ${{ matrix.name }}
+        run: ${{ matrix.build }}
+
+      - name: Upload build
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.name }}
+          path: dist/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download builds
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: dist/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        with:
+          name: WORDEE ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: true
+          files: |
+            dist/**/*
