@@ -27,13 +27,6 @@ jobs:
       - name: Get dependencies
         run: uv sync --locked
 
-      - name: Debug Python environment
-        run: |
-          uv run python --version
-          uv run mypy --version
-          uv run pre-commit --version
-          uv run pre-commit run mypy --all-files -v
-
       - name: Run pre-commits on all files
         run: uv run pre-commit run --all-files
 
