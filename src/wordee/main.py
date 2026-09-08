@@ -5,6 +5,8 @@
 # nuitka-project: --output-dir=dist
 # nuitka-project: --product-version=0.1.0
 # nuitka-project: --assume-yes-for-downloads
+# nuitka-project: --no_docstrings
+# nuitka-project: --no_site
 
 import argparse
 import sys
