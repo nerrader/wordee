@@ -15,9 +15,9 @@ venv = ".venv"
 typeCheckingMode = "standard"
 
 [tool.mypy]
-strict = true
-exclude = "^src/wordee/assets/"
+exclude = ["^src/wordee/assets/", "^dist/"]
 
+strict = true
 [tool.ruff.lint]
 ignore = ["DTZ011"]
 
