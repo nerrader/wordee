@@ -4,6 +4,7 @@
 # nuitka-project: --output-filename=WORDEE
 # nuitka-project: --output-dir=dist
 # nuitka-project: --product-version=0.1.0
+# nuitka-project: --assume-yes-for-downloads
 
 import argparse
 import sys
