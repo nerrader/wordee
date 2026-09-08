@@ -70,4 +70,5 @@ jobs:
         # also dont know why we need this
         env:
           QT_QPA_PLATFORM: offscreen
+          CI: "true"
         run: uv run pytest
