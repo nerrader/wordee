@@ -9,6 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.13, 3.14]
+        nuitka-version:
+          - "nuitka"
+          - "nuitka @ git+https://github.com/Nuitka/Nuitka.git@develop"
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +39,7 @@ jobs:
           uv run \
             --no-project \
             --python ${{matrix.python-version}} \
-            --with nuitka \
+            --with "${{matrix.nuitka-version}}" \
             nuitka \
               --mode=app \
               --linux-create-installer \
@@ -50,7 +53,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: nuitka-crash-report ${{matrix.python-version}}
+          name: nuitka-crash-report ${{matrix.python-version}} ${{matrix.nuitka-version}}
           path: nuitka-crash-report.xml
           if-no-files-found: ignore
 
