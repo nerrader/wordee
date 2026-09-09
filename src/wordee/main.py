@@ -1,12 +1,10 @@
 # nuitka-project: --enable-plugin=pyside6
-# nuitka-project: --company-name=Nerrader
 # nuitka-project: --product-name=WORDEE
 # nuitka-project: --output-filename=WORDEE
 # nuitka-project: --output-dir=dist
-# nuitka-project: --product-version=0.1.0
 # nuitka-project: --assume-yes-for-downloads
-# nuitka-project: --no_docstrings
-# nuitka-project: --no_site
+# nuitka-project: --python-flag=no_docstrings
+# nuitka-project: --python-flag=no_site
 
 import argparse
 import sys

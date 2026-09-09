@@ -64,11 +64,11 @@ jobs:
         run: uv sync --locked
 
       # this needs to exist so AppImage can be executed
-      - name: Install Linux dependencies
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libfuse2 || sudo apt-get install -y libfuse2t64
+      # - name: Install Linux dependencies
+      #   if: runner.os == 'Linux'
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y libfuse2 || sudo apt-get install -y libfuse2t64
 
       - name: Build ${{ matrix.name }}
         run: |
