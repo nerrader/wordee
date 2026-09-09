@@ -5,6 +5,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.13, 3.14]
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +18,7 @@ jobs:
           enable-cache: true
 
       - name: Install Python using UV
-        run: uv python install 3.14
+        run: uv python install ${{matrix.python-version}}
 
       # this needs to exist so AppImage can be executed
       - name: Install Linux dependencies
@@ -31,7 +35,7 @@ jobs:
         run: |
           uv run \
             --no-project \
-            --python 3.14 \
+            --python ${{matrix.python-version}} \
             --with nuitka \
             nuitka \
               --mode=app \
@@ -46,7 +50,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: nuitka-crash-report
+          name: nuitka-crash-report ${{matrix.python-version}}
           path: nuitka-crash-report.xml
           if-no-files-found: ignore
 
