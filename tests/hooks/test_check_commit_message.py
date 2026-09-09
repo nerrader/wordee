@@ -62,7 +62,7 @@ def test_commit_message_rejects_not_using_conventional_commits_message(
 
 def test_commit_message_rejects_invalid_commit_category(tmp_path: Path) -> None:
     message_path = tmp_path / "message"
-    message_path.write_text("ci(CI): something something")
+    message_path.write_text("security(idk): something something")
 
     result = subprocess.run(
         [
@@ -98,7 +98,7 @@ def test_commit_message_rejects_invalid_commit_scope(tmp_path: Path) -> None:
 
 def test_commit_message_rejects_invalid_commit_description(tmp_path: Path) -> None:
     message_path = tmp_path / "message"
-    message_path.write_text("chore(): something something")
+    message_path.write_text("chore(): ")
 
     result = subprocess.run(
         [

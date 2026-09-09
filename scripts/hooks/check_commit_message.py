@@ -2,7 +2,7 @@ import re
 import sys
 from pathlib import Path
 
-VALID_COMMIT_TYPES = (
+VALID_COMMIT_TYPES: tuple[str, ...] = (
     "feat",
     "fix",
     "refactor",
@@ -12,6 +12,8 @@ VALID_COMMIT_TYPES = (
     "style",
     "revert",
     "perf",
+    "ci",
+    "build",
 )
 
 commit_regex: str = rf"^({'|'.join(VALID_COMMIT_TYPES)})(\([^()]+\))?(!)?: .+$"
