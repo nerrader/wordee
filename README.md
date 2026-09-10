@@ -1,4 +1,4 @@
-# WORDEE GUI Project
+# WORDEE
 
 This project is my own version of Wordle, the famous web minigame, as a PySide6 Desktop Application, that I made for fun.
 
