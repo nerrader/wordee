@@ -2,6 +2,6 @@
 set -e
 
 uv run nuitka \
-  --mode=app \
+  --mode=app-dist \
   --macos-app-icon=assets/wordee-icon.icns \
   src/wordee/main.py
