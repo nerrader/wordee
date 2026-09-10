@@ -5,3 +5,5 @@ uv run nuitka \
   --mode=app-dist \
   --macos-app-icon=assets/wordee-icon.icns \
   src/wordee/main.py
+
+mv dist/main.app dist/WORDEE.app
