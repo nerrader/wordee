@@ -5,3 +5,5 @@ uv run nuitka `
     --windows-console-mode=disable `
     --windows-icon-from-ico=assets/wordee-icon.ico `
     src/wordee/main.py
+
+Rename-Item "dist/WORDEE.exe" "WORDEE-x86_64.exe"

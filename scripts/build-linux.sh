@@ -7,4 +7,4 @@ uv run nuitka \
   --linux-app-icon=assets/wordee-icon.png \
   src/wordee/main.py
 
-mv dist/main.AppImage dist/WORDEE.AppImage
+mv dist/main.AppImage dist/WORDEE-x86_64.AppImage

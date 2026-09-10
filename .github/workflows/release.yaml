@@ -112,7 +112,11 @@ jobs:
 
       # only for debuggin
       - name: Show release files
-        run: find dist -maxdepth 2 -type f -print
+        shell: bash
+        run: |
+          find dist -name "*.app" -print
+          find dist -name "*.AppImage" -print
+          find dist -name "*.exe" -print
 
       - name: Create Release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
@@ -122,6 +126,6 @@ jobs:
           draft: true
           fail_on_unmatched_files: true
           files: |
-            dist/WORDEE.exe
-            dist/WORDEE.app
-            dist/WORDEE.AppImage
+            dist/WORDEE-x86_64.exe
+            dist/WORDEE-x86_64.app
+            dist/WORDEE-x86_64.AppImage
