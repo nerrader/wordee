@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from wordee import __version__ as game_version
+from wordee import game_version
 from wordee.game_signals import game_signals
 
 
