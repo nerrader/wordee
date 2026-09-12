@@ -14,6 +14,8 @@ This project is my own version of Wordle, the famous web minigame, as a PySide6 
 - Automatic cache syncing based on date.
 - Adding viewable statistics.
 - Adding configurable settings.
+- Offline mode, sends you to unlimited mode immediately with a notice.
+- Target word cachhing
 
 ## Tech Stack
 
