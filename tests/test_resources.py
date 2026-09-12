@@ -1,17 +1,18 @@
-import subprocess
 from pathlib import Path
 
-QRC = Path("src/wordee/assets/resources.qrc")
-RESOURCES = Path("src/wordee/assets/resources_rc.py")
+from PySide6.QtCore import QFile, QIODevice, QTextStream
+
+STYLESHEET = Path("src/wordee/assets/style.qss")
 
 
-def test_resources_rc_is_up_to_date(tmp_path: Path) -> None:
-    original_rc_file = RESOURCES.read_text()
+def test_resources_stylesheet_is_up_to_date(tmp_path: Path) -> None:
+    current_stylesheet = STYLESHEET.read_text()
 
-    result = subprocess.run(
-        ["uv", "run", "pyside6-rcc", QRC, "-o", tmp_path / "resources_rc.py"],
-        check=False,
-    )
+    file = QFile(":/style.qss")
+    assert file.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text)
 
-    assert result.returncode == 0
-    assert original_rc_file == (tmp_path / "resources_rc.py").read_text()
+    stream = QTextStream(file)
+    resources_stylesheet: str = stream.readAll()
+    file.close()
+
+    assert current_stylesheet == resources_stylesheet
