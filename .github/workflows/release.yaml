@@ -127,6 +127,6 @@ jobs:
           draft: true
           fail_on_unmatched_files: true
           files: |
-            dist/WORDEE-x86_64.exe
+            dist/WORDEE-x86_64.zip
             dist/WORDEE-x86_64.app.zip
             dist/WORDEE-x86_64.AppImage
