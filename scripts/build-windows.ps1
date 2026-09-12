@@ -6,23 +6,19 @@ uv run nuitka `
     --windows-icon-from-ico=assets/wordee-icon.ico `
     src/wordee/main.py
 
-# rename the .exe
-Rename-Item `
-    "dist/WORDEE.exe" `
-    "WORDEE-x86_64.exe"
-
 # remove all useless build junk
 Remove-Item "dist/main.build" -Recurse -Force
 Remove-Item "dist/main.onefile-build" -Recurse -Force
 
+# add the readme from assets
 Copy-Item `
     "assets/README-windows.txt" `
-    "dist/README.md"
+    "dist/README.txt"
 
 # zip the WORDEE-x86_64
 Compress-Archive `
     -Path "dist/*" `
-    -DestinationPath "WORDEE-x86_64.zip" `
+    -DestinationPath "WORDEE-windows-x86_64.zip" `
     -Force
 
 # remove all items in dist/
@@ -30,5 +26,5 @@ Remove-Item -Path "dist/*" -Recurse -Force
 
 # then move the .zip there
 Move-Item `
-    "WORDEE-x86_64.zip" `
-    "dist/WORDEE-x86_64.zip"
+    "WORDEE-windows-x86_64.zip" `
+    "dist/WORDEE-windows-x86_64.zip"
