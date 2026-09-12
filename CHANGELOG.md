@@ -16,4 +16,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Logging through verbose mode and the locally stored .log file.
 - Persistent daily game state across application sessions.
 
-[1.0.0-beta.1]: 
+[1.0.0-beta.1]:
