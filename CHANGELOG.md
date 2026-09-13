@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0]
+
+- Change version number to v1.0.0 in the actual game.
+- Change the windows `.exe` to a standalone `.zip` containing the `.exe`, this is to reduce the possibility of false positives from Windows Defender.
+- Improve binary filenames by explicitly adding the OS name.
+- Fix QRC resources test in CI.
+
 ## [1.0.0-beta.1]
 
 - The core features of the app, including the GUI and game loop.
@@ -16,4 +23,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Logging through verbose mode and the locally stored .log file.
 - Persistent daily game state across application sessions.
 
-[1.0.0-beta.1]:
+[1.0.0-beta.1]:<https://github.com/nerrader/wordee/releases/tag/v1.0.0-beta.1>
+[1.0.0]: <https://github.com/nerrader/wordee/compare/v1.0.0-beta.1...v1.0.0>
