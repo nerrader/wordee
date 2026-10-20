@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
+from wordee.constants import WordeeCellColor
 from wordee.game_signals import game_signals
 from wordee.models.wordee_game_creation import WordeeGameFactory
 from wordee.views.dialogs import BlockSwitchModeDialog, GameOverDialog, HelpMenu
@@ -152,15 +153,33 @@ class GamePresenter:
             logger.debug("Invalid guess: {}", user_guess)
             return
 
-        color_feedback = self.model.get_color_feedback(user_guess)
+        color_feedback: list[WordeeCellColor] = self.model.get_color_feedback(
+            user_guess
+        )
         self.view.right_game_area.game_stats.set_guesses_left(self.model.guesses_left)
 
         self.view.wordee_grid.update_wordee_row_cell_colors(
             user_guess_row, color_feedback
         )
 
+        # no dictionary comprehension because ill give you an example why
+        # word: STINK, guess: STINT
+        # the second T with a gray color will override the first with green
+        # this prevents that
+        letter_statuses: dict[str, WordeeCellColor | None] = {}
+
+        for letter, color in zip(user_guess.lower(), color_feedback):
+            letter_color = letter_statuses.get(letter)
+
+            if (
+                letter_color is None
+                or color == "green"
+                or (color == "yellow" and letter_color != "green")
+            ):
+                letter_statuses[letter] = color
+
         self.view.right_game_area.letter_statuses.update_letter_statuses(
-            {letter: color for letter, color in zip(user_guess.lower(), color_feedback)}
+            letter_statuses
         )
 
         # no need for an if check cuz view already does that now
