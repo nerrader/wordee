@@ -47,11 +47,11 @@ def main() -> None:
     app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
 
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
-    if wordee_state.target_word == "" or wordee_state.daily_puzzle_number == 0:
+    if wordee_state.target_word == "" or wordee_state.puzzle_number == 0:
         try:
             target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
             wordee_state.target_word = target_word
-            wordee_state.daily_puzzle_number = puzzle_number
+            wordee_state.puzzle_number = puzzle_number
         except ConnectError:
             logger.warning("Could not connect to the NYT API. Check your internet.")
             NoInternetDialog().exec()
@@ -89,8 +89,8 @@ def main() -> None:
 def save_state(wordee_state: state.DailyGameState, seconds_elapsed: int) -> None:
     logger.info("User quit the game.")
     # if the daily game is not done yet
-    if wordee_state.daily_time_elapsed == 0:
-        wordee_state.daily_time_elapsed = seconds_elapsed
+    if wordee_state.time_elapsed == 0:
+        wordee_state.time_elapsed = seconds_elapsed
 
     logger.debug("Saving persistent daily state")
     state.save_daily_state(const.STATE_PATH, wordee_state)

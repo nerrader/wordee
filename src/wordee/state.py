@@ -18,28 +18,24 @@ class DailyGameState:
 
     # im hoping these values will be provided later on by the presenter or smth
     date: str = date.today().isoformat()
-    daily_board: list[list[tuple[str, WordeeCellColor | None]]] = field(
-        default_factory=list
-    )
-    daily_letter_statuses: dict[str, WordeeCellColor | None] = field(
-        default_factory=dict
-    )
+    board: list[list[tuple[str, WordeeCellColor | None]]] = field(default_factory=list)
+    letter_statuses: dict[str, WordeeCellColor | None] = field(default_factory=dict)
     target_word: str = ""
-    daily_puzzle_number: int = 0
-    daily_time_elapsed: int = 0
-    daily_guesses_left: int = 6
-    daily_game_status: GameStatus = "playing"
+    puzzle_number: int = 0
+    time_elapsed: int = 0
+    guesses_left: int = 6
+    game_status: GameStatus = "playing"
 
 
 def save_daily_state(filepath: Path, daily_state: DailyGameState) -> None:
     daily_state_dict = {
         "date": daily_state.date,
-        "board": daily_state.daily_board,
-        "letter_statuses": daily_state.daily_letter_statuses,
-        "time_elapsed": daily_state.daily_time_elapsed,
-        "guesses_left": daily_state.daily_guesses_left,
-        "game_status": daily_state.daily_game_status,
-        "puzzle_number": daily_state.daily_puzzle_number,
+        "board": daily_state.board,
+        "letter_statuses": daily_state.letter_statuses,
+        "time_elapsed": daily_state.time_elapsed,
+        "guesses_left": daily_state.guesses_left,
+        "game_status": daily_state.game_status,
+        "puzzle_number": daily_state.puzzle_number,
         "target_word": daily_state.target_word,
     }
     with open(filepath, "w", encoding="utf-8") as file:
@@ -52,12 +48,12 @@ def load_daily_state(filepath: Path) -> DailyGameState:
 
     return DailyGameState(
         date=daily_state_dict["date"],
-        daily_board=daily_state_dict["board"],
-        daily_letter_statuses=daily_state_dict["letter_statuses"],
-        daily_time_elapsed=daily_state_dict["time_elapsed"],
-        daily_guesses_left=daily_state_dict["guesses_left"],
-        daily_game_status=daily_state_dict["game_status"],
-        daily_puzzle_number=daily_state_dict["puzzle_number"],
+        board=daily_state_dict["board"],
+        letter_statuses=daily_state_dict["letter_statuses"],
+        time_elapsed=daily_state_dict["time_elapsed"],
+        guesses_left=daily_state_dict["guesses_left"],
+        game_status=daily_state_dict["game_status"],
+        puzzle_number=daily_state_dict["puzzle_number"],
         target_word=daily_state_dict["target_word"],
     )
 

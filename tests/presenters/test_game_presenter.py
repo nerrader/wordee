@@ -77,22 +77,22 @@ def test_sync_daily_state(game_presenter: GamePresenter) -> None:
 
     game_presenter.sync_daily_state()
 
-    assert game_presenter.state.daily_board == DAILY_GRID
-    assert game_presenter.state.daily_letter_statuses["s"] == "green"
-    assert game_presenter.state.daily_letter_statuses["h"] == "gray"
-    assert game_presenter.state.daily_letter_statuses["e"] == "yellow"
-    assert game_presenter.state.daily_letter_statuses["p"] == "gray"
-    assert game_presenter.state.daily_guesses_left == 3
-    assert game_presenter.state.daily_time_elapsed == 20
+    assert game_presenter.state.board == DAILY_GRID
+    assert game_presenter.state.letter_statuses["s"] == "green"
+    assert game_presenter.state.letter_statuses["h"] == "gray"
+    assert game_presenter.state.letter_statuses["e"] == "yellow"
+    assert game_presenter.state.letter_statuses["p"] == "gray"
+    assert game_presenter.state.guesses_left == 3
+    assert game_presenter.state.time_elapsed == 20
 
 
 def test_restore_daily_view(game_presenter: GamePresenter) -> None:
-    game_presenter.state.daily_board = DAILY_GRID
-    game_presenter.state.daily_letter_statuses = LETTER_STATUSES
-    game_presenter.state.daily_guesses_left = 3
-    game_presenter.state.daily_time_elapsed = 20
-    game_presenter.state.daily_game_status = "playing"
-    game_presenter.state.daily_puzzle_number = 42
+    game_presenter.state.board = DAILY_GRID
+    game_presenter.state.letter_statuses = LETTER_STATUSES
+    game_presenter.state.guesses_left = 3
+    game_presenter.state.time_elapsed = 20
+    game_presenter.state.game_status = "playing"
+    game_presenter.state.puzzle_number = 42
 
     game_presenter.restore_daily_view()
 
@@ -116,9 +116,9 @@ def test_restore_daily_view_with_default_board_and_letter_statuses_values(
     original_letter_statuses = (
         game_presenter.view.right_game_area.letter_statuses.get_letter_statuses()
     )
-    game_presenter.state.daily_guesses_left = 3
-    game_presenter.state.daily_time_elapsed = 20
-    game_presenter.state.daily_puzzle_number = 42
+    game_presenter.state.guesses_left = 3
+    game_presenter.state.time_elapsed = 20
+    game_presenter.state.puzzle_number = 42
 
     game_presenter.restore_daily_view()
 
@@ -145,7 +145,7 @@ def test_handle_enter_key_does_nothing_if_game_not_playing(
 def test_handle_switch_modes_between_daily_and_unlimited(
     game_presenter: GamePresenter,
 ) -> None:
-    game_presenter.state.daily_game_status = "win"
+    game_presenter.state.game_status = "win"
     game_presenter.model._game_state = "win"
     game_presenter.current_game_mode = "daily"
 
@@ -186,7 +186,7 @@ def test_handle_alphabet_key_updates_daily_state(
     game_presenter.handle_alphabet_key("a")
 
     assert game_presenter.view.wordee_grid.get_wordee_row_text(1) == "A"
-    assert game_presenter.state.daily_board == (
+    assert game_presenter.state.board == (
         game_presenter.view.wordee_grid.get_wordee_grid()
     )
 
@@ -201,7 +201,7 @@ def test_handle_backspace_key_updates_daily_state(
     game_presenter.handle_backspace_key()
 
     assert game_presenter.view.wordee_grid.get_wordee_row_text(1) == "A"
-    assert game_presenter.state.daily_board == (
+    assert game_presenter.state.board == (
         game_presenter.view.wordee_grid.get_wordee_grid()
     )
 
@@ -218,8 +218,8 @@ def test_handle_enter_key_submits_guess_and_updates_view(
 
     assert game_presenter.model.guesses_left == 5
     assert game_presenter.view.wordee_grid.get_wordee_row_text(1) == "STRAY"
-    assert game_presenter.state.daily_guesses_left == 5
-    assert game_presenter.state.daily_game_status == game_presenter.model.game_state
+    assert game_presenter.state.guesses_left == 5
+    assert game_presenter.state.game_status == game_presenter.model.game_state
 
 
 def test_handle_enter_key_shows_game_over_dialog_on_loss(
@@ -255,7 +255,7 @@ def test_handle_give_up_ends_game(
     game_presenter.handle_give_up()
 
     assert game_presenter.model.game_state == "loss"
-    assert game_presenter.state.daily_game_status == "loss"
+    assert game_presenter.state.game_status == "loss"
     game_over_dialog.assert_called_once()
 
 
