@@ -1,4 +1,5 @@
 # nuitka-project: --enable-plugin=pyside6
+# nuitka-project: --include-data-dir=src/wordee/data=wordee/data
 # nuitka-project: --company-name=Nerrader
 # nuitka-project: --product-name=WORDEE
 # nuitka-project: --output-filename=WORDEE
@@ -44,15 +45,10 @@ def main() -> None:
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
 
     try:
-        possible_solutions, valid_guesses = app_setup.load_words_data(
-            const.CACHE_DIR_PATH
-        )
+        possible_solutions, valid_guesses = app_setup.load_words_data()
     except FileNotFoundError:
         logger.info("Word cache file not found. Syncing caches.")
-        app_setup.sync_caches(const.CACHE_DIR_PATH, const.USER_AGENT)
-        possible_solutions, valid_guesses = app_setup.load_words_data(
-            const.CACHE_DIR_PATH
-        )
+        possible_solutions, valid_guesses = app_setup.load_words_data()
 
     app = QApplication(sys.argv)
     app_setup.load_application_font(":/fonts/RobotoMono.ttf")

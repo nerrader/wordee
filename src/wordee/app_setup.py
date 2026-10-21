@@ -1,12 +1,11 @@
 import sys
 from pathlib import Path
 
-from httpx import Client as httpx_client
 from loguru import logger
 from PySide6.QtCore import QFile, QIODevice, QTextStream
 from PySide6.QtGui import QFontDatabase
 
-from wordee.logic import cache
+from wordee.logic import word_files
 
 
 def setup_logger(logging_path: Path, verbose_mode: bool = False) -> None:
@@ -18,31 +17,19 @@ def setup_logger(logging_path: Path, verbose_mode: bool = False) -> None:
         logger.info("Verbose mode enabled.")
 
 
-def load_words_data(cache_dirpath: Path) -> tuple[set[str], set[str]]:
-    """Loads and syncs the possible_solutions and valid_guesses cache.
+def load_words_data() -> tuple[set[str], set[str]]:
+    """Loads and syncs the possible_solutions and valid_guesses word_files.
 
     Args:
-        cache_dirpath: The path to the cache/ directory.
+        word_files_dirpath: The path to the cache/ directory.
 
     Returns:
         tuple[set[str], set[str]]: The possible_solutions and valid_guesses in a tuple.
     """
-    cache_dirpath.mkdir(parents=True, exist_ok=True)
-
-    possible_solutions: set[str] = cache.read_cache("possible_solutions", cache_dirpath)
-    valid_guesses: set[str] = cache.read_cache("valid_guesses", cache_dirpath)
+    possible_solutions: set[str] = word_files.read_word_file("possible_solutions")
+    valid_guesses: set[str] = word_files.read_word_file("valid_guesses")
 
     return (possible_solutions, valid_guesses)
-
-
-def sync_caches(cache_dirpath: Path, user_agent: str) -> None:
-    cache_dirpath.mkdir(parents=True, exist_ok=True)
-
-    with httpx_client(headers={"User-Agent": user_agent}) as client:
-        cache.sync_cache("possible_solutions", cache_dirpath, client)
-        cache.sync_cache("valid_guesses", cache_dirpath, client)
-
-    logger.info("Succesfully synced cache for both word lists.")
 
 
 def load_application_font(font_path: str) -> None:
