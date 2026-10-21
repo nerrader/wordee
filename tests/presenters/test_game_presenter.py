@@ -41,7 +41,11 @@ def game_presenter(mocker: MockerFixture, qtbot: QtBot) -> GamePresenter:
 
     return GamePresenter(
         MainWindow(),
-        WordeeGameFactory({"sheep"}, {"stray", "sheep"}, "sheep"),
+        WordeeGameFactory(
+            possible_solutions={"sheep"},
+            valid_guesses={"stray", "sheep"},
+            daily_word="sheep",
+        ),
         state,
     )
 
