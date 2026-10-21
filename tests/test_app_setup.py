@@ -17,16 +17,16 @@ def test_load_words_data(tmp_path: Path, qapp: QApplication) -> None:
     possible_solutions = {"arise", "crane"}
     valid_guesses = {"arise", "crane", "apple"}
 
-    with patch("wordee.logic.cache.read_cache") as read_cache:
-        read_cache.side_effect = [possible_solutions, valid_guesses]
+    with patch("wordee.logic.word_files.read_word_file") as read_word_file:
+        read_word_file.side_effect = [possible_solutions, valid_guesses]
 
-        result = app_setup.load_words_data(tmp_path)
+        result = app_setup.load_words_data()
 
     assert result == (possible_solutions, valid_guesses)
 
-    assert read_cache.call_count == 2
-    read_cache.assert_any_call("possible_solutions", tmp_path)
-    read_cache.assert_any_call("valid_guesses", tmp_path)
+    assert read_word_file.call_count == 2
+    read_word_file.assert_any_call("possible_solutions")
+    read_word_file.assert_any_call("valid_guesses")
 
 
 def test_load_valid_application_font() -> None:
