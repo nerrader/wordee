@@ -24,6 +24,7 @@ class DailyGameState:
     daily_letter_statuses: dict[str, WordeeCellColor | None] = field(
         default_factory=dict
     )
+    target_word: str = ""
     daily_puzzle_number: int = 0
     daily_time_elapsed: int = 0
     daily_guesses_left: int = 6
@@ -39,6 +40,7 @@ def save_daily_state(filepath: Path, daily_state: DailyGameState) -> None:
         "guesses_left": daily_state.daily_guesses_left,
         "game_status": daily_state.daily_game_status,
         "puzzle_number": daily_state.daily_puzzle_number,
+        "target_word": daily_state.target_word,
     }
     with open(filepath, "w", encoding="utf-8") as file:
         json.dump(daily_state_dict, file, indent=4)
@@ -56,6 +58,7 @@ def load_daily_state(filepath: Path) -> DailyGameState:
         daily_guesses_left=daily_state_dict["guesses_left"],
         daily_game_status=daily_state_dict["game_status"],
         daily_puzzle_number=daily_state_dict["puzzle_number"],
+        target_word=daily_state_dict["target_word"],
     )
 
 
