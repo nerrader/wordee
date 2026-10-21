@@ -15,6 +15,7 @@ This project is my own version of Wordle, the famous web minigame, as a PySide6 
 - Adding viewable statistics.
 - Adding configurable settings.
 - Offline mode, sends you to unlimited mode immediately with a notice.
+- Making the window full-screenable using a keybind. (atleast on windows)
 
 ## Tech Stack
 
