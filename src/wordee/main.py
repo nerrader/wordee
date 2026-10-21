@@ -42,7 +42,22 @@ def main() -> None:
 
     logger.info("Starting up wordee")
 
+    app = QApplication(sys.argv)
+    app_setup.load_application_font(":/fonts/RobotoMono.ttf")
+    app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
+
     wordee_state = state.load_or_create_daily_state(const.STATE_PATH)
+    if wordee_state.target_word == "" or wordee_state.daily_puzzle_number == 0:
+        try:
+            target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
+            wordee_state.target_word = target_word
+            wordee_state.daily_puzzle_number = puzzle_number
+        except ConnectError:
+            logger.warning("Could not connect to the NYT API. Check your internet.")
+            NoInternetDialog().exec()
+            return
+    else:
+        target_word = wordee_state.target_word
 
     try:
         possible_solutions, valid_guesses = app_setup.load_words_data()
@@ -50,19 +65,7 @@ def main() -> None:
         logger.info("Word cache file not found. Syncing caches.")
         possible_solutions, valid_guesses = app_setup.load_words_data()
 
-    app = QApplication(sys.argv)
-    app_setup.load_application_font(":/fonts/RobotoMono.ttf")
-    app.setStyleSheet(app_setup.get_stylesheet_contents(":/style.qss"))
-
-    try:
-        target_word, puzzle_number = nyt.fetch_wordle_solution(const.USER_AGENT)
-    except ConnectError:
-        logger.warning("Could not connect to the NYT API. Check your internet.")
-        NoInternetDialog().exec()
-        return
-
     window = MainWindow()
-    wordee_state.daily_puzzle_number = puzzle_number
 
     # i dont need to assign it to anything since all the connecting stuff is in __init__()
     presenter = GamePresenter(  # noqa: F841
