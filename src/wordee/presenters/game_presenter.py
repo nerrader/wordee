@@ -29,7 +29,7 @@ class GamePresenter:
         self.game_factory = game_factory
         self.state = daily_game_state
         self.model = game_factory.create_daily_game(
-            self.state.daily_guesses_left, self.state.daily_game_status
+            self.state.guesses_left, self.state.game_status
         )
         self.current_game_mode: GameMode = "daily"
         self.setup_connections()
@@ -61,15 +61,13 @@ class GamePresenter:
         if self.current_game_mode != "daily":
             raise RuntimeError("The current game_mode is not daily.")
 
-        self.state.daily_board = self.view.wordee_grid.get_wordee_grid()
-        self.state.daily_letter_statuses = (
+        self.state.board = self.view.wordee_grid.get_wordee_grid()
+        self.state.letter_statuses = (
             self.view.right_game_area.letter_statuses.get_letter_statuses()
         )
-        self.state.daily_guesses_left = self.model.guesses_left
-        self.state.daily_time_elapsed = (
-            self.view.right_game_area.game_stats.seconds_elapsed
-        )
-        self.state.daily_game_status = self.model.game_state
+        self.state.guesses_left = self.model.guesses_left
+        self.state.time_elapsed = self.view.right_game_area.game_stats.seconds_elapsed
+        self.state.game_status = self.model.game_state
 
     def restore_daily_view(self) -> None:
         """Restores the daily view by using the persistent daily state to update
@@ -79,31 +77,27 @@ class GamePresenter:
         logger.debug("Restoring daily game state.")
         # if the state is still default values aka first time opening up the thingy
         # fill it in with the actual default values
-        if not self.state.daily_board:
-            self.state.daily_board = self.view.wordee_grid.get_wordee_grid()
-        if not self.state.daily_letter_statuses:
-            self.state.daily_letter_statuses = (
+        if not self.state.board:
+            self.state.board = self.view.wordee_grid.get_wordee_grid()
+        if not self.state.letter_statuses:
+            self.state.letter_statuses = (
                 self.view.right_game_area.letter_statuses.get_letter_statuses()
             )
 
         # might as well update them for those who actually do have
         # values for the state
-        self.view.wordee_grid.update_wordee_grid(self.state.daily_board)
+        self.view.wordee_grid.update_wordee_grid(self.state.board)
         self.view.right_game_area.letter_statuses.update_letter_statuses(
-            self.state.daily_letter_statuses
+            self.state.letter_statuses
         )
-        self.view.right_game_area.game_stats.set_time_elapsed(
-            self.state.daily_time_elapsed
-        )
+        self.view.right_game_area.game_stats.set_time_elapsed(self.state.time_elapsed)
 
         if self.model.guesses_left <= 5 and self.model.game_state == "playing":
             self.view.right_game_area.enable_give_up_button()
 
         # 0 is jsut a placeholder number, itll have the days_since_launch
         # from the nyt in the real game
-        self.view.right_game_area.set_numbered_puzzle_label(
-            self.state.daily_puzzle_number
-        )
+        self.view.right_game_area.set_numbered_puzzle_label(self.state.puzzle_number)
         self.view.right_game_area.game_stats.set_game_mode("daily")
         self.view.wordee_grid.set_game_mode_grid_color("daily")
 
@@ -214,7 +208,7 @@ class GamePresenter:
 
         You cannot switch modes while playing in a game."""
         if (
-            self.state.daily_game_status not in ("win", "loss")
+            self.state.game_status not in ("win", "loss")
             or not self.model.can_switch_game_modes
         ):
             with self.view.dimmed():
@@ -245,7 +239,7 @@ class GamePresenter:
         # to stop the user from typing again and stuff
         # we also gotta restore the daily game model
         self.model = self.game_factory.create_daily_game(
-            self.state.daily_guesses_left, self.state.daily_game_status
+            self.state.guesses_left, self.state.game_status
         )
         self.view.right_game_area.set_give_up_button()
         self.view.right_game_area.disable_give_up_button()
