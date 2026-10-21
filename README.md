@@ -8,14 +8,13 @@ This project is my own version of Wordle, the famous web minigame, as a PySide6 
 - A give up button if you don't feel like solving the word.
 - Two game modes: daily and unlimited, and a button to switch between them.
 - A help menu to help new players get into the game.
+- Target word caching.
 
 ## Upcoming Features
 
-- Automatic cache syncing based on date.
 - Adding viewable statistics.
 - Adding configurable settings.
 - Offline mode, sends you to unlimited mode immediately with a notice.
-- Target word caching.
 
 ## Tech Stack
 
