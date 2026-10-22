@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+rm -rf dist
+
 uv run nuitka \
   --mode=app-dist \
   --macos-app-icon=assets/wordee-icon.icns \
