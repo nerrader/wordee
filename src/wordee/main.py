@@ -2,7 +2,7 @@
 # nuitka-project: --include-data-dir=src/wordee/word_lists/=wordee/word_lists/
 # nuitka-project: --company-name=Nerrader
 # nuitka-project: --product-name=WORDEE
-# nuitka-project: --output-filename=WORDEE
+# nuitka-project: --output-filename=WORDEE-gui
 # nuitka-project: --output-dir=dist
 # nuitka-project: --product-version=1.1.0
 # nuitka-project: --assume-yes-for-downloads
