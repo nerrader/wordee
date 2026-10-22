@@ -4,7 +4,7 @@
 # nuitka-project: --product-name=WORDEE
 # nuitka-project: --output-filename=WORDEE
 # nuitka-project: --output-dir=dist
-# nuitka-project: --product-version=0.1.0
+# nuitka-project: --product-version=1.1.0
 # nuitka-project: --assume-yes-for-downloads
 # nuitka-project: --python-flag=no_docstrings
 # nuitka-project: --python-flag=no_site
