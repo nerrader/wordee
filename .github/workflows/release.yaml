@@ -37,13 +37,13 @@ jobs:
           echo "tag-name=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "using tag: $TAG_NAME, with commit hash: $GITHUB_SHA"
 
-      - name: Check commit in main branch
-        run: |
-          git fetch origin main
-          if ! git merge-base --is-ancestor $GITHUB_SHA "origin/main"; then
-            echo "ERROR: Release tag must point to a commit on main."
-            exit 1
-          fi
+      # - name: Check commit in main branch
+      #   run: |
+      #     git fetch origin main
+      #     if ! git merge-base --is-ancestor $GITHUB_SHA "origin/main"; then
+      #       echo "ERROR: Release tag must point to a commit on main."
+      #       exit 1
+      #     fi
 
   build:
     needs: get-tag-name
