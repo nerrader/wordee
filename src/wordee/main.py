@@ -1,5 +1,5 @@
 # nuitka-project: --enable-plugin=pyside6
-# nuitka-project: --include-package-data=wordee
+# nuitka-project: --include-data-dir=src/wordee/word_lists/=wordee/word_lists/
 # nuitka-project: --company-name=Nerrader
 # nuitka-project: --product-name=WORDEE
 # nuitka-project: --output-filename=WORDEE
