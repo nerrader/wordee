@@ -1,5 +1,6 @@
 # run this from the project root
 # all the other configs are in the project root
+Remove-Item dist/ -Recurse -Force
 uv run nuitka `
     --mode=app `
     --windows-console-mode=disable `

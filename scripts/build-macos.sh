@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-uv run nuitka \
+rm -rf dist
+
+uv run --with "Nuitka[app] @ git+https://github.com/Nuitka/Nuitka.git@factory" \
+  -- nuitka \
   --mode=app-dist \
   --macos-app-icon=assets/wordee-icon.icns \
   src/wordee/main.py

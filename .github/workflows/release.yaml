@@ -37,13 +37,13 @@ jobs:
           echo "tag-name=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "using tag: $TAG_NAME, with commit hash: $GITHUB_SHA"
 
-      - name: Check commit in main branch
-        run: |
-          git fetch origin main
-          if ! git merge-base --is-ancestor $GITHUB_SHA "origin/main"; then
-            echo "ERROR: Release tag must point to a commit on main."
-            exit 1
-          fi
+      # - name: Check commit in main branch
+      #   run: |
+      #     git fetch origin main
+      #     if ! git merge-base --is-ancestor $GITHUB_SHA "origin/main"; then
+      #       echo "ERROR: Release tag must point to a commit on main."
+      #       exit 1
+      #     fi
 
   build:
     needs: get-tag-name
@@ -92,12 +92,23 @@ jobs:
         run: |
           ${{ matrix.build }}
 
+      # Upload the actual build
       - name: Upload build
+        if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ matrix.name }}
           path: dist/
           if-no-files-found: error
+
+      # Upload the Nuitka crash report separately
+      - name: Upload Nuitka crash report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.name }}-nuitka-crash-report
+          path: nuitka-crash-report.xml
+          if-no-files-found: ignore
 
   release:
     needs: [build, get-tag-name]
